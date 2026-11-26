@@ -3674,10 +3674,44 @@
     // =========================================================================
     function updateHomeScreenAppIcons(url) {
       if (!url) return;
-      const appleLink = document.getElementById('apple-touch-icon-link');
-      const favLink = document.getElementById('favicon-link');
-      if (appleLink && appleLink.getAttribute('href') !== url) appleLink.setAttribute('href', url);
-      if (favLink && favLink.getAttribute('href') !== url) favLink.setAttribute('href', url);
+      const applyHref = (finalHref) => {
+        const appleLink = document.getElementById('apple-touch-icon-link');
+        const favLink = document.getElementById('favicon-link');
+        if (appleLink && appleLink.getAttribute('href') !== finalHref) appleLink.setAttribute('href', finalHref);
+        if (favLink && favLink.getAttribute('href') !== finalHref) favLink.setAttribute('href', finalHref);
+      };
+
+      // If already a square data URL, apply directly
+      if (url.startsWith('data:image/')) {
+        applyHref(url);
+        return;
+      }
+
+      // Fit non-square external logos into a square 512x512 padded icon so iOS never stretches them
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        try {
+          const size = 512;
+          const pad = 44;
+          const canvas = document.createElement('canvas');
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, size, size);
+          const avail = size - pad * 2;
+          const scale = Math.min(avail / img.width, avail / img.height);
+          const w = img.width * scale;
+          const h = img.height * scale;
+          ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+          applyHref(canvas.toDataURL('image/png'));
+        } catch (_) {
+          applyHref(url);
+        }
+      };
+      img.onerror = () => applyHref(url);
+      img.src = url;
     }
 
     function initDashboardApp() {
