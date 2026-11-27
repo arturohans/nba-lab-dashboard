@@ -465,9 +465,10 @@
     }
     html.xmas #btn-xmas-music {
       display: inline-flex !important;
-      background: linear-gradient(135deg, rgba(21, 128, 61, 0.38), rgba(185, 28, 28, 0.32)) !important;
-      border-color: rgba(250, 204, 21, 0.5) !important;
+      background: linear-gradient(135deg, rgba(16, 42, 34, 0.96), rgba(88, 22, 22, 0.94)) !important;
+      border-color: rgba(250, 204, 21, 0.55) !important;
       color: #fef08a !important;
+      box-shadow: 0 8px 18px -4px rgba(0, 0, 0, 0.65) !important;
     }
     #xmas-snow-canvas {
       position: fixed;
@@ -581,15 +582,17 @@
             <span id="lbl-sync-btn">Local / Sheet Sync</span>
           </button>
 
-          <button id="btn-night-mode" type="button" class="w-full sm:w-auto justify-center flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl sm:rounded-lg text-[11px] sm:text-xs font-semibold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition truncate" title="Toggle Night Mode">
-            <span id="night-mode-icon" class="shrink-0">🌙</span>
-            <span id="lbl-night-mode" class="truncate">Night</span>
-          </button>
+          <div class="relative w-full sm:w-auto">
+            <button id="btn-night-mode" type="button" class="w-full sm:w-auto justify-center flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl sm:rounded-lg text-[11px] sm:text-xs font-semibold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition truncate" title="Toggle Night Mode">
+              <span id="night-mode-icon" class="shrink-0">🌙</span>
+              <span id="lbl-night-mode" class="truncate">Night</span>
+            </button>
 
-          <button id="btn-xmas-music" type="button" class="hidden w-full sm:w-auto justify-center items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl sm:rounded-lg text-[11px] sm:text-xs font-semibold border border-amber-300 transition truncate cursor-pointer" title="Toggle Jingle Bells Instrumental">
-            <span id="xmas-music-icon" class="shrink-0">🔔</span>
-            <span id="lbl-xmas-music" class="hidden md:inline truncate">Music</span>
-          </button>
+            <button id="btn-xmas-music" type="button" class="hidden absolute left-0 right-0 top-full mt-1.5 z-50 justify-center items-center gap-1 px-2 py-1 rounded-xl sm:rounded-lg text-[10px] sm:text-[11px] font-semibold border border-amber-300 transition truncate cursor-pointer animate-fade" title="Toggle Christmas Music">
+              <span id="xmas-music-icon" class="shrink-0">🔔</span>
+              <span id="lbl-xmas-music" class="truncate">Jingle</span>
+            </button>
+          </div>
 
           <div class="w-full sm:w-auto grid grid-cols-2 sm:inline-flex rounded-xl bg-slate-100 p-0.5 sm:p-1 border border-slate-200" role="group" aria-label="Language toggle">
             <button id="lang-en" type="button" class="px-1.5 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition bg-white text-teal-800 shadow-sm text-center">
