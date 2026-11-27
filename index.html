@@ -17,18 +17,25 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    html, body {
-      position: fixed;
-      inset: 0;
+    html {
       margin: 0;
       padding: 0;
       width: 100%;
       max-width: 100%;
-      height: 100vh;
-      height: -webkit-fill-available;
-      height: 100dvh;
-      overflow: hidden;
+      min-height: 100%;
+      overflow-x: hidden;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
       background-color: #f8fafc;
       color: #0f172a;
     }
@@ -36,22 +43,19 @@
       background-color: #1e1f22 !important;
       color: #dbdee1;
     }
-    /* Lock top header at the top of the viewport shell */
+    /* Sticky top header keeps the title bar pinned while letting body fill 100% of iOS screen height */
     #app-header {
-      flex-shrink: 0;
+      position: sticky;
+      top: 0;
       width: 100%;
       z-index: 45;
       padding-top: env(safe-area-inset-top, 0px);
     }
-    /* Dedicated scroll container so the header physically cannot scroll on iOS */
+    /* Content wrapper with bottom clearance above the floating liquid glass dock */
     #app-scroll-container {
+      width: 100%;
       flex: 1 1 auto;
-      min-height: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior-y: contain;
-      padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+      padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px));
     }
     @media (min-width: 640px) {
       #app-scroll-container {
