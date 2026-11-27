@@ -463,6 +463,12 @@
       border-color: rgba(250, 204, 21, 0.5) !important;
       color: #fef08a !important;
     }
+    html.xmas #btn-xmas-music {
+      display: inline-flex !important;
+      background: linear-gradient(135deg, rgba(21, 128, 61, 0.38), rgba(185, 28, 28, 0.32)) !important;
+      border-color: rgba(250, 204, 21, 0.5) !important;
+      color: #fef08a !important;
+    }
     #xmas-snow-canvas {
       position: fixed;
       inset: 0;
@@ -494,6 +500,7 @@
 </head>
 <body class="min-h-screen w-full max-w-full flex flex-col selection:bg-teal-100 selection:text-teal-900">
   <canvas id="xmas-snow-canvas" aria-hidden="true"></canvas>
+  <audio id="xmas-bg-audio" src="./xmas-bg.mp3" loop preload="auto"></audio>
 
   <!-- Top Navigation & Brand Header -->
   <header id="app-header" class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
@@ -577,6 +584,11 @@
           <button id="btn-night-mode" type="button" class="w-full sm:w-auto justify-center flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl sm:rounded-lg text-[11px] sm:text-xs font-semibold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition truncate" title="Toggle Night Mode">
             <span id="night-mode-icon" class="shrink-0">🌙</span>
             <span id="lbl-night-mode" class="truncate">Night</span>
+          </button>
+
+          <button id="btn-xmas-music" type="button" class="hidden w-full sm:w-auto justify-center items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl sm:rounded-lg text-[11px] sm:text-xs font-semibold border border-amber-300 transition truncate cursor-pointer" title="Toggle Jingle Bells Instrumental">
+            <span id="xmas-music-icon" class="shrink-0">🔔</span>
+            <span id="lbl-xmas-music" class="hidden md:inline truncate">Music</span>
           </button>
 
           <div class="w-full sm:w-auto grid grid-cols-2 sm:inline-flex rounded-xl bg-slate-100 p-0.5 sm:p-1 border border-slate-200" role="group" aria-label="Language toggle">
@@ -1837,6 +1849,7 @@
       lang: safeGetStorage('nba_lab_lang', 'en'),
       themeMode: safeGetStorage('nba_lab_theme_mode', safeGetStorage('nba_lab_dark_mode', 'false') === 'true' ? 'dark' : 'light'),
       darkMode: safeGetStorage('nba_lab_dark_mode', 'false') === 'true',
+      xmasMusicMuted: safeGetStorage('nba_lab_xmas_muted', 'false') === 'true',
       isAdmin: !forceMemberMode && safeGetStorage('nba_lab_is_admin', 'false', true) === 'true',
       activeTab: 'roster',
       selectedDate: getInitialSelectedWeek(),
@@ -2402,13 +2415,16 @@
           nightLbl.textContent = t.xmasMode;
         }
       }
+      const musicIcon = document.getElementById('xmas-music-icon');
+      const musicLbl = document.getElementById('lbl-xmas-music');
+      if (musicIcon && musicLbl) {
+        musicIcon.textContent = state.xmasMusicMuted ? '🔕' : '🔔';
+        musicLbl.textContent = state.xmasMusicMuted ? (isZh ? '靜音' : 'Muted') : (isZh ? '鈴聲' : 'Jingle');
+      }
       if (typeof syncSnowAnimation === 'function') syncSnowAnimation();
-
-      const logoBoxEl = document.getElementById('lab-logo-box');
+      if (typeof syncXmasMusic === 'function') syncXmasMusic();
       const logoOverlayEl = document.getElementById('lab-logo-admin-overlay');
-      if (logoBoxEl && logoOverlayEl) {
-        logoBoxEl.classList.toggle('cursor-pointer', state.isAdmin);
-        logoBoxEl.title = state.isAdmin ? (isZh ? '點擊上傳實驗室 Logo' : 'Click to upload Lab Logo (Admin)') : 'NBA Lab';
+      if (logoOverlayEl) {
         logoOverlayEl.classList.toggle('hidden', !state.isAdmin);
         logoOverlayEl.classList.toggle('flex', state.isAdmin);
       }
@@ -3948,11 +3964,9 @@
             const pad = Math.round(size * 0.14);
             const inner = size - pad * 2;
             const scale = Math.min(inner / (img.naturalWidth || inner), inner / (img.naturalHeight || inner));
-            const drawW = Math.round((img.naturalWidth || inner) * scale);
-            const drawH = Math.round((img.naturalHeight || inner) * scale);
-            const dx = Math.round((size - drawW) / 2);
-            const dy = Math.round((size - drawH) / 2);
-            ctx.drawImage(img, dx, dy, drawW, drawH);
+            const drawW = (img.naturalWidth || inner) * scale;
+            const drawH = (img.naturalHeight || inner) * scale;
+            ctx.drawImage(img, (size - drawW) / 2, (size - drawH) / 2, drawW, drawH);
             const dataUrl = canvas.toDataURL('image/png');
             if (appleIcon) appleIcon.href = dataUrl;
             if (favIcon) favIcon.href = dataUrl;
@@ -3973,21 +3987,21 @@
       reader.onload = (ev) => {
         const img = new Image();
         img.onload = () => {
-          const maxDim = 240;
-          const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
           const canvas = document.createElement('canvas');
+          const maxDim = 256;
+          const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
           canvas.width = Math.round(img.width * scale);
           canvas.height = Math.round(img.height * scale);
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          const dataUrl = canvas.toDataURL('image/png');
+          const dataUrl = canvas.toDataURL('image/png', 0.9);
           state.logoUrl = dataUrl;
           safeSetStorage('nba_lab_logo_url', dataUrl);
           const logoUrlInput = document.getElementById('logo-url-input');
           if (logoUrlInput) logoUrlInput.value = dataUrl;
-          renderHeaderAndControls();
+          renderAll();
           pushFullStateToCloud();
-          showToast(state.lang === 'zh' ? '已更新實驗室 Logo 並同步' : 'Lab logo updated & synced');
+          showToast(state.lang === 'zh' ? '已更新並同步實驗室 Logo' : 'Updated & synced lab logo');
         };
         img.src = ev.target.result;
       };
@@ -3995,6 +4009,45 @@
     }
 
     function initApp() {
+      const logoImgEl = document.getElementById('lab-logo-img');
+      const logoFallbackEl = document.getElementById('lab-logo-fallback');
+      if (logoImgEl && logoFallbackEl) {
+        logoImgEl.addEventListener('error', () => {
+          logoImgEl.classList.add('hidden');
+          logoFallbackEl.classList.remove('hidden');
+        });
+        logoImgEl.addEventListener('load', () => {
+          logoImgEl.classList.remove('hidden');
+          logoFallbackEl.classList.add('hidden');
+        });
+      }
+
+      document.querySelectorAll('.nav-edit-pencil').forEach(pencil => {
+        pencil.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (!state.isAdmin) return;
+          const tabKey = pencil.dataset.editNav;
+          const currentLabel = getNavLabel(tabKey);
+          const spanEl = pencil.previousElementSibling;
+          if (!spanEl || spanEl.querySelector('input')) return;
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.value = currentLabel;
+          input.className = 'px-1.5 py-0.5 rounded border border-teal-400 bg-white text-slate-900 text-xs font-bold w-36 focus:outline-none focus:ring-2 focus:ring-teal-600';
+          input.addEventListener('click', ev => ev.stopPropagation());
+          const commitEdit = () => updateNavLabel(tabKey, input.value);
+          input.addEventListener('blur', commitEdit);
+          input.addEventListener('keydown', ev => {
+            if (ev.key === 'Enter') { ev.preventDefault(); input.blur(); }
+            if (ev.key === 'Escape') { renderHeaderAndControls(); }
+          });
+          spanEl.textContent = '';
+          spanEl.appendChild(input);
+          input.focus();
+          input.select();
+        });
+      });
+
       document.getElementById('lang-en').addEventListener('click', () => {
         state.lang = 'en';
         safeSetStorage('nba_lab_lang', 'en');
@@ -4005,16 +4058,42 @@
         safeSetStorage('nba_lab_lang', 'zh');
         renderAll();
       });
+      document.getElementById('btn-night-mode').addEventListener('click', () => {
+        const order = ['light', 'dark', 'xmas'];
+        const nextMode = order[(order.indexOf(state.themeMode) + 1) % order.length];
+        state.themeMode = nextMode;
+        state.darkMode = nextMode === 'dark' || nextMode === 'xmas';
+        safeSetStorage('nba_lab_theme_mode', nextMode);
+        safeSetStorage('nba_lab_dark_mode', state.darkMode ? 'true' : 'false');
+        renderHeaderAndControls();
+      });
 
-      const nightBtn = document.getElementById('btn-night-mode');
-      if (nightBtn) {
-        nightBtn.addEventListener('click', () => {
-          const order = ['light', 'dark', 'xmas'];
-          const nextMode = order[(order.indexOf(state.themeMode) + 1) % order.length];
-          state.themeMode = nextMode;
-          state.darkMode = nextMode === 'dark' || nextMode === 'xmas';
-          safeSetStorage('nba_lab_theme_mode', nextMode);
-          safeSetStorage('nba_lab_dark_mode', state.darkMode ? 'true' : 'false');
+      // Christmas MP3 Background Audio Player (plays ./xmas-bg.mp3 only in Xmas mode)
+      window.syncXmasMusic = function() {
+        const audioEl = document.getElementById('xmas-bg-audio');
+        if (!audioEl) return;
+        audioEl.volume = 0.35;
+        if (state.themeMode !== 'xmas' || state.xmasMusicMuted) {
+          audioEl.pause();
+          return;
+        }
+        const playPromise = audioEl.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(() => {});
+        }
+      };
+      const unlockAudioOnGesture = () => {
+        if (state.themeMode === 'xmas' && !state.xmasMusicMuted) {
+          syncXmasMusic();
+        }
+      };
+      document.addEventListener('pointerdown', unlockAudioOnGesture, { passive: true });
+
+      const musicBtn = document.getElementById('btn-xmas-music');
+      if (musicBtn) {
+        musicBtn.addEventListener('click', () => {
+          state.xmasMusicMuted = !state.xmasMusicMuted;
+          safeSetStorage('nba_lab_xmas_muted', state.xmasMusicMuted ? 'true' : 'false');
           renderHeaderAndControls();
         });
       }
