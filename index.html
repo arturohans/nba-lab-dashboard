@@ -23,7 +23,6 @@
       width: 100%;
       max-width: 100%;
       min-height: 100%;
-      overflow-x: hidden;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: #f8fafc;
       color: #0f172a;
@@ -35,7 +34,8 @@
       max-width: 100%;
       min-height: 100vh;
       min-height: 100dvh;
-      overflow-x: hidden;
+      overflow-x: clip;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: #f8fafc;
       color: #0f172a;
     }
@@ -45,22 +45,12 @@
     }
     /* Sticky top header keeps the title bar pinned while letting body fill 100% of iOS screen height */
     #app-header {
+      position: -webkit-sticky;
       position: sticky;
       top: 0;
       width: 100%;
       z-index: 45;
       padding-top: env(safe-area-inset-top, 0px);
-    }
-    /* Content wrapper with bottom clearance above the floating liquid glass dock */
-    #app-scroll-container {
-      width: 100%;
-      flex: 1 1 auto;
-      padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px));
-    }
-    @media (min-width: 640px) {
-      #app-scroll-container {
-        padding-bottom: 0;
-      }
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -386,10 +376,10 @@
     })();
   </script>
 </head>
-<body class="w-full max-w-full flex flex-col selection:bg-teal-100 selection:text-teal-900">
+<body class="min-h-screen w-full max-w-full flex flex-col selection:bg-teal-100 selection:text-teal-900">
 
   <!-- Top Navigation & Brand Header -->
-  <header id="app-header" class="z-40 w-full bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+  <header id="app-header" class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pt-3 pb-2.5 sm:py-3 gap-2.5">
         <!-- Brand -->
@@ -424,15 +414,15 @@
         </div>
 
         <!-- Right Controls -->
-        <div class="flex flex-wrap sm:flex-nowrap items-center justify-start sm:justify-end gap-1.5 sm:gap-2">
-          <button id="btn-admin-lock" type="button" class="shrink-0 flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition" title="Toggle Admin Edit Mode">
-            <span id="admin-lock-icon">🔒</span>
-            <span id="lbl-admin-btn">Member View</span>
+        <div class="grid grid-cols-4 sm:flex items-center justify-start sm:justify-end gap-1.5 sm:gap-2 w-full sm:w-auto">
+          <button id="btn-admin-lock" type="button" class="w-full sm:w-auto justify-center flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl sm:rounded-lg text-[11px] sm:text-xs font-semibold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition truncate" title="Toggle Admin Edit Mode">
+            <span id="admin-lock-icon" class="shrink-0">🔒</span>
+            <span id="lbl-admin-btn" class="truncate">Member View</span>
           </button>
 
-          <button id="btn-open-share" type="button" class="shrink-0 flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold border border-teal-200 bg-teal-50 hover:bg-teal-100 text-teal-800 transition">
+          <button id="btn-open-share" type="button" class="w-full sm:w-auto justify-center flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl sm:rounded-lg text-[11px] sm:text-xs font-semibold border border-teal-200 bg-teal-50 hover:bg-teal-100 text-teal-800 transition truncate">
             <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
-            <span id="lbl-share-btn">Share</span>
+            <span id="lbl-share-btn" class="truncate">Share</span>
           </button>
 
           <button id="btn-open-sync" type="button" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition">
@@ -440,16 +430,16 @@
             <span id="lbl-sync-btn">Local / Sheet Sync</span>
           </button>
 
-          <button id="btn-night-mode" type="button" class="shrink-0 flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition" title="Toggle Night Mode">
-            <span id="night-mode-icon">🌙</span>
-            <span id="lbl-night-mode">Night</span>
+          <button id="btn-night-mode" type="button" class="w-full sm:w-auto justify-center flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl sm:rounded-lg text-[11px] sm:text-xs font-semibold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition truncate" title="Toggle Night Mode">
+            <span id="night-mode-icon" class="shrink-0">🌙</span>
+            <span id="lbl-night-mode" class="truncate">Night</span>
           </button>
 
-          <div class="shrink-0 inline-flex rounded-xl bg-slate-100 p-0.5 sm:p-1 border border-slate-200" role="group" aria-label="Language toggle">
-            <button id="lang-en" type="button" class="px-2 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition bg-white text-teal-800 shadow-sm">
+          <div class="w-full sm:w-auto grid grid-cols-2 sm:inline-flex rounded-xl bg-slate-100 p-0.5 sm:p-1 border border-slate-200" role="group" aria-label="Language toggle">
+            <button id="lang-en" type="button" class="px-1.5 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition bg-white text-teal-800 shadow-sm text-center">
               EN
             </button>
-            <button id="lang-zh" type="button" class="px-2 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition text-slate-600 hover:text-slate-900">
+            <button id="lang-zh" type="button" class="px-1.5 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition text-slate-600 hover:text-slate-900 text-center">
               中文
             </button>
           </div>
@@ -482,27 +472,25 @@
     </div>
   </header>
 
-  <!-- Dedicated Scrollable Content Shell -->
-  <div id="app-scroll-container" class="flex-1 flex flex-col w-full">
   <!-- Main Workspace -->
-  <main id="main-workspace" class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-8 sm:pb-6 space-y-4 sm:space-y-6">
+  <main id="main-workspace" class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-28 sm:pb-8 space-y-4 sm:space-y-6">
 
     <!-- Mobile Active Section & Week Summary Strip -->
-    <div id="mobile-filter-summary-bar" class="sm:hidden flex items-center justify-between gap-2 bg-white rounded-2xl border border-slate-200 shadow-xs px-3.5 py-2.5">
+    <div id="mobile-filter-summary-bar" class="sm:hidden flex items-center justify-between gap-2.5 bg-white rounded-2xl border border-slate-200 shadow-xs px-3.5 py-2.5">
       <div class="min-w-0 flex-1">
         <div id="mobile-summary-section" class="text-xs font-extrabold text-slate-900 truncate">
           Duties
         </div>
-        <div id="mobile-summary-week" class="text-[11px] font-semibold text-teal-800 truncate">
+        <div id="mobile-summary-week" class="text-[11px] font-semibold text-teal-800 truncate mt-0.5">
           <!-- Populated dynamically -->
         </div>
       </div>
-      <div class="flex items-center gap-1.5 shrink-0">
-        <button id="btn-open-swap-mobile" type="button" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-[11px] font-bold text-amber-800 active:scale-95 transition">
+      <div class="flex items-center gap-2 shrink-0">
+        <button id="btn-open-swap-mobile" type="button" class="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-[11px] font-bold text-amber-800 active:scale-95 transition">
           <span>&#8644;</span>
           <span id="lbl-swap-mobile">Swap</span>
         </button>
-        <button id="btn-open-mobile-filters-strip" type="button" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-teal-50 border border-teal-200 text-[11px] font-bold text-teal-800 active:scale-95 transition">
+        <button id="btn-open-mobile-filters-strip" type="button" class="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-xl bg-teal-50 border border-teal-200 text-[11px] font-bold text-teal-800 active:scale-95 transition">
           <span id="mobile-summary-filter-badge">Filter</span>
           <span>&#9662;</span>
         </button>
@@ -786,7 +774,6 @@
       <p id="footer-right">Effective Sept. 7, 2026 • Dynamic Modular Rotation Engine</p>
     </div>
   </footer>
-  </div>
 
   <!-- Mobile Floating Liquid Glass Dock -->
   <div id="mobile-liquid-dock" class="liquid-glass-dock sm:hidden z-40" aria-label="Mobile Quick Controls">
@@ -1553,6 +1540,11 @@
       return formatDate(dt);
     }
 
+    function getInitialSelectedWeek() {
+      const todayStr = formatDate(new Date());
+      return todayStr < BASE_CALIBRATION_DATE ? BASE_CALIBRATION_DATE : snapToMonday(todayStr);
+    }
+
     function getWeekOffset(dateStr) {
       const slotNums = getActiveSlotNumbers();
       const nSlots = slotNums.length;
@@ -1572,7 +1564,6 @@
       return lang === 'zh' ? `${m.zh} (${m.en})` : `${m.en} (${m.zh})`;
     }
 
-    // Personal Duty Swaps for a given week Monday string
     function getWeekSwaps(mondayStr) {
       const list = state.dutySwaps[mondayStr];
       return Array.isArray(list) ? list : [];
@@ -1639,10 +1630,6 @@
       return getBaseDutiesForMember(member, shift);
     }
 
-    function getDutyForMember(member, shift, mondayStr = null) {
-      return getDutiesForMember(member, shift, mondayStr)[0];
-    }
-
     function getStatusKey(mondayStr, dutyId) {
       return `${mondayStr}::${dutyId}`;
     }
@@ -1700,10 +1687,7 @@
       darkMode: safeGetStorage('nba_lab_dark_mode', 'false') === 'true',
       isAdmin: !forceMemberMode && safeGetStorage('nba_lab_is_admin', 'false', true) === 'true',
       activeTab: 'roster',
-      selectedDate: (() => {
-        const todayStr = formatDate(new Date());
-        return todayStr < BASE_CALIBRATION_DATE ? BASE_CALIBRATION_DATE : snapToMonday(todayStr);
-      })(),
+      selectedDate: getInitialSelectedWeek(),
       selectedMember: 'ALL',
       selectedDuty: 'ALL',
       mobileFiltersOpen: false,
@@ -1956,7 +1940,8 @@
         feedback.textContent = 'Syncing with Google Apps Script...';
         feedback.classList.remove('hidden');
       }
-      fetch(state.gasUrl)
+      const apiUrl = state.gasUrl.includes('?') ? `${state.gasUrl}&api=1` : `${state.gasUrl}?api=1`;
+      fetch(apiUrl)
         .then(r => r.json())
         .then(data => {
           applyCloudPayload(data);
@@ -2229,11 +2214,11 @@
       const adminIcon = document.getElementById('admin-lock-icon');
       const adminLbl = document.getElementById('lbl-admin-btn');
       if (state.isAdmin) {
-        adminBtn.className = 'shrink-0 whitespace-nowrap flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 transition';
+        adminBtn.className = 'w-full sm:w-auto justify-center flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl sm:rounded-lg text-[11px] sm:text-xs font-semibold border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 transition truncate';
         adminIcon.textContent = '🔓';
         adminLbl.textContent = t.adminView;
       } else {
-        adminBtn.className = 'shrink-0 whitespace-nowrap flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition';
+        adminBtn.className = 'w-full sm:w-auto justify-center flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl sm:rounded-lg text-[11px] sm:text-xs font-semibold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition truncate';
         adminIcon.textContent = '🔒';
         adminLbl.textContent = t.memberView;
       }
@@ -2284,11 +2269,11 @@
       const btnEn = document.getElementById('lang-en');
       const btnZh = document.getElementById('lang-zh');
       if (isZh) {
-        btnZh.className = 'px-2 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition bg-white text-teal-800 shadow-sm';
-        btnEn.className = 'px-2 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition text-slate-600 hover:text-slate-900';
+        btnZh.className = 'px-1.5 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition bg-white text-teal-800 shadow-sm text-center';
+        btnEn.className = 'px-1.5 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition text-slate-600 hover:text-slate-900 text-center';
       } else {
-        btnEn.className = 'px-2 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition bg-white text-teal-800 shadow-sm';
-        btnZh.className = 'px-2 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition text-slate-600 hover:text-slate-900';
+        btnEn.className = 'px-1.5 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition bg-white text-teal-800 shadow-sm text-center';
+        btnZh.className = 'px-1.5 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition text-slate-600 hover:text-slate-900 text-center';
       }
 
       document.getElementById('date-picker').value = monStr;
@@ -2388,7 +2373,6 @@
         });
       }
 
-      // Render Member Spotlight Banner if a member is selected
       const spotPanel = document.getElementById('spotlight-panel');
       if (state.selectedMember === 'ALL') {
         spotPanel.classList.add('hidden');
@@ -2497,7 +2481,6 @@
         </span>
       `;
 
-      // Active Swaps Banner
       const swapsBanner = document.getElementById('active-swaps-banner');
       const weekSwaps = getWeekSwaps(monStr);
       if (weekSwaps.length > 0) {
@@ -3361,7 +3344,7 @@
                             </div>
                           ` : ''}
                         ` : `
-                          <span class="text-[10px] font-semibold text-teal-800/80">${isZh ? '下次未定' : 'Next TBD'}</span>
+                          <span class="text-[10px] font-semibold text-teal-800/80 truncate">${isZh ? '下次未定' : 'Next TBD'}</span>
                         `}
                       </div>
                     </div>
@@ -3369,25 +3352,25 @@
                 </div>
               `}
             </td>
-            <td class="py-2.5 px-3.5 whitespace-nowrap align-middle w-[112px]">
-              <span class="inline-flex items-center justify-center min-w-[84px] px-2 py-0.5 rounded-md text-[11px] font-bold border ${badge}">${formatMeetingTypeLabel(mtg.type, isZh)}</span>
+            <td class="py-2.5 px-3.5 whitespace-nowrap align-middle">
+              <span class="inline-flex items-center justify-center min-w-[92px] px-2.5 py-0.5 rounded-md text-[11px] font-bold border ${badge}">${formatMeetingTypeLabel(mtg.type, isZh)}</span>
             </td>
-            <td class="py-3.5 px-4 align-middle">
+            <td class="py-2.5 px-3.5 align-middle">
               <div class="flex flex-wrap items-center gap-1.5">
                 ${presenterBadges}
                 ${state.isAdmin ? `
-                  <select onchange="if(this.value){ addMeetingPresenter('${mtg.id}', this.value); this.value=''; }" class="px-2 py-1 rounded-lg border border-dashed border-slate-300 bg-white text-xs font-medium text-slate-600 hover:border-teal-600 focus:outline-none">
+                  <select onchange="if(this.value){ addMeetingPresenter('${mtg.id}', this.value); this.value=''; }" class="px-2 py-1 rounded-lg border border-dashed border-slate-300 bg-white text-xs font-medium text-slate-600 cursor-pointer hover:border-teal-600">
                     <option value="">+ Add</option>
                     ${activeMembers.map(m => `<option value="${m.en}">${m.en} (${m.zh})</option>`).join('')}
                   </select>
                 ` : ''}
               </div>
             </td>
-            <td class="py-3.5 px-4 text-xs text-slate-600 leading-relaxed align-middle">
+            <td class="py-2.5 px-3.5 text-xs text-slate-600 align-middle">
               ${state.isAdmin ? `
-                <input type="text" value="${isZh ? mtg.notes_zh : mtg.notes_en}" onchange="updateMeetingField('${mtg.id}', '${isZh ? 'notes_zh' : 'notes_en'}', this.value)" class="w-full min-w-[220px] px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+                <input type="text" value="${isZh ? mtg.notes_zh : mtg.notes_en}" onchange="updateMeetingField('${mtg.id}', '${isZh ? 'notes_zh' : 'notes_en'}', this.value)" class="w-full min-w-[200px] px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-600" />
               ` : `
-                <span>${isZh ? mtg.notes_zh : mtg.notes_en}</span>
+                <span class="text-xs text-slate-600 leading-relaxed">${isZh ? mtg.notes_zh : mtg.notes_en}</span>
               `}
             </td>
           </tr>
@@ -3398,37 +3381,38 @@
     function updateMeetingField(mtgId, field, value) {
       if (!state.isAdmin) return;
       const base = MEETING_SCHEDULE.find(m => m.id === mtgId);
-      if (!base) return;
       const current = getMeetingData(base);
       state.meetingOverrides[mtgId] = { ...current, [field]: value };
       safeSetStorage('nba_lab_meetings_v2', JSON.stringify(state.meetingOverrides));
       renderMeetingsView();
       pushFullStateToCloud();
-      showToast(`Saved ${mtgId} (${field})`);
+      showToast(`Updated ${mtgId}`);
     }
 
-    function addMeetingPresenter(mtgId, memberEnName) {
+    function addMeetingPresenter(mtgId, presenterEn) {
       if (!state.isAdmin) return;
       const base = MEETING_SCHEDULE.find(m => m.id === mtgId);
-      if (!base) return;
       const current = getMeetingData(base);
-      if (!current.presenters.includes(memberEnName)) {
-        updateMeetingField(mtgId, 'presenters', [...current.presenters, memberEnName]);
+      if (!current.presenters.includes(presenterEn)) {
+        const nextList = [...current.presenters, presenterEn];
+        updateMeetingField(mtgId, 'presenters', nextList);
       }
     }
 
-    function removeMeetingPresenter(mtgId, memberEnName) {
+    function removeMeetingPresenter(mtgId, presenterEn) {
       if (!state.isAdmin) return;
       const base = MEETING_SCHEDULE.find(m => m.id === mtgId);
-      if (!base) return;
       const current = getMeetingData(base);
-      updateMeetingField(mtgId, 'presenters', current.presenters.filter(p => p !== memberEnName));
+      const nextList = current.presenters.filter(p => p !== presenterEn);
+      updateMeetingField(mtgId, 'presenters', nextList);
     }
 
     function getMonthlyDutyData(item) {
       const ov = state.monthlyOverrides[item.id] || {};
       return {
         ...item,
+        title_en: ov.title_en !== undefined ? ov.title_en : item.title_en,
+        title_zh: ov.title_zh !== undefined ? ov.title_zh : item.title_zh,
         lead_en: ov.lead_en !== undefined ? ov.lead_en : item.lead_en,
         lead_zh: ov.lead_zh !== undefined ? ov.lead_zh : item.lead_zh,
         members_en: ov.members_en !== undefined ? ov.members_en : item.members_en,
@@ -3438,26 +3422,30 @@
       };
     }
 
-    function updateMonthlyDutyField(mdId, field, value) {
+    function updateMonthlyDutyField(dutyId, field, value) {
       if (!state.isAdmin) return;
-      const base = MONTHLY_DUTIES.find(m => m.id === mdId);
+      const base = MONTHLY_DUTIES.find(d => d.id === dutyId);
       if (!base) return;
       const current = getMonthlyDutyData(base);
-      state.monthlyOverrides[mdId] = { ...current, [field]: value };
+      state.monthlyOverrides[dutyId] = { ...current, [field]: value };
       safeSetStorage('nba_lab_monthly', JSON.stringify(state.monthlyOverrides));
       renderMonthlyView();
       pushFullStateToCloud();
-      showToast(state.lang === 'zh' ? '已更新每月輪值名單' : 'Updated monthly duty roster');
+      showToast(state.lang === 'zh' ? `已更新定期工作 (${dutyId})` : `Updated schedule (${dutyId})`);
     }
 
-    function getTruckData(truck) {
-      const ov = state.truckOverrides[truck.id] || {};
+    function getTruckData(item) {
+      const ov = state.truckOverrides[item.id] || {};
       return {
-        ...truck,
-        time: ov.time !== undefined ? ov.time : truck.time,
-        location_en: ov.location_en !== undefined ? ov.location_en : truck.location_en,
-        location_zh: ov.location_zh !== undefined ? ov.location_zh : truck.location_zh,
-        days: Array.isArray(ov.days) ? ov.days : truck.days
+        ...item,
+        type_en: ov.type_en !== undefined ? ov.type_en : item.type_en,
+        type_zh: ov.type_zh !== undefined ? ov.type_zh : item.type_zh,
+        location_en: ov.location_en !== undefined ? ov.location_en : item.location_en,
+        location_zh: ov.location_zh !== undefined ? ov.location_zh : item.location_zh,
+        time: ov.time !== undefined ? ov.time : item.time,
+        days: Array.isArray(ov.days) ? ov.days : item.days,
+        note_en: ov.note_en !== undefined ? ov.note_en : item.note_en,
+        note_zh: ov.note_zh !== undefined ? ov.note_zh : item.note_zh
       };
     }
 
@@ -3470,206 +3458,191 @@
       safeSetStorage('nba_lab_trucks', JSON.stringify(state.truckOverrides));
       renderMonthlyView();
       pushFullStateToCloud();
-      showToast(state.lang === 'zh' ? '已更新垃圾車時刻表' : 'Updated trash collection schedule');
+      showToast(state.lang === 'zh' ? '已更新垃圾車清運時間' : 'Updated garbage truck schedule');
     }
 
-    function toggleTruckDay(truckId, dayName) {
+    function toggleTruckDay(truckId, dayKey) {
       if (!state.isAdmin) return;
       const base = GARBAGE_TRUCKS.find(t => t.id === truckId);
       if (!base) return;
       const current = getTruckData(base);
-      const exists = current.days.includes(dayName);
-      const nextDays = exists
-        ? current.days.filter(d => d !== dayName)
-        : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].filter(d => d === dayName || current.days.includes(d));
+      const dayOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      const hasDay = current.days.includes(dayKey);
+      const nextDays = hasDay
+        ? current.days.filter(d => d !== dayKey)
+        : [...current.days, dayKey].sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
       updateTruckField(truckId, 'days', nextDays);
     }
 
-    function getTrashRule(key) {
+    function getTrashRuleText(key) {
       return state.trashRuleOverrides[key] !== undefined ? state.trashRuleOverrides[key] : DEFAULT_TRASH_RULES[key];
     }
 
-    function updateTrashRule(key, value) {
+    function updateTrashRuleField(key, value) {
       if (!state.isAdmin) return;
       state.trashRuleOverrides[key] = value;
       safeSetStorage('nba_lab_trash_rules', JSON.stringify(state.trashRuleOverrides));
       renderMonthlyView();
       pushFullStateToCloud();
-      showToast(state.lang === 'zh' ? '已更新分類清運規則' : 'Updated collection & recycling rule');
+      showToast(state.lang === 'zh' ? '已更新垃圾清運規定' : 'Updated waste disposal rule');
     }
 
     function renderMonthlyView() {
       const isZh = state.lang === 'zh';
       const grid = document.getElementById('monthly-grid');
-      const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      const daysZh = { Mon: '一', Tue: '二', Wed: '三', Thu: '四', Fri: '五', Sat: '六' };
+      const allDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      const dayZhMap = { Mon: '一', Tue: '二', Wed: '三', Thu: '四', Fri: '五', Sat: '六', Sun: '日' };
 
-      const monthlyCardsHtml = MONTHLY_DUTIES.map(rawMd => {
-        const md = getMonthlyDutyData(rawMd);
+      const monthlyCards = MONTHLY_DUTIES.map(rawItem => {
+        const item = getMonthlyDutyData(rawItem);
+        const titleField = isZh ? 'title_zh' : 'title_en';
         const leadField = isZh ? 'lead_zh' : 'lead_en';
         const membersField = isZh ? 'members_zh' : 'members_en';
         const noteField = isZh ? 'note_zh' : 'note_en';
 
         return `
-          <div class="p-4 sm:p-5 space-y-2.5">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <h3 class="font-bold text-slate-900 text-sm">${isZh ? md.title_zh : md.title_en}</h3>
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/70 space-y-2">
+            <div class="flex items-start justify-between gap-2">
               ${state.isAdmin ? `
-                <div class="flex items-center gap-1">
-                  <span class="text-[11px] font-bold text-teal-800">${isZh ? '負責人：' : 'Lead:'}</span>
-                  <input type="text" value="${md[leadField]}" onchange="updateMonthlyDutyField('${md.id}', '${leadField}', this.value)" class="px-2 py-0.5 rounded-lg border border-teal-300 bg-teal-50 text-teal-900 text-xs font-semibold w-40 focus:outline-none focus:ring-2 focus:ring-teal-600" />
-                </div>
+                <input type="text" value="${item[titleField].replace(/"/g, '&quot;')}" onchange="updateMonthlyDutyField('${item.id}', '${titleField}', this.value)" class="flex-1 px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-600" />
               ` : `
-                <span class="px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-semibold">
-                  ${isZh ? `負責人：${md.lead_zh}` : `Lead: ${md.lead_en}`}
-                </span>
+                <h4 class="font-bold text-slate-900 text-sm">${item[titleField]}</h4>
               `}
+              ${state.isAdmin ? `<span class="px-2 py-0.5 rounded bg-teal-50 text-teal-800 border border-teal-200 text-xs font-bold shrink-0">${item.id}</span>` : ''}
             </div>
+
             ${state.isAdmin ? `
-              <div class="space-y-1.5">
-                <label class="block text-[11px] font-semibold text-slate-500">${isZh ? '輪值成員名單：' : 'Team Members:'}</label>
-                <input type="text" value="${md[membersField]}" onchange="updateMonthlyDutyField('${md.id}', '${membersField}', this.value)" class="w-full px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-600" />
-                <label class="block text-[11px] font-semibold text-slate-500">${isZh ? '執行說明：' : 'Task Notes:'}</label>
-                <input type="text" value="${md[noteField]}" onchange="updateMonthlyDutyField('${md.id}', '${noteField}', this.value)" class="w-full px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+              <div class="space-y-1.5 pt-1">
+                <div class="flex items-center gap-2 text-xs">
+                  <span class="font-bold text-teal-800 w-20 shrink-0">${isZh ? '負責人：' : 'Lead:'}</span>
+                  <input type="text" value="${item[leadField].replace(/"/g, '&quot;')}" onchange="updateMonthlyDutyField('${item.id}', '${leadField}', this.value)" class="flex-1 px-2 py-1 rounded-lg border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+                </div>
+                <div class="flex items-center gap-2 text-xs">
+                  <span class="font-bold text-slate-600 w-20 shrink-0">${isZh ? '輪值成員：' : 'Team:'}</span>
+                  <input type="text" value="${item[membersField].replace(/"/g, '&quot;')}" onchange="updateMonthlyDutyField('${item.id}', '${membersField}', this.value)" class="flex-1 px-2 py-1 rounded-lg border border-slate-300 bg-white text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+                </div>
+                <div class="flex items-start gap-2 text-xs">
+                  <span class="font-bold text-slate-600 w-20 shrink-0 pt-1">${isZh ? '備註說明：' : 'Notes:'}</span>
+                  <textarea rows="2" onchange="updateMonthlyDutyField('${item.id}', '${noteField}', this.value)" class="flex-1 px-2 py-1 rounded-lg border border-slate-300 bg-white text-xs text-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-600">${item[noteField]}</textarea>
+                </div>
               </div>
             ` : `
-              <div class="text-xs text-slate-700">
-                <span class="font-semibold text-slate-500">${isZh ? '輪值成員：' : 'Team Members:'}</span> ${isZh ? md.members_zh : md.members_en}
+              <div class="text-xs text-teal-800 font-semibold">
+                ${isZh ? '負責人：' : 'Lead:'} ${item[leadField]}
               </div>
-              <p class="text-xs text-slate-500 leading-relaxed">${isZh ? md.note_zh : md.note_en}</p>
+              <div class="text-xs text-slate-700">
+                <span class="font-semibold">${isZh ? '輪值成員：' : 'Team:'}</span> ${item[membersField]}
+              </div>
+              <p class="text-xs text-slate-500 leading-relaxed">${item[noteField]}</p>
             `}
           </div>
         `;
       }).join('');
 
-      const truckRowsHtml = GARBAGE_TRUCKS.map(rawTruck => {
+      const truckCards = GARBAGE_TRUCKS.map(rawTruck => {
         const truck = getTruckData(rawTruck);
-        const isCampus = truck.id === 'campus';
+        const typeField = isZh ? 'type_zh' : 'type_en';
         const locField = isZh ? 'location_zh' : 'location_en';
-        const pillClass = isCampus ? 'bg-teal-50 text-teal-800 border-teal-200' : 'bg-amber-50 text-amber-800 border-amber-200';
-        const activeColor = isCampus ? 'bg-teal-700 text-white' : 'bg-amber-500 text-white';
+        const noteField = isZh ? 'note_zh' : 'note_en';
 
         return `
-          <tr class="hover:bg-slate-50/70 transition">
-            <td class="py-3 px-4">
-              <div class="flex flex-wrap items-center gap-2">
-                ${state.isAdmin ? `
-                  <input type="text" value="${truck.time}" onchange="updateTruckField('${truck.id}', 'time', this.value)" class="w-16 px-1.5 py-0.5 rounded-md text-xs font-bold border ${pillClass} focus:outline-none focus:ring-2 focus:ring-teal-600" />
-                  <input type="text" value="${truck[locField]}" onchange="updateTruckField('${truck.id}', '${locField}', this.value)" class="flex-1 min-w-[160px] px-2 py-0.5 rounded-md border border-slate-300 bg-white text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-600" />
-                ` : `
-                  <span class="px-2 py-0.5 rounded-md text-xs font-bold border ${pillClass}">${truck.time}</span>
-                  <span class="font-bold text-slate-800 text-xs">${isZh ? truck.location_zh : truck.location_en}</span>
-                `}
+          <div class="p-4 rounded-xl border border-slate-200 bg-white space-y-2">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              ${state.isAdmin ? `
+                <input type="text" value="${truck[typeField].replace(/"/g, '&quot;')}" onchange="updateTruckField('${truck.id}', '${typeField}', this.value)" class="px-2.5 py-1 rounded-lg border border-slate-300 bg-slate-50 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+                <div class="flex items-center gap-1">
+                  <span class="text-xs font-bold text-teal-800">&#9200;</span>
+                  <input type="time" value="${truck.time}" onchange="updateTruckField('${truck.id}', 'time', this.value)" class="px-2 py-1 rounded-lg border border-teal-200 bg-teal-50 text-xs font-bold text-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+                </div>
+              ` : `
+                <span class="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-xs font-bold">${truck[typeField]}</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-bold">&#9200; ${truck.time}</span>
+              `}
+            </div>
+
+            ${state.isAdmin ? `
+              <input type="text" value="${truck[locField].replace(/"/g, '&quot;')}" onchange="updateTruckField('${truck.id}', '${locField}', this.value)" class="w-full px-2.5 py-1 rounded-lg border border-slate-300 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+              <div class="flex flex-wrap items-center gap-1 pt-0.5">
+                ${allDays.map(d => {
+                  const active = truck.days.includes(d);
+                  return `
+                    <button type="button" onclick="toggleTruckDay('${truck.id}', '${d}')" class="px-2 py-0.5 rounded text-[11px] font-bold border transition cursor-pointer ${active ? 'bg-teal-700 text-white border-teal-700' : 'bg-slate-50 text-slate-400 border-slate-200 hover:text-slate-700'}">
+                      ${isZh ? `週${dayZhMap[d]}` : d}
+                    </button>
+                  `;
+                }).join('')}
               </div>
-              <div class="text-[11px] text-slate-500 mt-1">${isZh ? truck.type_zh : truck.type_en}</div>
-            </td>
-            ${daysOfWeek.map(d => {
-              const active = truck.days.includes(d);
-              if (state.isAdmin) {
-                return `
-                  <td class="py-3 px-2 text-center">
-                    <button type="button" onclick="toggleTruckDay('${truck.id}', '${d}')" title="Toggle ${d}" class="inline-flex items-center justify-center w-6 h-6 rounded-md text-xs font-bold transition cursor-pointer ${
-                      active ? `${activeColor} shadow-2xs` : 'bg-slate-100 text-slate-400 hover:bg-slate-200'
-                    }">${active ? '&#10003;' : '&mdash;'}</button>
-                  </td>
-                `;
-              }
-              return `
-                <td class="py-3 px-2 text-center">
-                  ${active
-                    ? `<span class="inline-flex items-center justify-center w-6 h-6 rounded-md ${activeColor} font-bold text-xs shadow-2xs">&#10003;</span>`
-                    : `<span class="text-slate-300 text-xs">&mdash;</span>`
-                  }
-                </td>
-              `;
-            }).join('')}
-          </tr>
+              <input type="text" value="${truck[noteField].replace(/"/g, '&quot;')}" onchange="updateTruckField('${truck.id}', '${noteField}', this.value)" class="w-full px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 text-xs text-slate-600 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+            ` : `
+              <div class="font-bold text-slate-900 text-sm">${truck[locField]}</div>
+              <div class="flex flex-wrap gap-1">
+                ${truck.days.map(d => `<span class="px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200 text-[11px] font-semibold">${isZh ? `週${dayZhMap[d]}` : d}</span>`).join('')}
+              </div>
+              <p class="text-xs text-slate-500">${truck[noteField]}</p>
+            `}
+          </div>
         `;
       }).join('');
 
-      const suf = isZh ? 'zh' : 'en';
-      const renderCampusRuleBox = (dayLabel, key) => {
-        const val = getTrashRule(key);
-        if (state.isAdmin) {
-          return `
-            <div class="p-2 rounded-lg bg-white/90 border border-teal-200 space-y-1">
-              <div class="font-bold text-teal-800">${dayLabel}</div>
-              <input type="text" value="${val}" onchange="updateTrashRule('${key}', this.value)" class="w-full px-2 py-0.5 rounded border border-teal-300 bg-white text-[11px] text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-600" />
-            </div>
-          `;
-        }
-        return `<div class="p-2 rounded-lg bg-white/80 border border-teal-100"><span class="font-bold text-teal-800">${dayLabel}</span> ${val}</div>`;
-      };
-
-      const renderOffRuleBox = (dayLabel, key, highlightTeal = false) => {
-        const val = getTrashRule(key);
-        if (state.isAdmin) {
-          return `
-            <div class="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg bg-white border border-amber-200">
-              <span class="font-bold text-slate-700 shrink-0">${dayLabel}</span>
-              <input type="text" value="${val}" onchange="updateTrashRule('${key}', this.value)" class="w-32 px-1.5 py-0.5 rounded border border-amber-300 bg-white text-[11px] font-semibold text-slate-800 text-right focus:outline-none focus:ring-2 focus:ring-amber-500" />
-            </div>
-          `;
-        }
-        return `<div class="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-white/90 border border-amber-100"><span class="font-bold text-slate-700">${dayLabel}</span><span class="${highlightTeal ? 'text-teal-700' : 'text-slate-600'} font-semibold">${val}</span></div>`;
+      const langSuffix = isZh ? 'zh' : 'en';
+      const renderRuleRow = (dayBadge, keyPrefix) => {
+        const fullKey = `${keyPrefix}_${langSuffix}`;
+        const val = getTrashRuleText(fullKey);
+        return `
+          <li class="flex items-start gap-2">
+            <span class="font-bold text-slate-800 shrink-0 pt-0.5">${dayBadge}</span>
+            ${state.isAdmin ? `
+              <input type="text" value="${val.replace(/"/g, '&quot;')}" onchange="updateTrashRuleField('${fullKey}', this.value)" class="flex-1 px-2 py-0.5 rounded border border-slate-300 bg-white text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+            ` : `
+              <span>${val}</span>
+            `}
+          </li>
+        `;
       };
 
       grid.innerHTML = `
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-          <div class="p-4 sm:p-5 border-b border-slate-200">
-            <h2 class="text-base font-bold text-slate-900">${isZh ? '每月與單雙月輪值任務' : 'Monthly Rotation Duties'}</h2>
-            <p class="text-xs text-slate-500 mt-0.5">${isZh ? '依單數月 / 雙數月分組負責實驗室廢棄物與冰箱除霜' : 'Assigned by Odd / Even calendar months across lab teams'}</p>
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <div>
+            <h3 class="text-base font-bold text-slate-900">${isZh ? '定期輪值：化學廢液清運與冰箱除霜' : 'Periodic Schedules: Chemical Waste & Freezer Defrosting'}</h3>
+            <p class="text-xs text-slate-500 mt-0.5">${isZh ? '單數月與雙數月分組責任制' : 'Odd & Even Month Specialized Lab Teams'}</p>
           </div>
-          <div class="divide-y divide-slate-100 flex-1">
-            ${monthlyCardsHtml}
-          </div>
+          <div class="space-y-3">${monthlyCards}</div>
         </div>
 
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
-          <div class="p-4 sm:p-5 border-b border-slate-200">
-            <h2 class="text-base font-bold text-slate-900">${isZh ? '校內與校外垃圾車清運時刻表' : 'Campus & Off-Campus Trash Collection Schedule'}</h2>
-            <p class="text-xs text-slate-500 mt-0.5">${isZh ? '垃圾車清運時間與資源回收規則（含平日與週六）' : 'Pickup times & recycling schedule for D02 duty holders'}</p>
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <div>
+            <h3 class="text-base font-bold text-slate-900">${isZh ? '校內外垃圾車清運時刻與分類規定' : 'Campus & Municipal Garbage Truck Timetables'}</h3>
+            <p class="text-xs text-slate-500 mt-0.5">${isZh ? '清運時間、停靠點與每日回收品項規範' : 'Pickup times, locations, and daily recyclable sorting guidelines'}</p>
           </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500">
-                  <th class="py-3 px-4">${isZh ? '清運地點與時間' : 'Collection Point & Time'}</th>
-                  ${daysOfWeek.map(d => `<th class="py-3 px-2 text-center">${isZh ? daysZh[d] : d}</th>`).join('')}
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 text-sm">
-                ${truckRowsHtml}
-              </tbody>
-            </table>
-          </div>
-          <div class="p-4 sm:p-5 bg-slate-50/80 border-t border-slate-200 space-y-3 text-xs">
-            <div class="rounded-xl bg-teal-50/70 border border-teal-200/80 p-3.5 space-y-2">
-              <div class="font-bold text-teal-900">${isZh ? '校內資源回收（11:30 環保車，航太系門口 09:00 垃圾車）' : 'On-Campus Recycling (11:30 Eco-Truck) & 09:00 Trash Pickup'}</div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-slate-700 leading-relaxed">
-                ${renderCampusRuleBox(isZh ? '週一 (Mon)：' : 'Mon:', `campus_mon_${suf}`)}
-                ${renderCampusRuleBox(isZh ? '週二 (Tue)：' : 'Tue:', `campus_tue_${suf}`)}
-                ${renderCampusRuleBox(isZh ? '週三 (Wed)：' : 'Wed:', `campus_wed_${suf}`)}
-                ${renderCampusRuleBox(isZh ? '週四 (Thu)：' : 'Thu:', `campus_thu_${suf}`)}
-                <div class="sm:col-span-2">
-                  ${renderCampusRuleBox(isZh ? '週五 (Fri)：' : 'Fri:', `campus_fri_${suf}`)}
-                </div>
+          <div class="space-y-3">${truckCards}</div>
+
+          <!-- Daily Waste & Recyclable Rules -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <div class="rounded-xl bg-teal-50/60 border border-teal-200/80 p-3.5 text-xs text-slate-700 space-y-2">
+              <div class="font-bold text-teal-900 flex items-center gap-1.5">
+                <span>&#9851;</span>
+                <span>${isZh ? '校內回收品項規定（透明袋）' : 'Campus Recyclable Schedule'}</span>
               </div>
+              <ul class="space-y-1.5 text-[11px] leading-snug">
+                ${renderRuleRow(isZh ? '週一 Mon：' : 'Mon:', 'campus_mon')}
+                ${renderRuleRow(isZh ? '週二 Tue：' : 'Tue:', 'campus_tue')}
+                ${renderRuleRow(isZh ? '週三 Wed：' : 'Wed:', 'campus_wed')}
+                ${renderRuleRow(isZh ? '週四 Thu：' : 'Thu:', 'campus_thu')}
+                ${renderRuleRow(isZh ? '週五 Fri：' : 'Fri:', 'campus_fri')}
+              </ul>
             </div>
 
-            <div class="rounded-xl bg-amber-50/60 border border-amber-200/80 p-3.5 space-y-2">
-              <div class="font-bold text-amber-950">${isZh ? '校外垃圾車清運分類規則（16:40 – 17:17）' : 'Off-Campus Trash Truck Rules (16:40 – 17:17)'}</div>
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-                ${renderOffRuleBox(isZh ? '週一 Mon' : 'Mon', `off_mon_${suf}`, false)}
-                ${renderOffRuleBox(isZh ? '週二 Tue' : 'Tue', `off_tue_${suf}`, true)}
-                ${renderOffRuleBox(isZh ? '週四 Thu' : 'Thu', `off_thu_${suf}`, false)}
-                ${renderOffRuleBox(isZh ? '週六 Sat' : 'Sat', `off_sat_${suf}`, true)}
+            <div class="rounded-xl bg-amber-50/70 border border-amber-200/80 p-3.5 text-xs text-amber-950 space-y-2">
+              <div class="font-bold text-amber-900 flex items-center gap-1.5">
+                <span>&#128666;</span>
+                <span>${isZh ? '校外垃圾車清運規定' : 'Off-Campus Truck Rules'}</span>
               </div>
-              <p class="text-[11px] text-slate-600 leading-relaxed pt-0.5">
-                ${isZh
-                  ? '註：週一及週四僅收一般垃圾（不收資源回收）；週二及週六同時收一般垃圾與資源回收。校內垃圾車請務必使用透明垃圾袋。'
-                  : 'Note: Monday & Thursday collect general trash only (no recycling). Tuesday & Saturday collect both general trash and recyclables. Always use transparent bags for campus pickup.'}
-              </p>
+              <ul class="space-y-1.5 text-[11px] leading-snug">
+                ${renderRuleRow(isZh ? '週一 Mon：' : 'Mon:', 'off_mon')}
+                ${renderRuleRow(isZh ? '週二 Tue：' : 'Tue:', 'off_tue')}
+                ${renderRuleRow(isZh ? '週四 Thu：' : 'Thu:', 'off_thu')}
+                ${renderRuleRow(isZh ? '週六 Sat：' : 'Sat:', 'off_sat')}
+              </ul>
             </div>
           </div>
         </div>
@@ -3685,64 +3658,175 @@
     }
 
     // =========================================================================
-    // 7. HOME SCREEN ICON & EVENT LISTENERS
+    // 7. EVENT LISTENERS & INITIALIZATION
     // =========================================================================
-    function updateHomeScreenAppIcons(url) {
-      if (!url) return;
-      const applyHref = (finalHref) => {
-        const appleLink = document.getElementById('apple-touch-icon-link');
-        const favLink = document.getElementById('favicon-link');
-        if (appleLink && appleLink.getAttribute('href') !== finalHref) appleLink.setAttribute('href', finalHref);
-        if (favLink && favLink.getAttribute('href') !== finalHref) favLink.setAttribute('href', finalHref);
-      };
-
-      // If already a square data URL, apply directly
-      if (url.startsWith('data:image/')) {
-        applyHref(url);
-        return;
-      }
-
-      // Fit non-square external logos into a square 512x512 padded icon so iOS never stretches them
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      img.onload = () => {
-        try {
-          const size = 512;
-          const pad = 44;
-          const canvas = document.createElement('canvas');
-          canvas.width = size;
-          canvas.height = size;
-          const ctx = canvas.getContext('2d');
-          ctx.fillStyle = '#ffffff';
-          ctx.fillRect(0, 0, size, size);
-          const avail = size - pad * 2;
-          const scale = Math.min(avail / img.width, avail / img.height);
-          const w = img.width * scale;
-          const h = img.height * scale;
-          ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
-          applyHref(canvas.toDataURL('image/png'));
-        } catch (_) {
-          applyHref(url);
+    function switchTab(tabName) {
+      state.activeTab = tabName;
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        const isTarget = btn.dataset.tab === tabName;
+        btn.classList.toggle('active', isTarget);
+        btn.classList.toggle('border-teal-700', isTarget);
+        btn.classList.toggle('text-teal-800', isTarget);
+        btn.classList.toggle('font-semibold', isTarget);
+        btn.classList.toggle('border-transparent', !isTarget);
+        btn.classList.toggle('text-slate-600', !isTarget);
+        btn.classList.toggle('font-medium', !isTarget);
+      });
+      document.querySelectorAll('.mob-tab-btn').forEach(btn => {
+        const isTarget = btn.dataset.tab === tabName;
+        const iconSvg = btn.querySelector('svg');
+        const checkMark = btn.querySelector('.mob-tab-check');
+        btn.classList.toggle('active', isTarget);
+        btn.classList.toggle('bg-teal-50/90', isTarget);
+        btn.classList.toggle('text-teal-900', isTarget);
+        btn.classList.toggle('border-teal-200', isTarget);
+        btn.classList.toggle('font-bold', isTarget);
+        btn.classList.toggle('text-slate-700', !isTarget);
+        btn.classList.toggle('border-transparent', !isTarget);
+        btn.classList.toggle('font-semibold', !isTarget);
+        if (iconSvg) {
+          iconSvg.classList.toggle('text-teal-700', isTarget);
+          iconSvg.classList.toggle('text-slate-500', !isTarget);
         }
-      };
-      img.onerror = () => applyHref(url);
-      img.src = url;
+        if (checkMark) {
+          checkMark.classList.toggle('hidden', !isTarget);
+        }
+      });
+      ['roster', 'matrix', 'meetings', 'monthly'].forEach(id => {
+        const el = document.getElementById(`view-${id}`);
+        if (el) el.classList.toggle('hidden', id !== tabName);
+      });
+      renderHeaderAndControls();
     }
 
-    function initDashboardApp() {
-      const logoImgEl = document.getElementById('lab-logo-img');
-      const logoFallbackEl = document.getElementById('lab-logo-fallback');
-      if (logoImgEl && logoFallbackEl) {
-        logoImgEl.addEventListener('error', () => {
-          logoImgEl.classList.add('hidden');
-          logoFallbackEl.classList.remove('hidden');
-        });
-        logoImgEl.addEventListener('load', () => {
-          logoImgEl.classList.remove('hidden');
-          logoFallbackEl.classList.add('hidden');
-        });
+    function setMobileDockCollapsed(collapsed) {
+      state.mobileDockCollapsed = collapsed;
+      const dockEl = document.getElementById('mobile-liquid-dock');
+      if (dockEl) {
+        dockEl.classList.toggle('dock-collapsed', collapsed);
       }
+    }
 
+    function syncMobileBackdropAndScrollLock() {
+      const backdropEl = document.getElementById('mobile-controls-backdrop');
+      const anyOpen = state.mobileFiltersOpen || state.mobileNavOpen;
+      if (backdropEl) {
+        backdropEl.classList.toggle('hidden', !anyOpen);
+      }
+      if (window.innerWidth < 640) {
+        document.body.style.overflow = anyOpen ? 'hidden' : '';
+      } else {
+        document.body.style.overflow = '';
+      }
+    }
+
+    function toggleMobileFilters(forceOpen = null) {
+      state.mobileFiltersOpen = forceOpen !== null ? forceOpen : !state.mobileFiltersOpen;
+      if (state.mobileFiltersOpen) {
+        state.mobileNavOpen = false;
+        setMobileDockCollapsed(false);
+        const navPopoverEl = document.getElementById('mobile-nav-popover');
+        if (navPopoverEl) navPopoverEl.classList.add('hidden');
+      }
+      const controlsEl = document.getElementById('controls-bar-section');
+      if (controlsEl) {
+        controlsEl.classList.toggle('hidden', !state.mobileFiltersOpen);
+      }
+      syncMobileBackdropAndScrollLock();
+    }
+
+    function toggleMobileNavMenu(forceOpen = null) {
+      state.mobileNavOpen = forceOpen !== null ? forceOpen : !state.mobileNavOpen;
+      if (state.mobileNavOpen) {
+        state.mobileFiltersOpen = false;
+        setMobileDockCollapsed(false);
+        const controlsEl = document.getElementById('controls-bar-section');
+        if (controlsEl) controlsEl.classList.add('hidden');
+      }
+      const navPopoverEl = document.getElementById('mobile-nav-popover');
+      if (navPopoverEl) {
+        navPopoverEl.classList.toggle('hidden', !state.mobileNavOpen);
+      }
+      syncMobileBackdropAndScrollLock();
+    }
+
+    function shiftSelectedWeek(daysDelta) {
+      const cur = parseLocalDate(snapToMonday(state.selectedDate));
+      cur.setDate(cur.getDate() + daysDelta);
+      state.selectedDate = formatDate(cur);
+      renderAll();
+    }
+
+    function updateHomeScreenAppIcons(logoSrc) {
+      if (!logoSrc) return;
+      const appleIcon = document.getElementById('apple-touch-icon-link');
+      const favIcon = document.getElementById('favicon-link');
+      const applyRawHref = () => {
+        if (appleIcon) appleIcon.href = logoSrc;
+        if (favIcon) favIcon.href = logoSrc;
+      };
+      try {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          try {
+            const size = 512;
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, size, size);
+            const pad = Math.round(size * 0.14);
+            const inner = size - pad * 2;
+            const scale = Math.min(inner / (img.naturalWidth || inner), inner / (img.naturalHeight || inner));
+            const drawW = Math.round((img.naturalWidth || inner) * scale);
+            const drawH = Math.round((img.naturalHeight || inner) * scale);
+            const dx = Math.round((size - drawW) / 2);
+            const dy = Math.round((size - drawH) / 2);
+            ctx.drawImage(img, dx, dy, drawW, drawH);
+            const dataUrl = canvas.toDataURL('image/png');
+            if (appleIcon) appleIcon.href = dataUrl;
+            if (favIcon) favIcon.href = dataUrl;
+          } catch (_) {
+            applyRawHref();
+          }
+        };
+        img.onerror = applyRawHref;
+        img.src = logoSrc;
+      } catch (_) {
+        applyRawHref();
+      }
+    }
+
+    function applyLogoFromFile(file) {
+      if (!file || !file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          const maxDim = 240;
+          const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const dataUrl = canvas.toDataURL('image/png');
+          state.logoUrl = dataUrl;
+          safeSetStorage('nba_lab_logo_url', dataUrl);
+          const logoUrlInput = document.getElementById('logo-url-input');
+          if (logoUrlInput) logoUrlInput.value = dataUrl;
+          renderHeaderAndControls();
+          pushFullStateToCloud();
+          showToast(state.lang === 'zh' ? '已更新實驗室 Logo 並同步' : 'Lab logo updated & synced');
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function initApp() {
       document.getElementById('lang-en').addEventListener('click', () => {
         state.lang = 'en';
         safeSetStorage('nba_lab_lang', 'en');
@@ -3754,184 +3838,123 @@
         renderAll();
       });
 
-      document.getElementById('btn-night-mode').addEventListener('click', () => {
-        state.darkMode = !state.darkMode;
-        safeSetStorage('nba_lab_dark_mode', state.darkMode ? 'true' : 'false');
-        renderHeaderAndControls();
+      const nightBtn = document.getElementById('btn-night-mode');
+      if (nightBtn) {
+        nightBtn.addEventListener('click', () => {
+          state.darkMode = !state.darkMode;
+          safeSetStorage('nba_lab_dark_mode', state.darkMode ? 'true' : 'false');
+          renderHeaderAndControls();
+        });
+      }
+
+      document.querySelectorAll('.nav-edit-pencil').forEach(pencil => {
+        pencil.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (!state.isAdmin) return;
+          const tabKey = pencil.dataset.editNav;
+          const currentLabel = getNavLabel(tabKey);
+          const isZh = state.lang === 'zh';
+          const btnContainer = pencil.parentElement;
+          const spanEl = btnContainer ? btnContainer.querySelector(`#nav-${tabKey}, #mob-menu-${tabKey}`) : null;
+          if (!spanEl) return;
+
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.value = currentLabel;
+          input.className = 'px-2 py-0.5 rounded border border-teal-500 bg-white text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-600 w-36 sm:w-44';
+          input.addEventListener('click', (ev) => ev.stopPropagation());
+          const commitEdit = () => {
+            updateNavLabel(tabKey, input.value);
+          };
+          input.addEventListener('keydown', (ev) => {
+            ev.stopPropagation();
+            if (ev.key === 'Enter') {
+              ev.preventDefault();
+              commitEdit();
+            } else if (ev.key === 'Escape') {
+              renderHeaderAndControls();
+            }
+          });
+          input.addEventListener('blur', commitEdit);
+          spanEl.replaceWith(input);
+          pencil.classList.add('hidden');
+          input.focus();
+          input.select();
+          showToast(isZh ? '輸入新名稱後按 Enter 儲存' : 'Type new tab name & press Enter');
+        });
       });
 
-      function switchActiveTab(tab) {
-        state.activeTab = tab;
-        document.querySelectorAll('.tab-btn').forEach(b => {
-          const isTarget = b.getAttribute('data-tab') === tab;
-          if (isTarget) {
-            b.className = 'tab-btn active whitespace-nowrap px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold border-b-2 border-teal-700 text-teal-800 transition flex items-center gap-1.5 sm:gap-2';
-          } else {
-            b.className = 'tab-btn whitespace-nowrap px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-medium border-b-2 border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300 transition flex items-center gap-1.5 sm:gap-2';
+      const logoImg = document.getElementById('lab-logo-img');
+      const logoFallback = document.getElementById('lab-logo-fallback');
+      if (logoImg && logoFallback) {
+        logoImg.addEventListener('error', () => {
+          logoImg.classList.add('hidden');
+          logoFallback.classList.remove('hidden');
+        });
+        logoImg.addEventListener('load', () => {
+          logoFallback.classList.add('hidden');
+          logoImg.classList.remove('hidden');
+        });
+      }
+      const logoBox = document.getElementById('lab-logo-box');
+      const logoFileInput = document.getElementById('logo-file-input');
+      if (logoBox && logoFileInput) {
+        logoBox.addEventListener('click', () => {
+          if (!state.isAdmin) return;
+          logoFileInput.click();
+        });
+        logoFileInput.addEventListener('change', (e) => {
+          if (e.target.files && e.target.files[0]) {
+            applyLogoFromFile(e.target.files[0]);
+            e.target.value = '';
           }
         });
-        document.querySelectorAll('.mob-tab-btn').forEach(b => {
-          const isTarget = b.getAttribute('data-tab') === tab;
-          const checkIcon = b.querySelector('.mob-tab-check');
-          const svgIcon = b.querySelector('svg');
-          if (isTarget) {
-            b.className = 'mob-tab-btn active w-full flex items-center justify-between gap-2.5 px-3.5 py-3 rounded-2xl text-sm font-bold bg-teal-50/90 text-teal-900 border border-teal-200 transition cursor-pointer';
-            if (checkIcon) checkIcon.classList.remove('hidden');
-            if (svgIcon) { svgIcon.classList.remove('text-slate-500'); svgIcon.classList.add('text-teal-700'); }
-          } else {
-            b.className = 'mob-tab-btn w-full flex items-center justify-between gap-2.5 px-3.5 py-3 rounded-2xl text-sm font-semibold text-slate-700 hover:bg-white/60 border border-transparent transition cursor-pointer';
-            if (checkIcon) checkIcon.classList.add('hidden');
-            if (svgIcon) { svgIcon.classList.remove('text-teal-700'); svgIcon.classList.add('text-slate-500'); }
-          }
+      }
+      const modalUploadLogoBtn = document.getElementById('btn-modal-upload-logo');
+      if (modalUploadLogoBtn && logoFileInput) {
+        modalUploadLogoBtn.addEventListener('click', () => {
+          logoFileInput.click();
         });
-        ['roster', 'matrix', 'meetings', 'monthly'].forEach(v => {
-          document.getElementById(`view-${v}`).classList.toggle('hidden', v !== tab);
-        });
-        renderHeaderAndControls();
-        const scrollContainer = document.getElementById('app-scroll-container');
-        if (scrollContainer) scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
       document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          switchActiveTab(btn.getAttribute('data-tab'));
-        });
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
       });
-
-      document.querySelectorAll('[data-edit-nav]').forEach(pencilBtn => {
-        pencilBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          if (!state.isAdmin) return;
-          const tabKey = pencilBtn.getAttribute('data-edit-nav');
-          const spanId = pencilBtn.closest('.mob-tab-btn') ? `mob-menu-${tabKey}` : `nav-${tabKey}`;
-          const labelSpan = document.getElementById(spanId);
-          if (!labelSpan || labelSpan.querySelector('input')) return;
-
-          const currentText = getNavLabel(tabKey);
-          const input = document.createElement('input');
-          input.type = 'text';
-          input.value = currentText;
-          input.className = 'px-2 py-0.5 rounded-md border border-teal-500 bg-white text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-teal-600 min-w-[110px]';
-
-          let committed = false;
-          const commit = () => {
-            if (committed) return;
-            committed = true;
-            updateNavLabel(tabKey, input.value);
-          };
-
-          input.addEventListener('click', (ev) => ev.stopPropagation());
-          input.addEventListener('keydown', (ev) => {
-            ev.stopPropagation();
-            if (ev.key === 'Enter') commit();
-            if (ev.key === 'Escape') { committed = true; renderAll(); }
-          });
-          input.addEventListener('blur', commit);
-
-          labelSpan.textContent = '';
-          labelSpan.appendChild(input);
-          input.focus();
-          input.select();
-        });
-      });
-
-      const mobileDockEl = document.getElementById('mobile-liquid-dock');
-      const mobileBackdropEl = document.getElementById('mobile-controls-backdrop');
-      const controlsSectionEl = document.getElementById('controls-bar-section');
-      const mobileNavPopoverEl = document.getElementById('mobile-nav-popover');
-
-      function setMobileDockCollapsed(collapsed) {
-        state.mobileDockCollapsed = !!collapsed;
-        if (mobileDockEl) {
-          mobileDockEl.classList.toggle('dock-collapsed', state.mobileDockCollapsed);
-        }
-      }
-
-      function syncMobileBackdrop() {
-        if (!mobileBackdropEl) return;
-        const shouldShow = state.mobileFiltersOpen || state.mobileNavOpen;
-        mobileBackdropEl.classList.toggle('hidden', !shouldShow);
-      }
-
-      function closeMobileFilters() {
-        state.mobileFiltersOpen = false;
-        if (controlsSectionEl) {
-          controlsSectionEl.classList.add('hidden');
-        }
-        syncMobileBackdrop();
-      }
-
-      function openMobileFilters() {
-        closeMobileNavMenu();
-        setMobileDockCollapsed(false);
-        state.mobileFiltersOpen = true;
-        if (controlsSectionEl) {
-          controlsSectionEl.classList.remove('hidden');
-        }
-        syncMobileBackdrop();
-      }
-
-      function toggleMobileFilters() {
-        if (state.mobileFiltersOpen) {
-          closeMobileFilters();
-        } else {
-          openMobileFilters();
-        }
-      }
-
-      function closeMobileNavMenu() {
-        state.mobileNavOpen = false;
-        if (mobileNavPopoverEl) {
-          mobileNavPopoverEl.classList.add('hidden');
-        }
-        syncMobileBackdrop();
-      }
-
-      function openMobileNavMenu() {
-        closeMobileFilters();
-        setMobileDockCollapsed(false);
-        state.mobileNavOpen = true;
-        if (mobileNavPopoverEl) {
-          mobileNavPopoverEl.classList.remove('hidden');
-        }
-        syncMobileBackdrop();
-      }
-
-      function toggleMobileNavMenu() {
-        if (state.mobileNavOpen) {
-          closeMobileNavMenu();
-        } else {
-          openMobileNavMenu();
-        }
-      }
-
       document.querySelectorAll('.mob-tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          const targetTab = btn.getAttribute('data-tab');
-          if (targetTab) {
-            switchActiveTab(targetTab);
-            closeMobileNavMenu();
-          }
+          switchTab(btn.dataset.tab);
+          toggleMobileNavMenu(false);
         });
       });
 
-      const mobDockExpandBtn = document.getElementById('btn-mobile-dock-expand');
-      if (mobDockExpandBtn) {
-        mobDockExpandBtn.addEventListener('click', (e) => {
+      const openMobileFiltersHandler = () => toggleMobileFilters(true);
+      const closeMobileFiltersHandler = () => toggleMobileFilters(false);
+      document.getElementById('btn-mobile-filter-fab').addEventListener('click', () => toggleMobileFilters());
+      document.getElementById('btn-mobile-nav-fab').addEventListener('click', () => toggleMobileNavMenu());
+      document.getElementById('btn-open-mobile-filters-strip').addEventListener('click', openMobileFiltersHandler);
+      document.getElementById('btn-close-mobile-filters').addEventListener('click', closeMobileFiltersHandler);
+      document.getElementById('btn-done-mobile-filters').addEventListener('click', closeMobileFiltersHandler);
+      document.getElementById('mobile-controls-backdrop').addEventListener('click', () => {
+        toggleMobileFilters(false);
+        toggleMobileNavMenu(false);
+      });
+
+      const dockExpandBtn = document.getElementById('btn-mobile-dock-expand');
+      if (dockExpandBtn) {
+        dockExpandBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           setMobileDockCollapsed(false);
         });
       }
 
-      let lastScrollY = 0;
+      let lastScrollY = window.scrollY || 0;
       let scrollRafPending = false;
-      const scrollContainerEl = document.getElementById('app-scroll-container');
       const handleScrollCollapse = () => {
         if (scrollRafPending) return;
         scrollRafPending = true;
         window.requestAnimationFrame(() => {
           scrollRafPending = false;
-          const currentY = Math.max(0, scrollContainerEl ? scrollContainerEl.scrollTop : (window.scrollY || 0));
+          const currentY = Math.max(0, window.scrollY || document.documentElement.scrollTop || 0);
           const delta = Math.abs(currentY - lastScrollY);
           if (!state.mobileFiltersOpen && !state.mobileNavOpen && delta > 6) {
             setMobileDockCollapsed(true);
@@ -3939,44 +3962,13 @@
           lastScrollY = currentY;
         });
       };
-      if (scrollContainerEl) {
-        scrollContainerEl.addEventListener('scroll', handleScrollCollapse, { passive: true });
-      }
       window.addEventListener('scroll', handleScrollCollapse, { passive: true });
+      document.addEventListener('scroll', handleScrollCollapse, { passive: true });
 
-      const mobNavFab = document.getElementById('btn-mobile-nav-fab');
-      const mobFab = document.getElementById('btn-mobile-filter-fab');
-      const mobStripBtn = document.getElementById('btn-open-mobile-filters-strip');
-      const mobCloseBtn = document.getElementById('btn-close-mobile-filters');
-      const mobDoneBtn = document.getElementById('btn-done-mobile-filters');
-
-      if (mobNavFab) mobNavFab.addEventListener('click', toggleMobileNavMenu);
-      if (mobFab) mobFab.addEventListener('click', toggleMobileFilters);
-      if (mobStripBtn) mobStripBtn.addEventListener('click', toggleMobileFilters);
-      if (mobCloseBtn) mobCloseBtn.addEventListener('click', closeMobileFilters);
-      if (mobDoneBtn) mobDoneBtn.addEventListener('click', closeMobileFilters);
-      if (mobileBackdropEl) {
-        mobileBackdropEl.addEventListener('click', () => {
-          closeMobileFilters();
-          closeMobileNavMenu();
-        });
-      }
-
-      document.getElementById('btn-prev-week').addEventListener('click', () => {
-        const dt = parseLocalDate(snapToMonday(state.selectedDate));
-        dt.setDate(dt.getDate() - 7);
-        state.selectedDate = formatDate(dt);
-        renderAll();
-      });
-      document.getElementById('btn-next-week').addEventListener('click', () => {
-        const dt = parseLocalDate(snapToMonday(state.selectedDate));
-        dt.setDate(dt.getDate() + 7);
-        state.selectedDate = formatDate(dt);
-        renderAll();
-      });
+      document.getElementById('btn-prev-week').addEventListener('click', () => shiftSelectedWeek(-7));
+      document.getElementById('btn-next-week').addEventListener('click', () => shiftSelectedWeek(7));
       document.getElementById('btn-today-week').addEventListener('click', () => {
-        const todayStr = formatDate(new Date());
-        state.selectedDate = todayStr < BASE_CALIBRATION_DATE ? BASE_CALIBRATION_DATE : snapToMonday(todayStr);
+        state.selectedDate = getInitialSelectedWeek();
         renderAll();
       });
       document.getElementById('date-picker').addEventListener('change', (e) => {
@@ -3993,35 +3985,36 @@
 
       // Swap Duties Modal Listeners
       document.getElementById('btn-open-swap').addEventListener('click', () => openSwapModal());
-      const openSwapMobileBtn = document.getElementById('btn-open-swap-mobile');
-      if (openSwapMobileBtn) openSwapMobileBtn.addEventListener('click', () => openSwapModal());
-      document.getElementById('btn-close-swap').addEventListener('click', () => {
-        document.getElementById('swap-modal').classList.add('hidden');
-        document.getElementById('swap-modal').classList.remove('flex');
-      });
-      document.getElementById('btn-cancel-swap').addEventListener('click', () => {
-        document.getElementById('swap-modal').classList.add('hidden');
-        document.getElementById('swap-modal').classList.remove('flex');
-      });
+      const swapMobileBtn = document.getElementById('btn-open-swap-mobile');
+      if (swapMobileBtn) {
+        swapMobileBtn.addEventListener('click', () => openSwapModal());
+      }
       document.getElementById('swap-member-a').addEventListener('change', updateSwapPreviewBoxes);
       document.getElementById('swap-member-b').addEventListener('change', updateSwapPreviewBoxes);
       document.getElementById('btn-confirm-swap').addEventListener('click', confirmDutySwap);
+      const closeSwapModal = () => {
+        document.getElementById('swap-modal').classList.add('hidden');
+        document.getElementById('swap-modal').classList.remove('flex');
+      };
+      document.getElementById('btn-close-swap').addEventListener('click', closeSwapModal);
+      document.getElementById('btn-cancel-swap').addEventListener('click', closeSwapModal);
+      document.getElementById('swap-modal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('swap-modal')) closeSwapModal();
+      });
 
       document.getElementById('btn-toggle-all-names').addEventListener('click', () => {
         state.allNamesExpanded = !state.allNamesExpanded;
         if (!state.allNamesExpanded) state.expandedNameCards.clear();
         renderAll();
       });
+
       document.getElementById('btn-expand-all').addEventListener('click', () => {
         state.allExpanded = !state.allExpanded;
         if (!state.allExpanded) state.expandedCards.clear();
         renderAll();
       });
+
       document.getElementById('btn-reset-statuses').addEventListener('click', () => {
-        if (!state.isAdmin) {
-          showToast(state.lang === 'zh' ? '僅管理員可重設本週狀態' : 'Admin access required to reset week');
-          return;
-        }
         const monStr = snapToMonday(state.selectedDate);
         getBalancedDuties().forEach(d => {
           delete state.statuses[getStatusKey(monStr, d.id)];
@@ -4032,10 +4025,14 @@
         showToast(I18N[state.lang].toastReset);
       });
 
-      document.getElementById('btn-toggle-positions-col').addEventListener('click', () => {
-        state.showPositionColumn = !state.showPositionColumn;
-        renderMatrixView();
-      });
+      const togglePositionsColBtn = document.getElementById('btn-toggle-positions-col');
+      if (togglePositionsColBtn) {
+        togglePositionsColBtn.addEventListener('click', () => {
+          state.showPositionColumn = !state.showPositionColumn;
+          renderMatrixView();
+        });
+      }
+
       document.getElementById('btn-add-member').addEventListener('click', handleAddMember);
       document.getElementById('btn-compact-slots').addEventListener('click', handleCompactSlotsNow);
       document.getElementById('btn-reset-members').addEventListener('click', () => {
@@ -4048,14 +4045,14 @@
         safeRemoveStorage('nba_lab_roles');
         renderAll();
         pushFullStateToCloud();
-        showToast(state.lang === 'zh' ? '已還原預設 22 人輪值名冊' : 'Restored default 22-member roster');
+        showToast(state.lang === 'zh' ? '已還原預設 22 人輪值名冊' : 'Reset to default 22-member roster');
       });
 
       document.querySelectorAll('.mtg-filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          state.mtgFilter = btn.getAttribute('data-mtg-filter');
+          state.mtgFilter = btn.dataset.mtgFilter;
           document.querySelectorAll('.mtg-filter-btn').forEach(b => {
-            const active = b.getAttribute('data-mtg-filter') === state.mtgFilter;
+            const active = b.dataset.mtgFilter === state.mtgFilter;
             b.className = active
               ? 'mtg-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-teal-700 text-white'
               : 'mtg-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200';
@@ -4064,103 +4061,42 @@
         });
       });
 
-      const logoBox = document.getElementById('lab-logo-box');
-      const logoFileInput = document.getElementById('logo-file-input');
-      const modalUploadLogoBtn = document.getElementById('btn-modal-upload-logo');
-
-      function handleLogoFileUpload(file) {
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          const img = new Image();
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const size = 256;
-            canvas.width = size;
-            canvas.height = size;
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, size, size);
-            const scale = Math.min(size / img.width, size / img.height);
-            const w = img.width * scale;
-            const h = img.height * scale;
-            ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
-            const compressedDataUrl = canvas.toDataURL('image/png');
-            state.logoUrl = compressedDataUrl;
-            safeSetStorage('nba_lab_logo_url', compressedDataUrl);
-            const logoUrlInputEl = document.getElementById('logo-url-input');
-            if (logoUrlInputEl) logoUrlInputEl.value = compressedDataUrl;
-            renderHeaderAndControls();
-            pushFullStateToCloud();
-            showToast(state.lang === 'zh' ? '已更新實驗室 Logo 並同步至試算表！' : 'Lab Logo updated & synced to Google Sheet!');
-          };
-          img.src = ev.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-
-      if (logoBox && logoFileInput) {
-        logoBox.addEventListener('click', () => {
-          if (!state.isAdmin) return;
-          logoFileInput.click();
-        });
-        logoFileInput.addEventListener('change', (e) => {
-          if (e.target.files && e.target.files[0]) {
-            handleLogoFileUpload(e.target.files[0]);
-            e.target.value = '';
-          }
-        });
-      }
-      if (modalUploadLogoBtn && logoFileInput) {
-        modalUploadLogoBtn.addEventListener('click', () => {
-          if (!state.isAdmin) {
-            showToast(state.lang === 'zh' ? '請先解鎖管理員模式' : 'Unlock Admin mode first');
-            return;
-          }
-          logoFileInput.click();
-        });
-      }
-
       const adminModal = document.getElementById('admin-modal');
-      const adminPinInput = document.getElementById('admin-pin-input');
+      const pinInput = document.getElementById('admin-pin-input');
       const adminFeedback = document.getElementById('admin-feedback');
 
       document.getElementById('btn-admin-lock').addEventListener('click', () => {
-        if (forceMemberMode) {
-          showToast(state.lang === 'zh' ? '目前為成員唯讀連結模式' : 'Read-only member link mode active');
-          return;
-        }
         if (state.isAdmin) {
           state.isAdmin = false;
           safeSetStorage('nba_lab_is_admin', 'false', true);
           renderAll();
-          showToast(state.lang === 'zh' ? '已鎖定為成員檢視模式' : 'Locked to Member View');
+          showToast(state.lang === 'zh' ? '已鎖定並切換為成員檢視模式' : 'Locked — switched to Member View');
         } else {
-          adminPinInput.value = '';
+          pinInput.value = '';
           adminFeedback.classList.add('hidden');
           adminModal.classList.remove('hidden');
           adminModal.classList.add('flex');
-          setTimeout(() => adminPinInput.focus(), 50);
+          setTimeout(() => pinInput.focus(), 50);
         }
       });
 
-      function attemptAdminUnlock() {
-        const entered = adminPinInput.value.trim();
+      const attemptAdminUnlock = () => {
+        const entered = pinInput.value.trim();
         if (ADMIN_PINS.includes(entered)) {
           state.isAdmin = true;
           safeSetStorage('nba_lab_is_admin', 'true', true);
           adminModal.classList.add('hidden');
           adminModal.classList.remove('flex');
           renderAll();
-          showToast(state.lang === 'zh' ? '已解鎖管理員編輯模式' : 'Admin Edit Mode Unlocked');
+          showToast(state.lang === 'zh' ? '已解鎖管理員編輯權限' : 'Admin Edit Mode unlocked');
         } else {
           adminFeedback.textContent = state.lang === 'zh' ? 'PIN 碼錯誤，請重新輸入。' : 'Incorrect Admin PIN. Please try again.';
           adminFeedback.classList.remove('hidden');
         }
-      }
+      };
 
       document.getElementById('btn-submit-admin').addEventListener('click', attemptAdminUnlock);
-      adminPinInput.addEventListener('keydown', (e) => {
+      pinInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') attemptAdminUnlock();
       });
       document.getElementById('btn-close-admin').addEventListener('click', () => {
@@ -4171,117 +4107,135 @@
         adminModal.classList.add('hidden');
         adminModal.classList.remove('flex');
       });
+      adminModal.addEventListener('click', (e) => {
+        if (e.target === adminModal) {
+          adminModal.classList.add('hidden');
+          adminModal.classList.remove('flex');
+        }
+      });
 
       const shareModal = document.getElementById('share-modal');
-      const shareUrlInput = document.getElementById('share-url-input');
+      const shareInput = document.getElementById('share-url-input');
       const shareGasBaseBox = document.getElementById('share-gas-base-box');
       const shareGasBaseInput = document.getElementById('share-gas-base-input');
 
-      function computeMemberShareUrl(baseCandidate) {
-        const raw = (baseCandidate || '').trim();
-        if (raw && raw.startsWith('http')) {
-          const sep = raw.includes('?') ? '&' : '?';
-          return raw.includes('mode=member') ? raw : `${raw}${sep}mode=member`;
-        }
+      const isHostedOnGasExec = () => {
+        const href = window.location.href;
+        return href.includes('script.google.com/macros/s/') && href.includes('/exec');
+      };
+
+      const computeMemberShareUrl = (customGasUrl = '') => {
+        const rawBase = (customGasUrl || state.gasUrl || window.location.href).trim();
         try {
-          const u = new URL(window.location.href);
-          if (u.protocol === 'http:' || u.protocol === 'https:') {
-            u.searchParams.set('mode', 'member');
-            return u.toString();
-          }
-        } catch (_) {}
-        return 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec?mode=member';
-      }
+          const shareUrl = new URL(rawBase);
+          shareUrl.searchParams.set('mode', 'member');
+          return shareUrl.toString();
+        } catch (_) {
+          const clean = rawBase.split('?')[0];
+          return clean ? `${clean}?mode=member` : '?mode=member';
+        }
+      };
 
       document.getElementById('btn-open-share').addEventListener('click', () => {
-        const currentHref = window.location.href;
-        const isHostedHttp = currentHref.startsWith('http://') || currentHref.startsWith('https://');
-        if (!isHostedHttp && state.isAdmin) {
+        if (isHostedOnGasExec()) {
+          shareGasBaseBox.classList.add('hidden');
+          shareInput.value = computeMemberShareUrl(window.location.href);
+        } else {
           shareGasBaseBox.classList.remove('hidden');
           shareGasBaseInput.value = state.gasUrl || '';
-          shareUrlInput.value = computeMemberShareUrl(state.gasUrl);
-        } else {
-          shareGasBaseBox.classList.add('hidden');
-          shareUrlInput.value = computeMemberShareUrl(isHostedHttp ? currentHref : state.gasUrl);
+          shareInput.value = computeMemberShareUrl(state.gasUrl);
         }
         shareModal.classList.remove('hidden');
         shareModal.classList.add('flex');
       });
 
-      if (shareGasBaseInput) {
-        shareGasBaseInput.addEventListener('input', (e) => {
-          if (!state.isAdmin) return;
-          const val = e.target.value.trim();
-          state.gasUrl = val;
-          safeSetStorage('nba_lab_gas_url', val);
-          shareUrlInput.value = computeMemberShareUrl(val);
-        });
-      }
+      shareGasBaseInput.addEventListener('input', () => {
+        const val = shareGasBaseInput.value.trim();
+        state.gasUrl = val;
+        safeSetStorage('nba_lab_gas_url', val);
+        shareInput.value = computeMemberShareUrl(val);
+      });
+
+      document.getElementById('btn-copy-share').addEventListener('click', () => {
+        shareInput.select();
+        shareInput.setSelectionRange(0, 99999);
+        try {
+          document.execCommand('copy');
+        } catch (_) {
+          if (navigator.clipboard) navigator.clipboard.writeText(shareInput.value);
+        }
+        showToast(state.lang === 'zh' ? '已複製成員分享連結！' : 'Member share link copied!');
+      });
 
       document.getElementById('btn-close-share').addEventListener('click', () => {
         shareModal.classList.add('hidden');
         shareModal.classList.remove('flex');
       });
-      document.getElementById('btn-copy-share').addEventListener('click', () => {
-        shareUrlInput.select();
-        navigator.clipboard?.writeText(shareUrlInput.value);
-        showToast(state.lang === 'zh' ? '已複製成員分享連結！' : 'Member share link copied!');
+      shareModal.addEventListener('click', (e) => {
+        if (e.target === shareModal) {
+          shareModal.classList.add('hidden');
+          shareModal.classList.remove('flex');
+        }
       });
 
-      const syncModal = document.getElementById('sync-modal');
+      const modal = document.getElementById('sync-modal');
+      const urlInput = document.getElementById('gas-url-input');
+      const logoUrlInput = document.getElementById('logo-url-input');
+      const feedback = document.getElementById('sync-feedback');
+
       document.getElementById('btn-open-sync').addEventListener('click', () => {
         if (!state.isAdmin) {
-          showToast(state.lang === 'zh' ? '請先解鎖管理員模式再設定試算表同步' : 'Unlock Admin mode to configure Google Sheet sync');
+          showToast(state.lang === 'zh' ? '請先解鎖管理員模式以修改同步設定' : 'Unlock Admin Edit Mode to change sync settings');
           return;
         }
-        document.getElementById('gas-url-input').value = state.gasUrl;
-        document.getElementById('logo-url-input').value = state.logoUrl;
-        document.getElementById('sync-feedback').classList.add('hidden');
-        syncModal.classList.remove('hidden');
-        syncModal.classList.add('flex');
+        urlInput.value = state.gasUrl;
+        if (logoUrlInput) logoUrlInput.value = state.logoUrl;
+        feedback.classList.add('hidden');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
       });
       document.getElementById('btn-close-sync').addEventListener('click', () => {
-        syncModal.classList.add('hidden');
-        syncModal.classList.remove('flex');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      });
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        }
       });
       document.getElementById('btn-save-gas').addEventListener('click', () => {
-        const val = document.getElementById('gas-url-input').value.trim();
-        const logoVal = document.getElementById('logo-url-input').value.trim();
-        state.gasUrl = val;
-        state.logoUrl = logoVal;
-        safeSetStorage('nba_lab_gas_url', val);
-        safeSetStorage('nba_lab_logo_url', logoVal);
-        renderHeaderAndControls();
+        state.gasUrl = urlInput.value.trim();
+        safeSetStorage('nba_lab_gas_url', state.gasUrl);
+        if (logoUrlInput) {
+          state.logoUrl = logoUrlInput.value.trim();
+          safeSetStorage('nba_lab_logo_url', state.logoUrl);
+        }
+        renderAll();
         pushFullStateToCloud();
-        if (val) {
+        if (state.gasUrl) {
           pullFromGas();
         } else {
-          syncModal.classList.add('hidden');
-          syncModal.classList.remove('flex');
-          showToast(state.lang === 'zh' ? '已儲存設定並同步至雲端' : 'Settings saved & synced');
+          feedback.className = 'rounded-xl p-3 text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200';
+          feedback.textContent = 'Saved settings & synced.';
+          feedback.classList.remove('hidden');
         }
       });
       document.getElementById('btn-disconnect-gas').addEventListener('click', () => {
         state.gasUrl = '';
         safeRemoveStorage('nba_lab_gas_url');
-        document.getElementById('gas-url-input').value = '';
+        urlInput.value = '';
         renderHeaderAndControls();
-        syncModal.classList.add('hidden');
-        syncModal.classList.remove('flex');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
         showToast('Switched to Local Storage mode');
       });
 
       renderAll();
-      if (isAppsScriptEnv() || state.gasUrl) {
-        pullFromGas();
-      }
+      if (isAppsScriptEnv() || state.gasUrl) pullFromGas();
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initDashboardApp);
-    } else {
-      initDashboardApp();
-    }
+    document.addEventListener('DOMContentLoaded', initApp);
   </script>
 </body>
 </html>
