@@ -377,6 +377,10 @@
       0%, 100% { opacity: 0.95; transform: scale(1); }
       50% { opacity: 0.45; transform: scale(0.85); }
     }
+    @keyframes xmasBaubleSway {
+      0%, 100% { transform: rotate(-4deg); }
+      50% { transform: rotate(4deg); }
+    }
     /* Minimalist Nordic Warm-White Corner Fairy Light Clusters */
     #xmas-lights-bar {
       display: none;
@@ -392,21 +396,23 @@
     .xmas-corner-cluster {
       position: absolute;
       top: 0;
-      width: 130px;
-      height: 44px;
+      width: 110px;
+      height: 36px;
+      opacity: 0.65;
     }
     @media (min-width: 640px) {
       .xmas-corner-cluster {
         width: 240px;
         height: 54px;
+        opacity: 0.92;
       }
     }
     .xmas-corner-cluster.left { left: 0; }
     .xmas-corner-cluster.right { right: 0; transform: scaleX(-1); }
     .xmas-micro-bulb {
       position: absolute;
-      width: 5px;
-      height: 5px;
+      width: 4.5px;
+      height: 4.5px;
       border-radius: 9999px;
       background: #fef9c3;
       box-shadow:
@@ -542,16 +548,87 @@
       color: #fecaca !important;
     }
     html.xmas #btn-night-mode {
-      background: linear-gradient(135deg, rgba(185, 28, 28, 0.35), rgba(21, 128, 61, 0.35)) !important;
-      border-color: rgba(250, 204, 21, 0.5) !important;
-      color: #fef08a !important;
-    }
-    html.xmas #btn-xmas-music {
-      display: inline-flex !important;
-      background: linear-gradient(135deg, rgba(16, 42, 34, 0.96), rgba(88, 22, 22, 0.94)) !important;
+      background: linear-gradient(135deg, rgba(20, 83, 45, 0.85), rgba(153, 27, 27, 0.72)) !important;
       border-color: rgba(250, 204, 21, 0.55) !important;
       color: #fef08a !important;
-      box-shadow: 0 8px 18px -4px rgba(0, 0, 0, 0.65) !important;
+      box-shadow: 0 0 14px -2px rgba(250, 204, 21, 0.25) !important;
+    }
+    /* Glowing 3D Christmas Ornament Bauble Pop-out Toggle */
+    html.xmas #btn-xmas-music {
+      display: inline-flex !important;
+      position: absolute !important;
+      right: -6px !important;
+      top: calc(100% + 4px) !important;
+      left: auto !important;
+      width: 34px !important;
+      height: 34px !important;
+      padding: 0 !important;
+      border-radius: 9999px !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transform-origin: top center;
+      animation: xmasBaubleSway 3.6s ease-in-out infinite;
+      background:
+        radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.75) 0%, rgba(254, 240, 138, 0.35) 18%, transparent 42%),
+        radial-gradient(circle at 50% 60%, #dc2626 0%, #991b1b 62%, #450a0a 100%) !important;
+      border: 1.5px solid rgba(253, 224, 71, 0.78) !important;
+      color: #fef08a !important;
+      box-shadow:
+        0 6px 16px -2px rgba(0, 0, 0, 0.65),
+        0 0 14px 2px rgba(248, 113, 113, 0.45),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.45) !important;
+      overflow: visible !important;
+    }
+    html.xmas #btn-xmas-music::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 9px;
+      height: 5px;
+      border-radius: 2px 2px 0 0;
+      background: linear-gradient(90deg, #b45309, #fde047, #b45309);
+      border: 0.5px solid rgba(254, 249, 195, 0.7);
+      box-shadow: 0 -2px 0 0.5px rgba(253, 224, 71, 0.6);
+    }
+    html.xmas #btn-xmas-music.is-muted {
+      animation: none !important;
+      background:
+        radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.35) 0%, transparent 40%),
+        radial-gradient(circle at 50% 60%, #1e3a34 0%, #0f2420 70%, #071311 100%) !important;
+      border-color: rgba(148, 163, 184, 0.45) !important;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.55) !important;
+      opacity: 0.85;
+    }
+    /* Match Mobile Floating Liquid Glass Dock & Buttons to Christmas Theme */
+    html.xmas .liquid-glass-dock {
+      background: linear-gradient(
+        155deg,
+        rgba(20, 83, 45, 0.52) 0%,
+        rgba(127, 29, 29, 0.44) 52%,
+        rgba(14, 48, 39, 0.62) 100%
+      ) !important;
+      box-shadow:
+        0 20px 44px -10px rgba(0, 0, 0, 0.75),
+        0 0 18px -2px rgba(250, 204, 21, 0.28),
+        inset 0 1px 1px rgba(254, 240, 138, 0.35) !important;
+    }
+    html.xmas .liquid-glass-pill {
+      background: linear-gradient(
+        165deg,
+        rgba(22, 68, 54, 0.88) 0%,
+        rgba(15, 46, 38, 0.92) 55%,
+        rgba(88, 22, 22, 0.78) 100%
+      ) !important;
+      border: 1px solid rgba(250, 204, 21, 0.38) !important;
+      color: #fef08a !important;
+    }
+    html.xmas #btn-open-swap,
+    html.xmas #btn-open-swap-mobile {
+      background: linear-gradient(135deg, rgba(153, 27, 27, 0.42), rgba(20, 83, 45, 0.42)) !important;
+      border-color: rgba(250, 204, 21, 0.45) !important;
+      color: #fef08a !important;
     }
     #xmas-snow-canvas {
       position: fixed;
@@ -648,9 +725,8 @@
               <span id="lbl-night-mode" class="truncate">Night</span>
             </button>
 
-            <button id="btn-xmas-music" type="button" class="hidden sm:absolute sm:left-0 sm:right-0 sm:top-full sm:mt-1.5 z-50 w-full sm:w-auto justify-center items-center gap-1 px-2 py-1.5 sm:py-1 rounded-xl sm:rounded-lg text-[11px] font-semibold border border-amber-300 transition truncate cursor-pointer animate-fade" title="Toggle Christmas Music">
-              <span id="xmas-music-icon" class="shrink-0">🔔</span>
-              <span id="lbl-xmas-music" class="truncate">Jingle</span>
+            <button id="btn-xmas-music" type="button" class="hidden z-50 items-center justify-center transition cursor-pointer animate-fade" title="Toggle Christmas Music" aria-label="Toggle Christmas Music">
+              <span id="xmas-music-icon" class="text-sm leading-none drop-shadow">🔔</span>
             </button>
           </div>
 
@@ -1587,7 +1663,7 @@
     const MEETING_SCHEDULE = [
       { id: 'PMTG01', date: '2026-12-07', time: '10:30', nextDate: '', nextTime: '10:30', type: 'Personal', presenters: ['Natasha', 'Chelwin', 'Angel', 'Yu'], notes_en: 'Personal Meeting (Mon. Group) • Dates: 12/7, 12/14, 12/21, 12/28', notes_zh: '週一個咪時段（日期：12/7、12/14、12/21、12/28）• 討論近一週進度及實驗問題' },
       { id: 'PMTG02', date: '2026-12-08', time: '13:30', nextDate: '', nextTime: '13:30', type: 'Personal', presenters: ['Ling-Fang', 'Szu-Hui', 'Hans', 'Joanne', 'Tina'], notes_en: 'Personal Meeting (Tue. Group) • Dates: 12/8, 12/15, 12/22, 12/29', notes_zh: '週二個咪時段（日期：12/8、12/15、12/22、12/29）• 討論近一週進度及實驗問題' },
-      { id: 'PMTG03', date: '2026-12-10', time: '10:30', nextDate: '', nextTime: '10:30', type: 'Personal', presenters: ['Bertha', 'Monica', 'Yi-Syuan', 'Yi Wen'], notes_en: 'Personal Meeting (Thu. Group) • Dates: 12/10, 12/17, 12/24, 12/31', notes_zh: '週四個咪時段（日期：12/10、12/17、12/24、12/31）• 討論近一週進度及實驗問題' },
+      { id: 'PMTG03', date: '2026-12-10', time: '10:30', nextDate: '', nextTime: '10:30', type: 'Personal', presenters: ['Bertha', 'Monica', 'Yi-Syuan', 'Yi Wen', 'Abby'], notes_en: 'Personal Meeting (Thu. Group) • Dates: 12/10, 12/17, 12/24, 12/31', notes_zh: '週四個咪時段（日期：12/10、12/17、12/24、12/31）• 討論近一週進度及實驗問題' },
       { id: 'MTG01', date: '2026-12-07', time: '13:30', nextDate: '2026-12-28', nextTime: '13:30', type: 'Mandarin', presenters: ['Yi Wen', 'Tina'], notes_en: 'Mandarin Group Meeting • Complete research story & publication-ready figures', notes_zh: '中文團咪 • 階段性彙總報告（完整研究脈絡）' },
       { id: 'MTG02', date: '2026-12-14', time: '13:30', nextDate: '', nextTime: '13:30', type: 'Mandarin', presenters: ['Bertha', 'Monica'], notes_en: 'Mandarin Group Meeting • Complete research story & publication-ready figures', notes_zh: '中文團咪 • 階段性彙總報告（完整研究脈絡）' },
       { id: 'MTG03', date: '2026-12-21', time: '13:30', nextDate: '', nextTime: '13:30', type: 'Mandarin', presenters: ['Yi-Syuan', 'Joanne'], notes_en: 'Mandarin Group Meeting • Complete research story & publication-ready figures', notes_zh: '中文團咪 • 階段性彙總報告（完整研究脈絡）' },
@@ -2463,24 +2539,6 @@
       state.darkMode = isDarkActive;
       document.documentElement.classList.toggle('dark', isDarkActive);
       document.documentElement.classList.toggle('xmas', isXmas);
-      const headerRightControls = document.getElementById('header-right-controls');
-      const musicBtnEl = document.getElementById('btn-xmas-music');
-      if (headerRightControls && musicBtnEl) {
-        const themeWrapper = document.getElementById('btn-night-mode')?.parentElement;
-        if (window.innerWidth < 640 && isXmas) {
-          headerRightControls.classList.remove('grid-cols-4');
-          headerRightControls.classList.add('grid-cols-5');
-          if (musicBtnEl.parentElement !== headerRightControls) {
-            headerRightControls.insertBefore(musicBtnEl, headerRightControls.lastElementChild);
-          }
-        } else {
-          headerRightControls.classList.remove('grid-cols-5');
-          headerRightControls.classList.add('grid-cols-4');
-          if (themeWrapper && musicBtnEl.parentElement !== themeWrapper) {
-            themeWrapper.appendChild(musicBtnEl);
-          }
-        }
-      }
       const themeMeta = document.getElementById('theme-color-meta');
       if (themeMeta) {
         themeMeta.setAttribute('content', isXmas ? '#0d1f1e' : (isDarkActive ? '#2b2d31' : '#ffffff'));
@@ -2500,10 +2558,15 @@
         }
       }
       const musicIcon = document.getElementById('xmas-music-icon');
-      const musicLbl = document.getElementById('lbl-xmas-music');
-      if (musicIcon && musicLbl) {
+      const musicBtnEl = document.getElementById('btn-xmas-music');
+      if (musicIcon) {
         musicIcon.textContent = state.xmasMusicMuted ? '🔕' : '🔔';
-        musicLbl.textContent = state.xmasMusicMuted ? (isZh ? '靜音' : 'Muted') : (isZh ? '鈴聲' : 'Jingle');
+      }
+      if (musicBtnEl) {
+        musicBtnEl.classList.toggle('is-muted', state.xmasMusicMuted);
+        musicBtnEl.title = state.xmasMusicMuted
+          ? (isZh ? '開啟聖誕音樂' : 'Unmute Christmas Music')
+          : (isZh ? '靜音聖誕音樂' : 'Mute Christmas Music');
       }
       if (typeof syncSnowAnimation === 'function') syncSnowAnimation();
       if (typeof syncXmasMusic === 'function') syncXmasMusic();
