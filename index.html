@@ -4140,21 +4140,18 @@
         return href.includes('script.google.com/macros/s/') && href.includes('/exec');
       };
 
-      const computeMemberShareUrl = (customGasUrl = '') => {
+const computeMemberShareUrl = (customGasUrl = '') => {
         const isGithubHosted = window.location.hostname.includes('github.io');
         const gasBackend = (customGasUrl || state.gasUrl || '').trim();
         const rawBase = isGithubHosted ? window.location.href : (gasBackend || window.location.href).trim();
         try {
           const shareUrl = new URL(rawBase);
+          shareUrl.searchParams.delete('gas');
           shareUrl.searchParams.set('mode', 'member');
-          if (isGithubHosted && gasBackend) {
-            shareUrl.searchParams.set('gas', gasBackend);
-          }
           return shareUrl.toString();
         } catch (_) {
           const clean = rawBase.split('?')[0];
-          const gasSuffix = isGithubHosted && gasBackend ? `&gas=${encodeURIComponent(gasBackend)}` : '';
-          return clean ? `${clean}?mode=member${gasSuffix}` : `?mode=member${gasSuffix}`;
+          return clean ? `${clean}?mode=member` : `?mode=member`;
         }
       };
 
