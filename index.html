@@ -392,8 +392,14 @@
     .xmas-corner-cluster {
       position: absolute;
       top: 0;
-      width: 240px;
-      height: 54px;
+      width: 130px;
+      height: 44px;
+    }
+    @media (min-width: 640px) {
+      .xmas-corner-cluster {
+        width: 240px;
+        height: 54px;
+      }
     }
     .xmas-corner-cluster.left { left: 0; }
     .xmas-corner-cluster.right { right: 0; transform: scaleX(-1); }
@@ -620,7 +626,7 @@
         </div>
 
         <!-- Right Controls -->
-        <div class="grid grid-cols-4 sm:flex items-center justify-start sm:justify-end gap-1.5 sm:gap-2 w-full sm:w-auto">
+        <div id="header-right-controls" class="grid grid-cols-4 sm:flex items-center justify-start sm:justify-end gap-1.5 sm:gap-2 w-full sm:w-auto">
           <button id="btn-admin-lock" type="button" class="w-full sm:w-auto justify-center flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl sm:rounded-lg text-[11px] sm:text-xs font-semibold border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700 transition truncate" title="Toggle Admin Edit Mode">
             <span id="admin-lock-icon" class="shrink-0">🔒</span>
             <span id="lbl-admin-btn" class="truncate">Member View</span>
@@ -642,7 +648,7 @@
               <span id="lbl-night-mode" class="truncate">Night</span>
             </button>
 
-            <button id="btn-xmas-music" type="button" class="hidden absolute left-0 right-0 top-full mt-1.5 z-50 justify-center items-center gap-1 px-2 py-1 rounded-xl sm:rounded-lg text-[10px] sm:text-[11px] font-semibold border border-amber-300 transition truncate cursor-pointer animate-fade" title="Toggle Christmas Music">
+            <button id="btn-xmas-music" type="button" class="hidden sm:absolute sm:left-0 sm:right-0 sm:top-full sm:mt-1.5 z-50 w-full sm:w-auto justify-center items-center gap-1 px-2 py-1.5 sm:py-1 rounded-xl sm:rounded-lg text-[11px] font-semibold border border-amber-300 transition truncate cursor-pointer animate-fade" title="Toggle Christmas Music">
               <span id="xmas-music-icon" class="shrink-0">🔔</span>
               <span id="lbl-xmas-music" class="truncate">Jingle</span>
             </button>
@@ -2457,6 +2463,24 @@
       state.darkMode = isDarkActive;
       document.documentElement.classList.toggle('dark', isDarkActive);
       document.documentElement.classList.toggle('xmas', isXmas);
+      const headerRightControls = document.getElementById('header-right-controls');
+      const musicBtnEl = document.getElementById('btn-xmas-music');
+      if (headerRightControls && musicBtnEl) {
+        const themeWrapper = document.getElementById('btn-night-mode')?.parentElement;
+        if (window.innerWidth < 640 && isXmas) {
+          headerRightControls.classList.remove('grid-cols-4');
+          headerRightControls.classList.add('grid-cols-5');
+          if (musicBtnEl.parentElement !== headerRightControls) {
+            headerRightControls.insertBefore(musicBtnEl, headerRightControls.lastElementChild);
+          }
+        } else {
+          headerRightControls.classList.remove('grid-cols-5');
+          headerRightControls.classList.add('grid-cols-4');
+          if (themeWrapper && musicBtnEl.parentElement !== themeWrapper) {
+            themeWrapper.appendChild(musicBtnEl);
+          }
+        }
+      }
       const themeMeta = document.getElementById('theme-color-meta');
       if (themeMeta) {
         themeMeta.setAttribute('content', isXmas ? '#0d1f1e' : (isDarkActive ? '#2b2d31' : '#ffffff'));
