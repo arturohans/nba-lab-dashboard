@@ -449,7 +449,7 @@
       <!-- Desktop Navigation Tabs -->
       <nav class="hidden sm:flex gap-1 overflow-x-auto no-scrollbar -mb-px pt-1" aria-label="Dashboard sections">
         <button data-tab="roster" class="tab-btn active whitespace-nowrap px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold border-b-2 border-teal-700 text-teal-800 transition flex items-center gap-1.5 sm:gap-2">
-          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
           <span id="nav-roster">Duties</span>
           <span data-edit-nav="roster" title="Edit tab label" class="hidden nav-edit-pencil text-[11px] opacity-70 hover:opacity-100 px-1 py-0.5 rounded hover:bg-slate-200/70">✎</span>
         </button>
@@ -583,7 +583,7 @@
       </div>
       <div class="mob-tab-btn active w-full flex items-center justify-between gap-2 px-3.5 py-3 rounded-2xl text-sm font-bold bg-teal-50/90 text-teal-900 border border-teal-200 transition cursor-pointer" data-tab="roster">
         <span class="flex items-center gap-2.5 min-w-0 flex-1">
-          <svg class="w-4 h-4 shrink-0 text-teal-700" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+          <svg class="w-4 h-4 shrink-0 text-teal-700" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
           <span id="mob-menu-roster" class="truncate">Duties</span>
         </span>
         <span class="flex items-center gap-1.5 shrink-0">
@@ -1003,6 +1003,8 @@
     // 1. MASTER BILINGUAL DATASET (115-1 CLEAN LAB DUTY ROSTER - 22 MEMBERS)
     // =========================================================================
     const BASE_CALIBRATION_DATE = '2026-09-07';
+    // Paste your Google Apps Script Web App URL (ending in /exec) below so GitHub Pages syncs automatically on all devices:
+    const DEFAULT_GAS_URL = '';
     const ADMIN_PINS = ['010203'];
     const forceMemberMode = new URLSearchParams(window.location.search).get('mode') === 'member';
 
@@ -1682,6 +1684,11 @@
       pushFullStateToCloud();
     }
 
+    const urlGasParam = new URLSearchParams(window.location.search).get('gas');
+    if (urlGasParam && urlGasParam.trim()) {
+      safeSetStorage('nba_lab_gas_url', urlGasParam.trim());
+    }
+
     const state = {
       lang: safeGetStorage('nba_lab_lang', 'en'),
       darkMode: safeGetStorage('nba_lab_dark_mode', 'false') === 'true',
@@ -1713,7 +1720,7 @@
       monthlyOverrides: safeParseJSON(safeGetStorage('nba_lab_monthly'), {}),
       truckOverrides: safeParseJSON(safeGetStorage('nba_lab_trucks'), {}),
       trashRuleOverrides: safeParseJSON(safeGetStorage('nba_lab_trash_rules'), {}),
-      gasUrl: safeGetStorage('nba_lab_gas_url', ''),
+      gasUrl: safeGetStorage('nba_lab_gas_url', '') || DEFAULT_GAS_URL,
       logoUrl: safeGetStorage('nba_lab_logo_url', 'https://drive.google.com/thumbnail?id=1YLkptQ9svjCxESQNzQbJXicXNrt8hSsw&sz=w400')
     };
 
@@ -1895,10 +1902,12 @@
         return;
       }
       if (!state.gasUrl) return;
+      // Use text/plain to avoid CORS preflight blockage when posting from GitHub Pages to Google Apps Script
       fetch(state.gasUrl, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        redirect: 'follow',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       }).catch(() => {});
     }
@@ -1917,7 +1926,7 @@
       };
     }
 
-    function pullFromGas() {
+    function pullFromGas(silent = false) {
       const feedback = document.getElementById('sync-feedback');
       if (isAppsScriptEnv()) {
         const handler = (raw) => {
@@ -1935,24 +1944,25 @@
         return;
       }
       if (!state.gasUrl) return;
-      if (feedback) {
+      if (!silent && feedback) {
         feedback.className = 'rounded-xl p-3 text-xs font-medium bg-slate-100 text-slate-700';
         feedback.textContent = 'Syncing with Google Apps Script...';
         feedback.classList.remove('hidden');
       }
-      const apiUrl = state.gasUrl.includes('?') ? `${state.gasUrl}&api=1` : `${state.gasUrl}?api=1`;
-      fetch(apiUrl)
+      const sep = state.gasUrl.includes('?') ? '&' : '?';
+      const apiUrl = `${state.gasUrl}${sep}api=1&t=${Date.now()}`;
+      fetch(apiUrl, { method: 'GET', redirect: 'follow', cache: 'no-store' })
         .then(r => r.json())
         .then(data => {
           applyCloudPayload(data);
           renderAll();
-          if (feedback) {
+          if (!silent && feedback) {
             feedback.className = 'rounded-xl p-3 text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200';
             feedback.textContent = 'Connected and synced with Google Sheet.';
           }
         })
         .catch(() => {
-          if (feedback) {
+          if (!silent && feedback) {
             feedback.className = 'rounded-xl p-3 text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200';
             feedback.textContent = 'Saved URL. Note: Ensure Apps Script is deployed as Web App (Access: Anyone).';
           }
@@ -4125,14 +4135,20 @@
       };
 
       const computeMemberShareUrl = (customGasUrl = '') => {
-        const rawBase = (customGasUrl || state.gasUrl || window.location.href).trim();
+        const isGithubHosted = window.location.hostname.includes('github.io');
+        const gasBackend = (customGasUrl || state.gasUrl || '').trim();
+        const rawBase = isGithubHosted ? window.location.href : (gasBackend || window.location.href).trim();
         try {
           const shareUrl = new URL(rawBase);
           shareUrl.searchParams.set('mode', 'member');
+          if (isGithubHosted && gasBackend) {
+            shareUrl.searchParams.set('gas', gasBackend);
+          }
           return shareUrl.toString();
         } catch (_) {
           const clean = rawBase.split('?')[0];
-          return clean ? `${clean}?mode=member` : '?mode=member';
+          const gasSuffix = isGithubHosted && gasBackend ? `&gas=${encodeURIComponent(gasBackend)}` : '';
+          return clean ? `${clean}?mode=member${gasSuffix}` : `?mode=member${gasSuffix}`;
         }
       };
 
@@ -4232,7 +4248,14 @@
       });
 
       renderAll();
-      if (isAppsScriptEnv() || state.gasUrl) pullFromGas();
+      if (isAppsScriptEnv() || state.gasUrl) {
+        pullFromGas(true);
+        // Auto-refresh from Google Sheet every 30s and whenever returning to the app
+        setInterval(() => pullFromGas(true), 30000);
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') pullFromGas(true);
+        });
+      }
     }
 
     document.addEventListener('DOMContentLoaded', initApp);
