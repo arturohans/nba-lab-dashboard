@@ -4282,7 +4282,8 @@
           playPromise.catch(() => {});
         }
       };
-      const unlockAudioOnGesture = () => {
+      const unlockAudioOnGesture = (e) => {
+        if (e && e.target && e.target.closest && e.target.closest('#btn-xmas-music')) return;
         if (state.themeMode === 'xmas' && !state.xmasMusicMuted) {
           syncXmasMusic();
         }
@@ -4291,9 +4292,19 @@
 
       const musicBtn = document.getElementById('btn-xmas-music');
       if (musicBtn) {
-        musicBtn.addEventListener('click', () => {
+        musicBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
           state.xmasMusicMuted = !state.xmasMusicMuted;
           safeSetStorage('nba_lab_xmas_muted', state.xmasMusicMuted ? 'true' : 'false');
+          const audioEl = document.getElementById('xmas-bg-audio');
+          if (audioEl) {
+            audioEl.volume = 0.35;
+            if (state.xmasMusicMuted || state.themeMode !== 'xmas') {
+              audioEl.pause();
+            } else {
+              audioEl.play().catch(() => {});
+            }
+          }
           renderHeaderAndControls();
         });
       }
