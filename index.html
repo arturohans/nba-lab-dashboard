@@ -373,6 +373,104 @@
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.42; transform: scale(0.84); }
     }
+    @keyframes xmasBulbGlow {
+      0%, 100% { opacity: 0.95; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.85); }
+    }
+    /* Minimalist Nordic Warm-White Corner Fairy Light Clusters */
+    #xmas-lights-bar {
+      display: none;
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 5;
+    }
+    html.xmas #xmas-lights-bar {
+      display: block;
+    }
+    .xmas-corner-cluster {
+      position: absolute;
+      top: 0;
+      width: 240px;
+      height: 54px;
+    }
+    .xmas-corner-cluster.left { left: 0; }
+    .xmas-corner-cluster.right { right: 0; transform: scaleX(-1); }
+    .xmas-micro-bulb {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 9999px;
+      background: #fef9c3;
+      box-shadow:
+        0 0 7px 2.5px rgba(253, 224, 71, 0.85),
+        0 0 16px 5px rgba(245, 158, 11, 0.38);
+      animation: xmasBulbGlow var(--twinkle-dur, 3.2s) ease-in-out infinite;
+      animation-delay: var(--twinkle-delay, 0s);
+    }
+    .xmas-micro-bulb.ruby {
+      background: #fecaca;
+      box-shadow:
+        0 0 7px 2px rgba(248, 113, 113, 0.85),
+        0 0 15px 4px rgba(220, 38, 38, 0.35);
+    }
+    html.xmas, html.xmas body {
+      background:
+        radial-gradient(circle at 18% 0%, rgba(185, 28, 28, 0.24) 0%, transparent 45%),
+        radial-gradient(circle at 82% 0%, rgba(21, 128, 61, 0.28) 0%, transparent 48%),
+        radial-gradient(circle at 50% 100%, rgba(180, 83, 9, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 50% 12%, #14332a 0%, #0a1917 58%, #060e0f 100%) !important;
+      color: #ecfdf5 !important;
+    }
+    html.xmas header, html.xmas footer {
+      background:
+        radial-gradient(ellipse 55% 100% at 12% 0%, rgba(220, 38, 38, 0.26) 0%, transparent 72%),
+        radial-gradient(ellipse 55% 100% at 88% 0%, rgba(22, 163, 74, 0.28) 0%, transparent 72%),
+        linear-gradient(180deg, rgba(16, 41, 34, 0.97) 0%, rgba(11, 28, 25, 0.97) 100%) !important;
+      border-color: rgba(250, 204, 21, 0.34) !important;
+      box-shadow: 0 10px 30px -6px rgba(0, 0, 0, 0.6) !important;
+    }
+    html.xmas #lab-logo-box {
+      border-color: #f87171 !important;
+      box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.55), 0 8px 22px rgba(220, 38, 38, 0.4) !important;
+    }
+    html.xmas #xmas-santa-hat {
+      display: block !important;
+    }
+    html.xmas #hdr-pi {
+      color: #fde047 !important;
+      text-shadow: 0 0 12px rgba(250, 204, 21, 0.28);
+    }
+    html.xmas #controls-bar-section,
+    html.xmas .bg-white {
+      background: linear-gradient(165deg, rgba(19, 46, 39, 0.95) 0%, rgba(13, 31, 29, 0.96) 100%) !important;
+      border-color: rgba(74, 222, 128, 0.30) !important;
+      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(254, 240, 138, 0.18) !important;
+    }
+    html.xmas #duty-grid article {
+      position: relative;
+      border-top: 2px solid rgba(250, 204, 21, 0.45) !important;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    html.xmas #duty-grid article:hover {
+      border-color: rgba(250, 204, 21, 0.65) !important;
+      box-shadow: 0 14px 32px -8px rgba(0, 0, 0, 0.65), 0 0 18px -4px rgba(250, 204, 21, 0.16) !important;
+    }
+    .xmas-corner-cluster.left { left: 0; }
+    .xmas-corner-cluster.right { right: 0; transform: scaleX(-1); }
+    .xmas-micro-bulb {
+      position: absolute;
+      width: 4.5px;
+      height: 4.5px;
+      border-radius: 9999px;
+      background: #fef9c3;
+      box-shadow:
+        0 0 6px 2px rgba(253, 224, 71, 0.75),
+        0 0 14px 4px rgba(245, 158, 11, 0.32);
+      animation: xmasBulbGlow var(--twinkle-dur, 3.2s) ease-in-out infinite;
+      animation-delay: var(--twinkle-delay, 0s);
+    }
     html.xmas, html.xmas body {
       background:
         radial-gradient(circle at 18% 0%, rgba(185, 28, 28, 0.20) 0%, transparent 42%),
@@ -381,34 +479,13 @@
       color: #ecfdf5 !important;
     }
     html.xmas header, html.xmas footer {
-      background: linear-gradient(180deg, rgba(16, 39, 33, 0.97) 0%, rgba(11, 28, 25, 0.97) 100%) !important;
-      border-color: rgba(248, 113, 113, 0.34) !important;
+      background:
+        radial-gradient(ellipse 55% 100% at 15% 0%, rgba(220, 38, 38, 0.22) 0%, transparent 70%),
+        radial-gradient(ellipse 55% 100% at 85% 0%, rgba(22, 163, 74, 0.24) 0%, transparent 70%),
+        linear-gradient(180deg, rgba(16, 39, 33, 0.97) 0%, rgba(11, 28, 25, 0.97) 100%) !important;
+      border-color: rgba(250, 204, 21, 0.28) !important;
       box-shadow: 0 8px 28px -6px rgba(0, 0, 0, 0.55) !important;
     }
-    html.xmas #xmas-lights-garland {
-      display: flex !important;
-    }
-    .xmas-bulb {
-      width: 9px;
-      height: 12px;
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      animation: xmasTwinkle 2.1s infinite ease-in-out;
-      position: relative;
-    }
-    .xmas-bulb::before {
-      content: '';
-      position: absolute;
-      top: -3px;
-      left: 2px;
-      width: 5px;
-      height: 3px;
-      background: #1e293b;
-      border-radius: 1px;
-    }
-    .xmas-bulb-red { background: #ef4444; box-shadow: 0 0 10px 2px rgba(239, 68, 68, 0.85); animation-delay: 0s; }
-    .xmas-bulb-gold { background: #facc15; box-shadow: 0 0 10px 2px rgba(250, 204, 21, 0.85); animation-delay: 0.5s; }
-    .xmas-bulb-green { background: #22c55e; box-shadow: 0 0 10px 2px rgba(34, 197, 94, 0.85); animation-delay: 1.0s; }
-    .xmas-bulb-ice { background: #38bdf8; box-shadow: 0 0 10px 2px rgba(56, 189, 248, 0.85); animation-delay: 1.5s; }
     html.xmas #lab-logo-box {
       border-color: #f87171 !important;
       box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.45), 0 6px 18px rgba(220, 38, 38, 0.35) !important;
@@ -504,31 +581,8 @@
   <audio id="xmas-bg-audio" src="./xmas-bg.mp3" loop preload="auto"></audio>
 
   <!-- Top Navigation & Brand Header -->
-  <header id="app-header" class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
-    <!-- Festive Twinkling Fairy Lights Garland (Visible in Christmas Mode) -->
-    <div id="xmas-lights-garland" aria-hidden="true" class="hidden w-full overflow-hidden justify-around items-center px-2 pt-1 pb-0.5 border-b border-emerald-500/20 bg-gradient-to-r from-red-950/60 via-emerald-950/60 to-red-950/60">
-      <span class="xmas-bulb xmas-bulb-red"></span>
-      <span class="xmas-bulb xmas-bulb-gold"></span>
-      <span class="xmas-bulb xmas-bulb-green"></span>
-      <span class="xmas-bulb xmas-bulb-ice"></span>
-      <span class="xmas-bulb xmas-bulb-red"></span>
-      <span class="xmas-bulb xmas-bulb-gold"></span>
-      <span class="xmas-bulb xmas-bulb-green"></span>
-      <span class="xmas-bulb xmas-bulb-ice"></span>
-      <span class="xmas-bulb xmas-bulb-red"></span>
-      <span class="xmas-bulb xmas-bulb-gold"></span>
-      <span class="xmas-bulb xmas-bulb-green"></span>
-      <span class="xmas-bulb xmas-bulb-ice"></span>
-      <span class="hidden sm:inline-block xmas-bulb xmas-bulb-red"></span>
-      <span class="hidden sm:inline-block xmas-bulb xmas-bulb-gold"></span>
-      <span class="hidden sm:inline-block xmas-bulb xmas-bulb-green"></span>
-      <span class="hidden sm:inline-block xmas-bulb xmas-bulb-ice"></span>
-      <span class="hidden md:inline-block xmas-bulb xmas-bulb-red"></span>
-      <span class="hidden md:inline-block xmas-bulb xmas-bulb-gold"></span>
-      <span class="hidden md:inline-block xmas-bulb xmas-bulb-green"></span>
-      <span class="hidden md:inline-block xmas-bulb xmas-bulb-ice"></span>
-    </div>
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+  <header id="app-header" class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm overflow-visible">
+    <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pt-3 pb-2.5 sm:py-3 gap-2.5">
         <!-- Brand -->
         <div class="flex items-center gap-3 sm:gap-3.5 min-w-0">
@@ -629,6 +683,9 @@
         </button>
       </nav>
     </div>
+
+    <!-- Creative Vintage Glass Fairy Lights Strand (Visible Only in Xmas Mode) -->
+    <div id="xmas-lights-bar" aria-hidden="true"></div>
   </header>
 
   <!-- Main Workspace -->
@@ -3379,10 +3436,10 @@
         mobileList.innerHTML = filtered.map(mtg => {
           const { badge, monthShort, dayNum, yearNum, weekdayLabel, hasNextSlot, nextInfo, presenterBadges } = renderMeetingRowData(mtg);
           return `
-            <div class="p-3.5 space-y-2.5 hover:bg-slate-50/70 transition">
-              <div class="flex items-start justify-between gap-2">
+            <div class="p-3.5 space-y-2.5 hover:bg-slate-50/70 transition min-w-0">
+              <div class="flex flex-wrap items-start justify-between gap-2 min-w-0">
                 ${state.isAdmin ? `
-                  <div class="flex flex-col gap-1.5 flex-1">
+                  <div class="flex flex-col gap-1.5 flex-1 min-w-0">
                     <div class="p-1.5 rounded-lg bg-slate-50 border border-slate-200 flex flex-wrap items-center gap-1">
                       <span class="text-[9px] font-bold uppercase text-teal-800 mr-0.5">${isZh ? '本次' : 'Now'}</span>
                       <input type="date" value="${mtg.date}" onchange="updateMeetingField('${mtg.id}', 'date', this.value)" class="px-1.5 py-0.5 rounded border border-slate-300 bg-white text-[11px] font-semibold text-slate-800" />
@@ -3400,9 +3457,9 @@
                     ` : ''}
                   </div>
                 ` : `
-                  <div class="flex flex-wrap items-center gap-1.5">
+                  <div class="flex flex-wrap items-center gap-1.5 min-w-0">
                     <div class="inline-flex items-stretch rounded-lg border border-slate-200 bg-white shadow-2xs overflow-hidden">
-                      <div class="bg-teal-800 text-white px-2 py-1 flex flex-col items-center justify-center min-w-[42px] text-center">
+                      <div class="bg-teal-800 text-white px-2 py-1 flex flex-col items-center justify-center min-w-[40px] text-center">
                         <span class="text-[9px] font-bold tracking-wider uppercase leading-none text-teal-200">${monthShort}</span>
                         <span class="text-sm font-extrabold leading-tight">${dayNum}</span>
                       </div>
@@ -3420,7 +3477,7 @@
 
                     ${hasNextSlot ? `
                       <div class="inline-flex items-stretch rounded-lg border border-teal-200 bg-teal-50/40 shadow-2xs overflow-hidden">
-                        <div class="bg-teal-600 text-white px-2 py-1 flex flex-col items-center justify-center min-w-[42px] text-center">
+                        <div class="bg-teal-600 text-white px-2 py-1 flex flex-col items-center justify-center min-w-[40px] text-center">
                           <span class="text-[9px] font-bold tracking-wider uppercase leading-none text-teal-100">${nextInfo ? nextInfo.monthShort : (isZh ? '下次' : 'NEXT')}</span>
                           <span class="text-sm font-extrabold leading-tight">${nextInfo ? nextInfo.dayNum : 'TBD'}</span>
                         </div>
@@ -3444,7 +3501,7 @@
                     ` : ''}
                   </div>
                 `}
-                <span class="inline-flex items-center justify-center min-w-[82px] px-2 py-0.5 rounded-md text-[11px] font-bold border shrink-0 ${badge}">${formatMeetingTypeLabel(mtg.type, isZh)}</span>
+                <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[11px] font-bold border shrink-0 ${badge}">${formatMeetingTypeLabel(mtg.type, isZh)}</span>
               </div>
 
               <div class="flex flex-wrap items-center gap-1.5">
@@ -3461,7 +3518,7 @@
                 ${state.isAdmin ? `
                   <input type="text" value="${isZh ? mtg.notes_zh : mtg.notes_en}" onchange="updateMeetingField('${mtg.id}', '${isZh ? 'notes_zh' : 'notes_en'}', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs text-slate-700" />
                 ` : `
-                  <p class="text-xs text-slate-600 leading-relaxed">${isZh ? mtg.notes_zh : mtg.notes_en}</p>
+                  <p class="text-xs text-slate-600 leading-relaxed break-words">${isZh ? mtg.notes_zh : mtg.notes_en}</p>
                 `}
               </div>
             </div>
@@ -4098,6 +4155,48 @@
           state.xmasMusicMuted = !state.xmasMusicMuted;
           safeSetStorage('nba_lab_xmas_muted', state.xmasMusicMuted ? 'true' : 'false');
           renderHeaderAndControls();
+        });
+      }
+
+      // Populate Minimalist Warm-White Corner Fairy Light Clusters (Top-Left & Top-Right)
+      const lightsBar = document.getElementById('xmas-lights-bar');
+      if (lightsBar && lightsBar.children.length === 0) {
+        const microCoords = [
+          // Upper graceful swag
+          { x: 14,  y: 10, dur: 2.8, delay: 0.0, ruby: false },
+          { x: 40,  y: 19, dur: 3.4, delay: 0.6, ruby: true  },
+          { x: 68,  y: 16, dur: 2.6, delay: 1.2, ruby: false },
+          { x: 96,  y: 9,  dur: 3.7, delay: 0.4, ruby: false },
+          { x: 126, y: 15, dur: 3.0, delay: 1.5, ruby: true  },
+          { x: 158, y: 12, dur: 2.9, delay: 0.9, ruby: false },
+          { x: 192, y: 5,  dur: 3.6, delay: 1.9, ruby: false },
+          // Lower secondary delicate swag
+          { x: 24,  y: 26, dur: 3.2, delay: 0.3, ruby: false },
+          { x: 54,  y: 34, dur: 2.7, delay: 1.1, ruby: false },
+          { x: 86,  y: 27, dur: 3.5, delay: 1.7, ruby: true  },
+          { x: 118, y: 16, dur: 2.9, delay: 0.5, ruby: false }
+        ];
+        ['left', 'right'].forEach((side, sIdx) => {
+          const cluster = document.createElement('div');
+          cluster.className = `xmas-corner-cluster ${side}`;
+          cluster.innerHTML = `
+            <svg viewBox="0 0 240 54" class="w-full h-full" fill="none">
+              <!-- Delicate pine sprigs tucked in corner -->
+              <path d="M-2,2 C18,6 34,14 48,22 M8,-2 C24,10 32,22 38,34" stroke="rgba(74,222,128,0.28)" stroke-width="1.6" stroke-linecap="round"/>
+              <!-- Double-layered golden fairy light wires -->
+              <path d="M-4,2 Q42,28 96,9 T215,-2" stroke="rgba(253,224,71,0.26)" stroke-width="1"/>
+              <path d="M-4,12 Q52,44 102,22 T148,-2" stroke="rgba(253,224,71,0.18)" stroke-width="0.9"/>
+            </svg>`;
+          microCoords.forEach((pt, idx) => {
+            const dot = document.createElement('span');
+            dot.className = `xmas-micro-bulb${pt.ruby ? ' ruby' : ''}`;
+            dot.style.left = `${pt.x}px`;
+            dot.style.top = `${pt.y}px`;
+            dot.style.setProperty('--twinkle-dur', `${pt.dur}s`);
+            dot.style.setProperty('--twinkle-delay', `${(pt.delay + sIdx * 0.5 + idx * 0.14).toFixed(2)}s`);
+            cluster.appendChild(dot);
+          });
+          lightsBar.appendChild(cluster);
         });
       }
 
