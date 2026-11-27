@@ -18,12 +18,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     html, body {
+      position: fixed;
+      inset: 0;
       margin: 0;
       padding: 0;
       width: 100%;
       max-width: 100%;
-      overflow-x: clip;
-      min-height: 100%;
+      height: 100dvh;
+      overflow: hidden;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: #f8fafc;
       color: #0f172a;
@@ -32,15 +34,21 @@
       background-color: #1e1f22 !important;
       color: #dbdee1;
     }
-    /* Lock top header cleanly with iOS safe-area support */
+    /* Lock top header at the top of the viewport shell */
     #app-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      flex-shrink: 0;
       width: 100%;
       z-index: 45;
       padding-top: env(safe-area-inset-top, 0px);
+    }
+    /* Dedicated scroll container so the header physically cannot scroll on iOS */
+    #app-scroll-container {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -366,10 +374,10 @@
     })();
   </script>
 </head>
-<body class="min-h-screen w-full max-w-full flex flex-col selection:bg-teal-100 selection:text-teal-900">
+<body class="w-full max-w-full flex flex-col selection:bg-teal-100 selection:text-teal-900">
 
   <!-- Top Navigation & Brand Header -->
-  <header id="app-header" class="fixed top-0 left-0 right-0 z-40 w-full bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+  <header id="app-header" class="z-40 w-full bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pt-3 pb-2.5 sm:py-3 gap-2.5">
         <!-- Brand -->
@@ -462,8 +470,10 @@
     </div>
   </header>
 
+  <!-- Dedicated Scrollable Content Shell -->
+  <div id="app-scroll-container" class="flex-1 flex flex-col w-full">
   <!-- Main Workspace -->
-  <main id="main-workspace" class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 pt-36 sm:pt-32 pb-28 sm:pb-6 space-y-4 sm:space-y-6">
+  <main id="main-workspace" class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-28 sm:pb-6 space-y-4 sm:space-y-6">
 
     <!-- Mobile Active Section & Week Summary Strip -->
     <div id="mobile-filter-summary-bar" class="sm:hidden flex items-center justify-between gap-2 bg-white rounded-2xl border border-slate-200 shadow-xs px-3.5 py-2.5">
@@ -764,6 +774,7 @@
       <p id="footer-right">Effective Sept. 7, 2026 • Dynamic Modular Rotation Engine</p>
     </div>
   </footer>
+  </div>
 
   <!-- Mobile Floating Liquid Glass Dock -->
   <div id="mobile-liquid-dock" class="liquid-glass-dock sm:hidden z-40" aria-label="Mobile Quick Controls">
@@ -1677,7 +1688,10 @@
       darkMode: safeGetStorage('nba_lab_dark_mode', 'false') === 'true',
       isAdmin: !forceMemberMode && safeGetStorage('nba_lab_is_admin', 'false', true) === 'true',
       activeTab: 'roster',
-      selectedDate: BASE_CALIBRATION_DATE,
+      selectedDate: (() => {
+        const todayStr = formatDate(new Date());
+        return todayStr < BASE_CALIBRATION_DATE ? BASE_CALIBRATION_DATE : snapToMonday(todayStr);
+      })(),
       selectedMember: 'ALL',
       selectedDuty: 'ALL',
       mobileFiltersOpen: false,
@@ -3652,22 +3666,10 @@
 
     function renderAll() {
       renderHeaderAndControls();
-      syncFixedHeaderOffset();
       renderRosterView();
       renderMatrixView();
       renderMeetingsView();
       renderMonthlyView();
-    }
-
-    function syncFixedHeaderOffset() {
-      const hdr = document.getElementById('app-header');
-      const mainEl = document.getElementById('main-workspace');
-      if (hdr && mainEl) {
-        const h = hdr.offsetHeight;
-        if (h > 0) {
-          mainEl.style.paddingTop = (h + 12) + 'px';
-        }
-      }
     }
 
     // =========================================================================
@@ -3675,10 +3677,44 @@
     // =========================================================================
     function updateHomeScreenAppIcons(url) {
       if (!url) return;
-      const appleLink = document.getElementById('apple-touch-icon-link');
-      const favLink = document.getElementById('favicon-link');
-      if (appleLink && appleLink.getAttribute('href') !== url) appleLink.setAttribute('href', url);
-      if (favLink && favLink.getAttribute('href') !== url) favLink.setAttribute('href', url);
+      const applyHref = (finalHref) => {
+        const appleLink = document.getElementById('apple-touch-icon-link');
+        const favLink = document.getElementById('favicon-link');
+        if (appleLink && appleLink.getAttribute('href') !== finalHref) appleLink.setAttribute('href', finalHref);
+        if (favLink && favLink.getAttribute('href') !== finalHref) favLink.setAttribute('href', finalHref);
+      };
+
+      // If already a square data URL, apply directly
+      if (url.startsWith('data:image/')) {
+        applyHref(url);
+        return;
+      }
+
+      // Fit non-square external logos into a square 512x512 padded icon so iOS never stretches them
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        try {
+          const size = 512;
+          const pad = 44;
+          const canvas = document.createElement('canvas');
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, size, size);
+          const avail = size - pad * 2;
+          const scale = Math.min(avail / img.width, avail / img.height);
+          const w = img.width * scale;
+          const h = img.height * scale;
+          ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+          applyHref(canvas.toDataURL('image/png'));
+        } catch (_) {
+          applyHref(url);
+        }
+      };
+      img.onerror = () => applyHref(url);
+      img.src = url;
     }
 
     function initDashboardApp() {
@@ -3740,7 +3776,8 @@
           document.getElementById(`view-${v}`).classList.toggle('hidden', v !== tab);
         });
         renderHeaderAndControls();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const scrollContainer = document.getElementById('app-scroll-container');
+        if (scrollContainer) scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
       document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -3874,21 +3911,26 @@
         });
       }
 
-      let lastScrollY = window.scrollY || 0;
+      let lastScrollY = 0;
       let scrollRafPending = false;
-      window.addEventListener('scroll', () => {
+      const scrollContainerEl = document.getElementById('app-scroll-container');
+      const handleScrollCollapse = () => {
         if (scrollRafPending) return;
         scrollRafPending = true;
         window.requestAnimationFrame(() => {
           scrollRafPending = false;
-          const currentY = Math.max(0, window.scrollY || 0);
+          const currentY = Math.max(0, scrollContainerEl ? scrollContainerEl.scrollTop : (window.scrollY || 0));
           const delta = Math.abs(currentY - lastScrollY);
           if (!state.mobileFiltersOpen && !state.mobileNavOpen && delta > 6) {
             setMobileDockCollapsed(true);
           }
           lastScrollY = currentY;
         });
-      }, { passive: true });
+      };
+      if (scrollContainerEl) {
+        scrollContainerEl.addEventListener('scroll', handleScrollCollapse, { passive: true });
+      }
+      window.addEventListener('scroll', handleScrollCollapse, { passive: true });
 
       const mobNavFab = document.getElementById('btn-mobile-nav-fab');
       const mobFab = document.getElementById('btn-mobile-filter-fab');
@@ -4218,7 +4260,6 @@
       });
 
       renderAll();
-      window.addEventListener('resize', syncFixedHeaderOffset);
       if (isAppsScriptEnv() || state.gasUrl) {
         pullFromGas();
       }
