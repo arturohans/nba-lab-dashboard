@@ -557,11 +557,11 @@
     html.xmas #btn-xmas-music {
       display: inline-flex !important;
       position: absolute !important;
-      right: -6px !important;
-      top: calc(100% + 4px) !important;
+      right: -5px !important;
+      top: -7px !important;
       left: auto !important;
-      width: 34px !important;
-      height: 34px !important;
+      width: 24px !important;
+      height: 24px !important;
       padding: 0 !important;
       border-radius: 9999px !important;
       align-items: center !important;
@@ -569,28 +569,28 @@
       transform-origin: top center;
       animation: xmasBaubleSway 3.6s ease-in-out infinite;
       background:
-        radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.75) 0%, rgba(254, 240, 138, 0.35) 18%, transparent 42%),
+        radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.8) 0%, rgba(254, 240, 138, 0.35) 18%, transparent 42%),
         radial-gradient(circle at 50% 60%, #dc2626 0%, #991b1b 62%, #450a0a 100%) !important;
-      border: 1.5px solid rgba(253, 224, 71, 0.78) !important;
+      border: 1.5px solid rgba(253, 224, 71, 0.82) !important;
       color: #fef08a !important;
       box-shadow:
-        0 6px 16px -2px rgba(0, 0, 0, 0.65),
-        0 0 14px 2px rgba(248, 113, 113, 0.45),
-        inset 0 -3px 6px rgba(0, 0, 0, 0.45) !important;
+        0 4px 10px -1px rgba(0, 0, 0, 0.65),
+        0 0 10px 1.5px rgba(248, 113, 113, 0.45),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.45) !important;
       overflow: visible !important;
     }
     html.xmas #btn-xmas-music::before {
       content: '';
       position: absolute;
-      top: -5px;
+      top: -4px;
       left: 50%;
       transform: translateX(-50%);
-      width: 9px;
-      height: 5px;
-      border-radius: 2px 2px 0 0;
+      width: 7px;
+      height: 4px;
+      border-radius: 1.5px 1.5px 0 0;
       background: linear-gradient(90deg, #b45309, #fde047, #b45309);
       border: 0.5px solid rgba(254, 249, 195, 0.7);
-      box-shadow: 0 -2px 0 0.5px rgba(253, 224, 71, 0.6);
+      box-shadow: 0 -1.5px 0 0.5px rgba(253, 224, 71, 0.6);
     }
     html.xmas #btn-xmas-music.is-muted {
       animation: none !important;
@@ -779,7 +779,7 @@
             </button>
 
             <button id="btn-xmas-music" type="button" class="hidden z-50 items-center justify-center transition cursor-pointer animate-fade" title="Toggle Christmas Music" aria-label="Toggle Christmas Music">
-              <span id="xmas-music-icon" class="text-sm leading-none drop-shadow">🔔</span>
+              <span id="xmas-music-icon" class="text-[11px] leading-none drop-shadow">🔔</span>
             </button>
           </div>
 
