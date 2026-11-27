@@ -4156,7 +4156,7 @@ const computeMemberShareUrl = (customGasUrl = '') => {
       };
 
       document.getElementById('btn-open-share').addEventListener('click', () => {
-        if (isHostedOnGasExec()) {
+        if (!state.isAdmin || isHostedOnGasExec()) {
           shareGasBaseBox.classList.add('hidden');
           shareInput.value = computeMemberShareUrl(window.location.href);
         } else {
