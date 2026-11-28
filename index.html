@@ -444,10 +444,26 @@
       box-shadow: 0 10px 30px -6px rgba(0, 0, 0, 0.6) !important;
     }
     html.xmas #lab-logo-box {
-      border-color: #f87171 !important;
-      box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.55), 0 8px 22px rgba(220, 38, 38, 0.4) !important;
+      border: 2px solid #bae6fd !important;
+      box-shadow:
+        0 0 0 2px rgba(224, 242, 254, 0.72),
+        0 0 18px 3px rgba(125, 211, 252, 0.55),
+        inset 0 0 12px 2px rgba(224, 242, 254, 0.52) !important;
     }
-    html.xmas #xmas-santa-hat {
+    html.xmas #lab-logo-box::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow:
+        inset 0 0 9px 2px rgba(255, 255, 255, 0.75),
+        inset 0 2px 4px rgba(186, 230, 253, 0.85);
+      pointer-events: none;
+      z-index: 15;
+    }
+    html.xmas #xmas-santa-hat,
+    html.xmas #xmas-santa-beard,
+    html.xmas #xmas-logo-frost {
       display: block !important;
     }
     html.xmas #hdr-pi {
@@ -485,22 +501,46 @@
     }
     html.xmas, html.xmas body {
       background:
-        radial-gradient(circle at 18% 0%, rgba(185, 28, 28, 0.20) 0%, transparent 42%),
-        radial-gradient(circle at 82% 0%, rgba(21, 128, 61, 0.24) 0%, transparent 45%),
-        radial-gradient(circle at 50% 12%, #132e26 0%, #0a1816 58%, #070f10 100%) !important;
+        radial-gradient(circle at 82% 8%, rgba(254, 249, 195, 0.16) 0%, transparent 28%),
+        radial-gradient(circle at 20% 15%, rgba(56, 189, 248, 0.16) 0%, transparent 45%),
+        radial-gradient(circle at 75% 22%, rgba(22, 163, 74, 0.18) 0%, transparent 48%),
+        linear-gradient(180deg, #071921 0%, #0d2b2e 42%, #113834 76%, #18423c 100%) !important;
       color: #ecfdf5 !important;
+    }
+    #xmas-winter-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    html.xmas #xmas-winter-backdrop {
+      display: block;
+    }
+    html.xmas header, html.xmas main, html.xmas footer {
+      position: relative;
+      z-index: 10;
+    }
+    html.xmas header {
+      z-index: 45;
     }
     html.xmas header, html.xmas footer {
       background:
         radial-gradient(ellipse 55% 100% at 15% 0%, rgba(220, 38, 38, 0.22) 0%, transparent 70%),
         radial-gradient(ellipse 55% 100% at 85% 0%, rgba(22, 163, 74, 0.24) 0%, transparent 70%),
-        linear-gradient(180deg, rgba(16, 39, 33, 0.97) 0%, rgba(11, 28, 25, 0.97) 100%) !important;
-      border-color: rgba(250, 204, 21, 0.28) !important;
+        linear-gradient(180deg, rgba(11, 33, 36, 0.94) 0%, rgba(9, 25, 29, 0.95) 100%) !important;
+      border-color: rgba(186, 230, 253, 0.28) !important;
       box-shadow: 0 8px 28px -6px rgba(0, 0, 0, 0.55) !important;
     }
     html.xmas #lab-logo-box {
-      border-color: #f87171 !important;
-      box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.45), 0 6px 18px rgba(220, 38, 38, 0.35) !important;
+      border: 2px solid #bae6fd !important;
+      box-shadow:
+        0 0 0 2px rgba(224, 242, 254, 0.72),
+        0 0 18px 3px rgba(125, 211, 252, 0.55),
+        inset 0 0 12px 2px rgba(224, 242, 254, 0.52) !important;
     }
     html.xmas #xmas-santa-hat {
       display: block !important;
@@ -771,6 +811,71 @@
   </script>
 </head>
 <body class="min-h-screen w-full max-w-full flex flex-col selection:bg-teal-100 selection:text-teal-900">
+  <!-- Panoramic Snowy Winter Night Christmas Backdrop (Visible Only in Xmas Mode) -->
+  <div id="xmas-winter-backdrop" aria-hidden="true">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="xmasMoonGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1180 155) scale(210)">
+          <stop offset="0%" stop-color="#fef9c3" stop-opacity="0.45"/>
+          <stop offset="35%" stop-color="#fde047" stop-opacity="0.14"/>
+          <stop offset="100%" stop-color="#0d2b2e" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="xmasAurora" x1="120" y1="90" x2="1150" y2="290" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#34d399" stop-opacity="0"/>
+          <stop offset="35%" stop-color="#2dd4bf" stop-opacity="0.16"/>
+          <stop offset="68%" stop-color="#38bdf8" stop-opacity="0.14"/>
+          <stop offset="100%" stop-color="#f87171" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="snowHillBack" x1="720" y1="540" x2="720" y2="900" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#1e464a" stop-opacity="0.72"/>
+          <stop offset="100%" stop-color="#0c2226" stop-opacity="0.92"/>
+        </linearGradient>
+        <linearGradient id="snowHillFront" x1="720" y1="680" x2="720" y2="900" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#e0f2fe" stop-opacity="0.22"/>
+          <stop offset="45%" stop-color="#bae6fd" stop-opacity="0.14"/>
+          <stop offset="100%" stop-color="#081a1e" stop-opacity="0.88"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Northern Aurora Ribbon & Winter Moon -->
+      <path d="M-60 220 C260 110, 560 270, 920 150 C1140 80, 1320 140, 1500 110 L1500 280 C1240 310, 960 210, 620 310 C320 390, 90 290, -60 320 Z" fill="url(#xmasAurora)"/>
+      <circle cx="1180" cy="155" r="210" fill="url(#xmasMoonGlow)"/>
+      <circle cx="1180" cy="155" r="34" fill="#fef9c3" fill-opacity="0.82"/>
+      <circle cx="1192" cy="147" r="29" fill="#0b252a" fill-opacity="0.78"/>
+
+      <!-- Distant Frosted Mountain Silhouettes -->
+      <path d="M-40 650 L180 480 L360 610 L580 440 L810 600 L1060 455 L1290 595 L1490 490 L1490 900 L-40 900 Z" fill="url(#snowHillBack)"/>
+      <!-- Snow Caps on Mountain Peaks -->
+      <path d="M180 480 L132 518 L162 514 L180 532 L202 512 L226 517 Z" fill="#e0f2fe" fill-opacity="0.24"/>
+      <path d="M580 440 L518 488 L556 482 L580 505 L612 480 L644 488 Z" fill="#e0f2fe" fill-opacity="0.26"/>
+      <path d="M1060 455 L1004 498 L1038 492 L1060 512 L1088 492 L1118 499 Z" fill="#e0f2fe" fill-opacity="0.24"/>
+
+      <!-- Layered Snow-Dusted Pine Trees (Left & Right Framing) -->
+      <g opacity="0.78">
+        <!-- Left Pine Cluster -->
+        <polygon points="75,540 32,645 118,645" fill="#0f3932"/>
+        <polygon points="75,595 22,715 128,715" fill="#0b2d28"/>
+        <polygon points="75,540 54,592 75,585 96,592" fill="#e0f2fe" fill-opacity="0.38"/>
+
+        <polygon points="155,585 118,675 192,675" fill="#13463d"/>
+        <polygon points="155,632 108,738 202,738" fill="#0d342e"/>
+        <polygon points="155,585 137,630 155,624 173,630" fill="#e0f2fe" fill-opacity="0.35"/>
+
+        <!-- Right Pine Cluster -->
+        <polygon points="1340,530 1295,640 1385,640" fill="#0f3932"/>
+        <polygon points="1340,590 1285,715 1395,715" fill="#0b2d28"/>
+        <polygon points="1340,530 1318,585 1340,578 1362,585" fill="#e0f2fe" fill-opacity="0.38"/>
+
+        <polygon points="1250,595 1212,685 1288,685" fill="#13463d"/>
+        <polygon points="1250,640 1202,745 1298,745" fill="#0d342e"/>
+        <polygon points="1250,595 1232,638 1250,632 1268,638" fill="#e0f2fe" fill-opacity="0.34"/>
+      </g>
+
+      <!-- Rolling Snowdrifts Along Bottom Horizon -->
+      <path d="M-40 735 C240 680, 520 775, 840 725 C1110 685, 1300 740, 1490 715 L1490 900 L-40 900 Z" fill="url(#snowHillFront)"/>
+      <path d="M-40 795 C320 755, 680 835, 1080 780 C1260 755, 1390 785, 1490 775 L1490 900 L-40 900 Z" fill="#e0f2fe" fill-opacity="0.14"/>
+    </svg>
+  </div>
   <canvas id="xmas-snow-canvas" aria-hidden="true"></canvas>
 
   <!-- Top Navigation & Brand Header -->
@@ -781,8 +886,50 @@
         <!-- Brand -->
         <div class="flex items-center gap-3 sm:gap-3.5 min-w-0">
           <div class="relative shrink-0">
-            <!-- Festive Santa Hat Badge on Logo in Xmas Mode -->
-            <span id="xmas-santa-hat" aria-hidden="true" class="hidden absolute -top-3 -left-2 z-10 text-xl sm:text-2xl -rotate-12 drop-shadow select-none pointer-events-none">🎅</span>
+            <!-- Custom Festive Santa Hat Centered Over Head -->
+            <svg id="xmas-santa-hat" aria-hidden="true" viewBox="0 0 80 50" class="hidden absolute -top-1.5 left-[54%] -translate-x-1/2 z-20 w-11 sm:w-12 h-auto drop-shadow-sm select-none pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="santaHatRed" x1="16" y1="6" x2="62" y2="34" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#ef4444"/>
+                  <stop offset="55%" stop-color="#dc2626"/>
+                  <stop offset="100%" stop-color="#991b1b"/>
+                </linearGradient>
+              </defs>
+              <!-- Solid Red Plush Cap & Side Droop (No See-Through Gap) -->
+              <path d="M15 28 C16 11, 31 4, 48 8 C59 11, 65 20, 67 29 L15 28 Z" fill="url(#santaHatRed)" stroke="#1e293b" stroke-width="1.8" stroke-linejoin="round"/>
+              <!-- White Fur Brim Band -->
+              <rect x="14" y="25" width="44" height="8.5" rx="4.25" fill="#ffffff" stroke="#1e293b" stroke-width="1.8"/>
+              <!-- White Pom-Pom -->
+              <circle cx="67" cy="30" r="5.2" fill="#ffffff" stroke="#1e293b" stroke-width="1.8"/>
+            </svg>
+
+            <!-- Single Clean White Santa Beard & Mustache Aligned to Face -->
+            <svg id="xmas-santa-beard" aria-hidden="true" viewBox="0 0 80 80" class="hidden absolute inset-0 z-20 w-full h-full select-none pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Fuller Fluffy White Beard Hugging Lower Cheeks & Chin -->
+              <path d="M28.6 36.6 C27.6 41.8, 29.2 47.2, 33.8 49.8 C36.9 51.5, 42.7 51.5, 45.8 49.8 C50.4 47.2, 52.0 41.8, 51.0 36.6 C47.6 38.8, 43.8 39.8, 39.8 39.8 C35.8 39.8, 32.0 38.8, 28.6 36.6 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.35" stroke-linejoin="round"/>
+              <!-- Curled White Mustache Under Nose -->
+              <path d="M39.8 35.6 C37.2 34.1, 32.6 34.1, 30.6 36.5 C29.2 38.1, 30.7 39.5, 33.2 38.8 C35.7 38.1, 38.3 37.3, 39.8 36.7 C41.3 37.3, 43.9 38.1, 46.4 38.8 C48.9 39.5, 50.4 38.1, 49.0 36.5 C47.0 34.1, 42.4 34.1, 39.8 35.6 Z" fill="#ffffff" stroke="#1e293b" stroke-width="1.25" stroke-linejoin="round"/>
+            </svg>
+
+            <!-- Snowy Frost Rim & Hanging Icicles Overlay for Logo Border -->
+            <svg id="xmas-logo-frost" aria-hidden="true" viewBox="0 0 80 80" class="hidden absolute -inset-1 z-30 w-[calc(100%+8px)] h-[calc(100%+8px)] select-none pointer-events-none drop-shadow-xs" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="iceGrad" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.96"/>
+                  <stop offset="50%" stop-color="#e0f2fe" stop-opacity="0.92"/>
+                  <stop offset="100%" stop-color="#bae6fd" stop-opacity="0.88"/>
+                </linearGradient>
+              </defs>
+              <!-- Top Left & Top Right Snow Caps + Hanging Icicles -->
+              <path d="M4 17 C4 9, 10 4, 18 4 L26 4 C24 8, 22 9, 20 7.5 L18.5 14.5 L17 8 C15 9.5, 13.5 9, 12 7.5 L10.5 16.5 L9 8.5 C7 10, 6 13, 4 17 Z" fill="url(#iceGrad)" stroke="#7dd3fc" stroke-width="0.7" stroke-linejoin="round"/>
+              <path d="M76 17 C76 9, 70 4, 62 4 L55 4 C57 8, 59 9, 61 7.5 L62.5 15 L64 8 C66 9.5, 67.5 9, 69 7.5 L70.5 17 L72 8.5 C74 10, 75 13, 76 17 Z" fill="url(#iceGrad)" stroke="#7dd3fc" stroke-width="0.7" stroke-linejoin="round"/>
+              <!-- Bottom Frosted Snow Drift & Ice Crystals -->
+              <path d="M4 62 C4 71, 10 76, 19 76 L61 76 C70 76, 76 71, 76 62 C74 66, 70 69, 65 70 C60 71, 56 69, 51 71 C46 72.5, 42 70.5, 37 71.5 C32 72.5, 27 70, 22 71 C16 72, 10 69, 4 62 Z" fill="url(#iceGrad)" stroke="#7dd3fc" stroke-width="0.75" stroke-linejoin="round"/>
+              <!-- Tiny Sparkling Ice Stars on Corners -->
+              <path d="M12 67 L13 69.5 L15.5 70.5 L13 71.5 L12 74 L11 71.5 L8.5 70.5 L11 69.5 Z" fill="#ffffff"/>
+              <path d="M67 66 L67.8 68 L69.8 68.8 L67.8 69.6 L67 71.6 L66.2 69.6 L64.2 68.8 L66.2 68 Z" fill="#ffffff"/>
+            </svg>
+
             <div id="lab-logo-box" class="relative group w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white border border-teal-200 flex items-center justify-center overflow-hidden shadow-xs shrink-0">
               <img id="lab-logo-img" src="https://drive.google.com/thumbnail?id=1YLkptQ9svjCxESQNzQbJXicXNrt8hSsw&sz=w400" alt="NBA Lab Logo" class="w-full h-full object-contain bg-white" />
               <svg id="lab-logo-fallback" class="hidden w-12 h-12 sm:w-14 sm:h-14" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -4428,19 +4575,21 @@
         resizeSnow();
         window.addEventListener('resize', resizeSnow, { passive: true });
         if (snowFlakes.length === 0) {
-          const count = window.innerWidth < 640 ? 48 : 88;
+          const count = window.innerWidth < 640 ? 68 : 125;
           for (let i = 0; i < count; i++) {
-            const isCrystal = i % 4 === 0;
+            const isCrystal = i % 5 === 0;
+            const isBokeh = !isCrystal && i % 6 === 0;
             snowFlakes.push({
               x: Math.random() * canvas.width,
               y: Math.random() * canvas.height,
-              r: isCrystal ? (3.5 + Math.random() * 3.5) : (1.3 + Math.random() * 2.6),
-              vy: 0.45 + Math.random() * 1.15,
-              vx: -0.35 + Math.random() * 0.7,
+              r: isCrystal ? (4.0 + Math.random() * 4.0) : (isBokeh ? (4.5 + Math.random() * 4.5) : (1.4 + Math.random() * 2.8)),
+              vy: isBokeh ? (0.28 + Math.random() * 0.45) : (0.55 + Math.random() * 1.35),
+              vx: -0.45 + Math.random() * 0.9,
               rot: Math.random() * Math.PI * 2,
-              vrot: (-0.015 + Math.random() * 0.03),
+              vrot: (-0.018 + Math.random() * 0.036),
               isCrystal,
-              alpha: 0.45 + Math.random() * 0.5
+              isBokeh,
+              alpha: isBokeh ? (0.14 + Math.random() * 0.16) : (0.52 + Math.random() * 0.46)
             });
           }
         }
@@ -4449,12 +4598,20 @@
           ctx.translate(x, y);
           ctx.rotate(angle);
           ctx.strokeStyle = `rgba(224, 242, 254, ${alpha})`;
-          ctx.lineWidth = 1.1;
+          ctx.lineWidth = 1.15;
           for (let k = 0; k < 3; k++) {
             ctx.rotate(Math.PI / 3);
             ctx.beginPath();
             ctx.moveTo(-radius, 0);
             ctx.lineTo(radius, 0);
+            ctx.stroke();
+            // Tiny crystalline branches
+            const b = radius * 0.55;
+            ctx.beginPath();
+            ctx.moveTo(b, 0);
+            ctx.lineTo(b + radius * 0.25, -radius * 0.22);
+            ctx.moveTo(b, 0);
+            ctx.lineTo(b + radius * 0.25, radius * 0.22);
             ctx.stroke();
           }
           ctx.restore();
@@ -4465,13 +4622,21 @@
           for (let i = 0; i < snowFlakes.length; i++) {
             const f = snowFlakes[i];
             f.y += f.vy;
-            f.x += f.vx + Math.sin(f.y * 0.015) * 0.28;
+            f.x += f.vx + Math.sin(f.y * 0.014 + i) * 0.36;
             f.rot += f.vrot;
-            if (f.y > canvas.height + 8) { f.y = -8; f.x = Math.random() * canvas.width; }
-            if (f.x > canvas.width + 8) f.x = -8;
-            if (f.x < -8) f.x = canvas.width + 8;
+            if (f.y > canvas.height + 10) { f.y = -10; f.x = Math.random() * canvas.width; }
+            if (f.x > canvas.width + 10) f.x = -10;
+            if (f.x < -10) f.x = canvas.width + 10;
             if (f.isCrystal) {
               drawCrystal(f.x, f.y, f.r, f.rot, f.alpha);
+            } else if (f.isBokeh) {
+              const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r);
+              grad.addColorStop(0, `rgba(240, 249, 255, ${f.alpha * 1.4})`);
+              grad.addColorStop(1, 'rgba(240, 249, 255, 0)');
+              ctx.beginPath();
+              ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+              ctx.fillStyle = grad;
+              ctx.fill();
             } else {
               ctx.beginPath();
               ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
