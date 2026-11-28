@@ -793,6 +793,21 @@
     html.xmas #xmas-snow-canvas {
       display: block;
     }
+    /* Subtle Frosted Ice Viewport Frame (Visible Only in Xmas Mode, Non-Intrusive) */
+    #xmas-screen-frost {
+      display: none;
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 49;
+      border: 2px solid rgba(186, 230, 253, 0.35);
+      box-shadow:
+        inset 0 0 18px 2px rgba(186, 230, 253, 0.24),
+        inset 0 0 42px 4px rgba(125, 211, 252, 0.10);
+    }
+    html.xmas #xmas-screen-frost {
+      display: block;
+    }
   </style>
   <script>
     // Apply saved dark/xmas mode & theme-color immediately before first paint to prevent white flash on iOS
@@ -877,6 +892,24 @@
     </svg>
   </div>
   <canvas id="xmas-snow-canvas" aria-hidden="true"></canvas>
+
+  <!-- Subtle Frosted Ice Screen Edge Frame (Visible Only in Xmas Mode) -->
+  <div id="xmas-screen-frost" aria-hidden="true">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="none" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="screenIceEdge" x1="0" y1="0" x2="1440" y2="900" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.72"/>
+          <stop offset="50%" stop-color="#bae6fd" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#e0f2fe" stop-opacity="0.68"/>
+        </linearGradient>
+      </defs>
+      <!-- Delicate Corner Frost & Tiny Hanging Icicles Along Very Edge -->
+      <path d="M0 0 L95 0 C78 4, 68 5, 58 3 L52 14 L46 4 C36 6, 28 5, 20 3 L14 19 L9 5 C4 8, 2 14, 0 26 Z" fill="url(#screenIceEdge)"/>
+      <path d="M1440 0 L1345 0 C1362 4, 1372 5, 1382 3 L1388 14 L1394 4 C1404 6, 1412 5, 1420 3 L1426 19 L1431 5 C1436 8, 1438 14, 1440 26 Z" fill="url(#screenIceEdge)"/>
+      <path d="M0 900 L0 865 C3 878, 7 887, 16 892 C28 897, 48 898, 85 900 Z" fill="url(#screenIceEdge)"/>
+      <path d="M1440 900 L1440 865 C1437 878, 1433 887, 1424 892 C1412 897, 1392 898, 1355 900 Z" fill="url(#screenIceEdge)"/>
+    </svg>
+  </div>
 
   <!-- Top Navigation & Brand Header -->
   <header id="app-header" class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm overflow-visible">
