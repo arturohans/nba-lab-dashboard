@@ -557,73 +557,71 @@
       0%, 100% { transform: scaleY(0.35); }
       50% { transform: scaleY(1); }
     }
-    /* Sleek Frosted-Gold & Pine Music Pill Hanging Below Theme Toggle */
+    @keyframes xmasBellRing {
+      0%, 100% { transform: rotate(0deg); }
+      15% { transform: rotate(15deg); }
+      30% { transform: rotate(-13deg); }
+      45% { transform: rotate(10deg); }
+      60% { transform: rotate(-8deg); }
+      75% { transform: rotate(4deg); }
+    }
+    /* Hanging Golden Bell Music Toggle Centered Below Theme Button */
     html.xmas #btn-xmas-music {
       display: inline-flex !important;
       position: absolute !important;
-      top: calc(100% + 5px) !important;
+      top: calc(100% + 6px) !important;
       left: 50% !important;
       right: auto !important;
       bottom: auto !important;
-      transform: translateX(-50%) !important;
-      height: 22px !important;
-      padding: 0 9px !important;
+      margin-left: -14px !important;
+      transform: none !important;
+      animation: none !important;
+      width: 28px !important;
+      height: 28px !important;
+      padding: 0 !important;
       border-radius: 9999px !important;
       align-items: center !important;
       justify-content: center !important;
-      gap: 5px !important;
-      white-space: nowrap !important;
-      background: linear-gradient(135deg, rgba(14, 38, 32, 0.94) 0%, rgba(69, 16, 16, 0.92) 100%) !important;
+      background: radial-gradient(circle at 35% 30%, rgba(25, 68, 54, 0.96) 0%, rgba(69, 16, 16, 0.96) 100%) !important;
       backdrop-filter: blur(12px) saturate(160%);
       -webkit-backdrop-filter: blur(12px) saturate(160%);
-      border: 1px solid rgba(250, 204, 21, 0.55) !important;
+      border: 1.5px solid rgba(250, 204, 21, 0.72) !important;
       color: #fef08a !important;
       box-shadow:
-        0 6px 14px -3px rgba(0, 0, 0, 0.72),
-        0 0 10px -2px rgba(250, 204, 21, 0.28),
-        inset 0 1px 0 rgba(254, 249, 195, 0.22) !important;
+        0 6px 14px -2px rgba(0, 0, 0, 0.78),
+        0 0 12px 1px rgba(250, 204, 21, 0.35),
+        inset 0 1px 1px rgba(254, 249, 195, 0.3) !important;
     }
     html.xmas #btn-xmas-music::before {
       content: '';
       position: absolute;
-      top: -5px;
+      top: -7px;
       left: 50%;
-      transform: translateX(-50%);
+      margin-left: -0.75px;
       width: 1.5px;
-      height: 5px;
-      background: rgba(250, 204, 21, 0.65);
+      height: 6px;
+      background: linear-gradient(180deg, rgba(250, 204, 21, 0.4), rgba(253, 224, 71, 0.95));
       pointer-events: none;
     }
     html.xmas #btn-xmas-music:hover {
-      border-color: rgba(253, 224, 71, 0.85) !important;
-      box-shadow: 0 8px 18px -3px rgba(0, 0, 0, 0.8), 0 0 14px rgba(250, 204, 21, 0.38) !important;
+      border-color: rgba(253, 224, 71, 0.95) !important;
+      box-shadow: 0 8px 18px -2px rgba(0, 0, 0, 0.85), 0 0 16px 2px rgba(250, 204, 21, 0.48) !important;
     }
-    .xmas-eq-bars {
-      display: inline-flex;
-      align-items: flex-end;
-      gap: 1.5px;
-      height: 9px;
+    html.xmas #btn-xmas-music #xmas-music-icon {
+      display: inline-block;
+      transform-origin: 50% 12%;
+      animation: xmasBellRing 2.1s ease-in-out infinite;
     }
-    .xmas-eq-bars span {
-      width: 2px;
-      height: 100%;
-      border-radius: 9999px;
-      background: #fde047;
-      transform-origin: bottom;
-      animation: xmasEqBar 0.9s ease-in-out infinite;
-    }
-    .xmas-eq-bars span:nth-child(2) { animation-delay: 0.25s; }
-    .xmas-eq-bars span:nth-child(3) { animation-delay: 0.5s; }
     html.xmas #btn-xmas-music.is-muted {
-      background: rgba(15, 28, 26, 0.88) !important;
-      border-color: rgba(148, 163, 184, 0.38) !important;
+      background: rgba(15, 28, 26, 0.92) !important;
+      border-color: rgba(148, 163, 184, 0.42) !important;
       color: #94a3b8 !important;
-      box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.6) !important;
+      box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.65) !important;
     }
-    html.xmas #btn-xmas-music.is-muted .xmas-eq-bars span {
+    html.xmas #btn-xmas-music.is-muted #xmas-music-icon {
       animation: none !important;
-      transform: scaleY(0.25) !important;
-      background: #64748b !important;
+      transform: none !important;
+      opacity: 0.78;
     }
     /* Match Mobile Floating Liquid Glass Dock & Buttons to Christmas Theme */
     html.xmas .liquid-glass-dock {
@@ -837,11 +835,9 @@
               <span id="night-mode-icon" class="shrink-0">🌙</span>
               <span id="lbl-night-mode" class="truncate">Night</span>
             </button>
-            <!-- Sleek Frosted-Gold & Pine Music Pill Hanging Below Theme Toggle -->
-            <button id="btn-xmas-music" type="button" class="hidden z-30 transition cursor-pointer animate-fade" title="Toggle Christmas Music" aria-label="Toggle Christmas Music">
-              <span id="xmas-music-icon" class="text-[10px] leading-none">🔔</span>
-              <span class="xmas-eq-bars" aria-hidden="true"><span></span><span></span><span></span></span>
-              <span id="lbl-xmas-music" class="text-[10px] font-bold tracking-wide leading-none">BGM</span>
+            <!-- Hanging Golden Bell Music Toggle Below Theme Button -->
+            <button id="btn-xmas-music" type="button" class="hidden z-30 transition-colors cursor-pointer" title="Toggle Christmas Music" aria-label="Toggle Christmas Music">
+              <span id="xmas-music-icon" class="text-[13px] leading-none select-none">🔔</span>
             </button>
           </div>
 
@@ -2673,15 +2669,9 @@
         }
       }
       const musicIcon = document.getElementById('xmas-music-icon');
-      const musicLbl = document.getElementById('lbl-xmas-music');
       const musicBtnEl = document.getElementById('btn-xmas-music');
       if (musicIcon) {
         musicIcon.textContent = state.xmasMusicMuted ? '🔕' : '🔔';
-      }
-      if (musicLbl) {
-        musicLbl.textContent = state.xmasMusicMuted
-          ? (isZh ? '靜音' : 'Muted')
-          : (isZh ? '音樂' : 'BGM');
       }
       if (musicBtnEl) {
         musicBtnEl.classList.toggle('is-muted', state.xmasMusicMuted);
