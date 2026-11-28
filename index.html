@@ -752,7 +752,12 @@
       ) !important;
     }
     @media (max-width: 639px) {
+      html.xmas .liquid-glass-dock {
+        z-index: 42 !important;
+      }
       html.xmas .liquid-glass-sheet {
+        z-index: 55 !important;
+        bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px)) !important;
         background: linear-gradient(
           165deg,
           rgba(18, 48, 39, 0.92) 0%,
