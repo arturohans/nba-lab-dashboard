@@ -24,7 +24,10 @@
       max-width: 100%;
       min-height: 100%;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #f8fafc;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(20, 184, 166, 0.10) 0%, transparent 42%),
+        radial-gradient(circle at 86% 14%, rgba(14, 165, 233, 0.08) 0%, transparent 45%),
+        linear-gradient(180deg, #f1f5f9 0%, #e8eff5 52%, #e2eceb 100%);
       color: #0f172a;
     }
     body {
@@ -36,12 +39,51 @@
       min-height: 100dvh;
       overflow-x: clip;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #f8fafc;
+      background: transparent;
       color: #0f172a;
     }
-    html.dark, html.dark body {
-      background-color: #1e1f22 !important;
+    html.dark {
+      background:
+        radial-gradient(circle at 16% 10%, rgba(20, 184, 166, 0.13) 0%, transparent 44%),
+        radial-gradient(circle at 84% 16%, rgba(56, 189, 248, 0.09) 0%, transparent 46%),
+        linear-gradient(180deg, #16181c 0%, #1b1e23 55%, #15191e 100%) !important;
       color: #dbdee1;
+    }
+    html.dark body {
+      background: transparent !important;
+      color: #dbdee1;
+    }
+    /* Nanobiomaterials Lab Environment Backdrop (Light & Night Modes) */
+    #lab-env-backdrop {
+      display: block;
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      opacity: 0.92;
+      transition: opacity 0.35s ease;
+    }
+    html.xmas #lab-env-backdrop {
+      display: none !important;
+    }
+    #lab-env-backdrop .lab-light-layer {
+      display: block;
+    }
+    #lab-env-backdrop .lab-dark-layer {
+      display: none;
+    }
+    html.dark:not(.xmas) #lab-env-backdrop .lab-light-layer {
+      display: none;
+    }
+    html.dark:not(.xmas) #lab-env-backdrop .lab-dark-layer {
+      display: block;
+    }
+    header, main, footer {
+      position: relative;
+      z-index: 10;
     }
     /* Sticky top header keeps the title bar pinned while letting body fill 100% of iOS screen height */
     #app-header {
@@ -291,21 +333,43 @@
     }
 
     /* Night Mode Theme Overrides */
+    /* Frosted Glass Content Fill (Light, Night & Xmas Modes) */
+    #controls-bar-section,
+    #mobile-filter-summary-bar,
+    #duty-grid article,
+    #view-matrix > div.bg-white,
+    #meeting-rules-grid > div,
+    #view-meetings > div.bg-white,
+    #monthly-grid > div.bg-white {
+      background-color: rgba(255, 255, 255, 0.78) !important;
+      backdrop-filter: blur(14px) saturate(150%);
+      -webkit-backdrop-filter: blur(14px) saturate(150%);
+    }
     html.dark header, html.dark footer {
-      background-color: rgba(43, 45, 49, 0.98) !important;
+      background-color: rgba(43, 45, 49, 0.86) !important;
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
       border-color: #3f4147 !important;
     }
-    html.dark #controls-bar-section {
-      background-color: #2b2d31 !important;
-      border-color: #3f4147 !important;
+    html.dark #controls-bar-section,
+    html.dark #mobile-filter-summary-bar,
+    html.dark #duty-grid article,
+    html.dark #view-matrix > div.bg-white,
+    html.dark #meeting-rules-grid > div,
+    html.dark #view-meetings > div.bg-white,
+    html.dark #monthly-grid > div.bg-white {
+      background-color: rgba(43, 45, 49, 0.76) !important;
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      border-color: rgba(82, 86, 94, 0.65) !important;
     }
-    html.dark .bg-white { background-color: #2b2d31 !important; }
-    html.dark .bg-white\/95 { background-color: rgba(43, 45, 49, 0.98) !important; }
-    html.dark .bg-white\/80, html.dark .bg-white\/90 { background-color: rgba(49, 51, 56, 0.88) !important; }
+    html.dark .bg-white { background-color: rgba(43, 45, 49, 0.84) !important; }
+    html.dark .bg-white\/95 { background-color: rgba(43, 45, 49, 0.88) !important; }
+    html.dark .bg-white\/80, html.dark .bg-white\/90 { background-color: rgba(49, 51, 56, 0.78) !important; }
     html.dark .bg-slate-50, html.dark .bg-slate-50\/40, html.dark .bg-slate-50\/50,
     html.dark .bg-slate-50\/60, html.dark .bg-slate-50\/70, html.dark .bg-slate-50\/80,
-    html.dark .bg-slate-50\/90 { background-color: #232428 !important; }
-    html.dark .bg-slate-100 { background-color: #313338 !important; }
+    html.dark .bg-slate-50\/90 { background-color: rgba(35, 36, 40, 0.68) !important; }
+    html.dark .bg-slate-100 { background-color: rgba(49, 51, 56, 0.75) !important; }
     html.dark .hover\:bg-slate-50:hover, html.dark .hover\:bg-slate-50\/70:hover,
     html.dark .hover\:bg-slate-50\/80:hover, html.dark .hover\:bg-slate-100:hover,
     html.dark .hover\:bg-slate-100\/70:hover, html.dark .hover\:bg-slate-200:hover {
@@ -472,22 +536,22 @@
     }
     html.xmas #controls-bar-section,
     html.xmas .bg-white {
-      background: linear-gradient(165deg, rgba(19, 46, 39, 0.95) 0%, rgba(13, 31, 29, 0.96) 100%) !important;
-      border-color: rgba(74, 222, 128, 0.30) !important;
-      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(254, 240, 138, 0.18) !important;
+      background: linear-gradient(165deg, rgba(18, 42, 36, 0.76) 0%, rgba(13, 30, 28, 0.80) 100%) !important;
+      backdrop-filter: blur(16px) saturate(150%);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
+      border-color: rgba(74, 222, 128, 0.28) !important;
+      box-shadow: 0 10px 26px -8px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(254, 240, 138, 0.14) !important;
     }
     html.xmas #duty-grid article {
       position: relative;
-      border-top: 2px solid rgba(250, 204, 21, 0.45) !important;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      border-top: 2px solid rgba(248, 113, 113, 0.55) !important;
     }
-    html.xmas #duty-grid article:hover {
-      border-color: rgba(250, 204, 21, 0.65) !important;
-      box-shadow: 0 14px 32px -8px rgba(0, 0, 0, 0.65), 0 0 18px -4px rgba(250, 204, 21, 0.16) !important;
+    html.xmas .bg-white\/95 { background-color: rgba(13, 31, 30, 0.86) !important; }
+    html.xmas .bg-slate-50, html.xmas .bg-slate-50\/40, html.xmas .bg-slate-50\/50,
+    html.xmas .bg-slate-50\/70, html.xmas .bg-slate-50\/80 {
+      background-color: rgba(11, 28, 26, 0.65) !important;
     }
-    .xmas-corner-cluster.left { left: 0; }
-    .xmas-corner-cluster.right { right: 0; transform: scaleX(-1); }
-    .xmas-micro-bulb {
+    html.xmas .bg-slate-100 { background-color: rgba(22, 51, 45, 0.72) !important; }
       position: absolute;
       width: 4.5px;
       height: 4.5px;
@@ -848,6 +912,192 @@
   </script>
 </head>
 <body class="min-h-screen w-full max-w-full flex flex-col selection:bg-teal-100 selection:text-teal-900">
+  <!-- Nanobiomaterials Lab Environment Backdrop (Visible in Light & Night Modes) -->
+  <div id="lab-env-backdrop" aria-hidden="true">
+    <!-- LIGHT THEME LAB ENVIRONMENT -->
+    <svg class="lab-light-layer w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="labBlueprintGridLight" width="48" height="48" patternUnits="userSpaceOnUse">
+          <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#0f766e" stroke-width="0.6" stroke-opacity="0.06"/>
+          <circle cx="0" cy="0" r="1.2" fill="#0d9488" fill-opacity="0.09"/>
+        </pattern>
+        <linearGradient id="labWallGlowLight" x1="720" y1="0" x2="720" y2="900" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#ccfbf1" stop-opacity="0.22"/>
+          <stop offset="55%" stop-color="#e0f2fe" stop-opacity="0.14"/>
+          <stop offset="100%" stop-color="#cbd5e1" stop-opacity="0.28"/>
+        </linearGradient>
+        <linearGradient id="labBenchTopLight" x1="720" y1="735" x2="720" y2="900" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#94a3b8" stop-opacity="0.24"/>
+          <stop offset="100%" stop-color="#64748b" stop-opacity="0.34"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Architectural Grid & Soft Ambient Window Light -->
+      <rect width="1440" height="900" fill="url(#labBlueprintGridLight)"/>
+      <rect width="1440" height="900" fill="url(#labWallGlowLight)"/>
+
+      <!-- Subtle Molecular Hexagon & Nanoparticle Watermark (Upper Center-Right) -->
+      <g stroke="#0f766e" stroke-opacity="0.09" stroke-width="1.6">
+        <polygon points="1040,145 1072,126 1104,145 1104,182 1072,201 1040,182"/>
+        <polygon points="1104,145 1136,126 1168,145 1168,182 1136,201 1104,182"/>
+        <polygon points="1072,201 1104,182 1136,201 1136,238 1104,257 1072,238"/>
+        <line x1="1168" y1="145" x2="1198" y2="128"/>
+        <circle cx="1198" cy="128" r="5" fill="#0d9488" fill-opacity="0.10"/>
+        <circle cx="1040" cy="145" r="4" fill="#0d9488" fill-opacity="0.10"/>
+        <!-- Nanosphere Core-Shell Illustration -->
+        <circle cx="340" cy="185" r="36" stroke-dasharray="4 4"/>
+        <circle cx="340" cy="185" r="20"/>
+        <circle cx="340" cy="185" r="6" fill="#0d9488" fill-opacity="0.12"/>
+      </g>
+
+      <!-- Left Lab Wall Shelf & Reagent Bottles / Erlenmeyer Flasks -->
+      <g opacity="0.58">
+        <!-- Upper Reagent Shelf -->
+        <rect x="38" y="340" width="230" height="7" rx="3" fill="#94a3b8" fill-opacity="0.45"/>
+        <path d="M58 347 L58 364 M248 347 L248 364" stroke="#64748b" stroke-width="3" stroke-opacity="0.35"/>
+        <!-- Reagent Bottles on Shelf -->
+        <rect x="64" y="294" width="26" height="46" rx="4" fill="#ffffff" fill-opacity="0.72" stroke="#64748b" stroke-width="1.3" stroke-opacity="0.45"/>
+        <rect x="68" y="314" width="18" height="22" rx="2" fill="#0d9488" fill-opacity="0.22"/>
+        <rect x="70" y="286" width="14" height="8" rx="2" fill="#0f766e" fill-opacity="0.45"/>
+
+        <rect x="102" y="302" width="24" height="38" rx="4" fill="#ffffff" fill-opacity="0.72" stroke="#64748b" stroke-width="1.3" stroke-opacity="0.45"/>
+        <rect x="106" y="318" width="16" height="18" rx="2" fill="#0284c7" fill-opacity="0.22"/>
+        <rect x="108" y="295" width="12" height="7" rx="2" fill="#0369a1" fill-opacity="0.42"/>
+
+        <!-- Volumetric Flask on Shelf -->
+        <path d="M156 292 L164 292 L164 310 L176 334 C178 338 175 340 171 340 L149 340 C145 340 142 338 144 334 L156 310 Z" fill="#ffffff" fill-opacity="0.75" stroke="#64748b" stroke-width="1.3" stroke-opacity="0.45"/>
+        <path d="M148 326 L172 326 L175 335 C176 338 174 339 171 339 L149 339 C146 339 144 338 145 335 Z" fill="#14b8a6" fill-opacity="0.25"/>
+
+        <!-- Pipette Stand -->
+        <path d="M204 340 L236 340 M220 282 L220 340 M202 288 L238 288" stroke="#64748b" stroke-width="2" stroke-opacity="0.45" stroke-linecap="round"/>
+        <rect x="208" y="284" width="4" height="44" rx="2" fill="#0f766e" fill-opacity="0.42"/>
+        <rect x="228" y="284" width="4" height="44" rx="2" fill="#0284c7" fill-opacity="0.42"/>
+      </g>
+
+      <!-- Right Biosafety Cabinet / Fume Hood Silhouette -->
+      <g opacity="0.52">
+        <rect x="1155" y="425" width="235" height="310" rx="10" fill="#ffffff" fill-opacity="0.62" stroke="#64748b" stroke-width="1.6" stroke-opacity="0.38"/>
+        <!-- Hood Exhaust Canopy -->
+        <path d="M1170 425 L1195 385 L1350 385 L1375 425 Z" fill="#cbd5e1" fill-opacity="0.45" stroke="#64748b" stroke-width="1.4" stroke-opacity="0.35"/>
+        <!-- Glass Sash Window -->
+        <rect x="1175" y="455" width="195" height="145" rx="6" fill="#e0f2fe" fill-opacity="0.48" stroke="#0d9488" stroke-width="1.4" stroke-opacity="0.35"/>
+        <line x1="1175" y1="538" x2="1370" y2="538" stroke="#0f766e" stroke-width="1.5" stroke-opacity="0.35"/>
+        <!-- Control Panel Indicator -->
+        <rect x="1182" y="434" width="54" height="12" rx="3" fill="#0f766e" fill-opacity="0.28"/>
+        <circle cx="1352" cy="440" r="4" fill="#10b981" fill-opacity="0.6"/>
+      </g>
+
+      <!-- Lab Bench Countertop & Floor Horizon -->
+      <rect x="0" y="735" width="1440" height="16" fill="#64748b" fill-opacity="0.26"/>
+      <rect x="0" y="751" width="1440" height="149" fill="url(#labBenchTopLight)"/>
+      <!-- Under-bench Cabinet Dividers -->
+      <line x1="280" y1="751" x2="280" y2="900" stroke="#64748b" stroke-width="1.2" stroke-opacity="0.22"/>
+      <line x1="560" y1="751" x2="560" y2="900" stroke="#64748b" stroke-width="1.2" stroke-opacity="0.22"/>
+      <line x1="880" y1="751" x2="880" y2="900" stroke="#64748b" stroke-width="1.2" stroke-opacity="0.22"/>
+      <line x1="1160" y1="751" x2="1160" y2="900" stroke="#64748b" stroke-width="1.2" stroke-opacity="0.22"/>
+
+      <!-- Benchtop Microscope & Beaker Cluster (Bottom-Left) -->
+      <g opacity="0.62">
+        <!-- Optical Microscope -->
+        <path d="M115 735 L185 735 L178 723 L122 723 Z" fill="#475569" fill-opacity="0.5"/>
+        <path d="M164 723 C176 702, 176 672, 158 656" stroke="#475569" stroke-width="7" stroke-opacity="0.45" stroke-linecap="round"/>
+        <rect x="142" y="642" width="14" height="32" rx="3" transform="rotate(-24 142 642)" fill="#334155" fill-opacity="0.52"/>
+        <line x1="132" y1="696" x2="164" y2="696" stroke="#334155" stroke-width="3.5" stroke-opacity="0.5"/>
+        <!-- Graduated Beaker & Erlenmeyer Flask -->
+        <rect x="212" y="692" width="32" height="43" rx="3" fill="#ffffff" fill-opacity="0.7" stroke="#475569" stroke-width="1.4" stroke-opacity="0.45"/>
+        <rect x="214" y="712" width="28" height="21" rx="2" fill="#14b8a6" fill-opacity="0.28"/>
+        <path d="M268 684 L276 684 L276 700 L290 730 C292 733 289 735 285 735 L259 735 C255 735 252 733 254 730 L268 700 Z" fill="#ffffff" fill-opacity="0.7" stroke="#475569" stroke-width="1.4" stroke-opacity="0.45"/>
+        <path d="M259 718 L285 718 L289 730 C290 733 288 734 285 734 L259 734 C256 734 254 733 255 730 Z" fill="#0ea5e9" fill-opacity="0.26"/>
+      </g>
+    </svg>
+
+    <!-- NIGHT THEME LAB ENVIRONMENT (Sleek Dark Laboratory with Subtle Teal/Cyan Bioluminescence) -->
+    <svg class="lab-dark-layer w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="labBlueprintGridDark" width="48" height="48" patternUnits="userSpaceOnUse">
+          <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#2dd4bf" stroke-width="0.6" stroke-opacity="0.06"/>
+          <circle cx="0" cy="0" r="1.2" fill="#5eead4" fill-opacity="0.10"/>
+        </pattern>
+        <radialGradient id="labHoodGlowDark" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1272 525) scale(175 130)">
+          <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.20"/>
+          <stop offset="65%" stop-color="#0ea5e9" stop-opacity="0.07"/>
+          <stop offset="100%" stop-color="#16181c" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="labBenchTopDark" x1="720" y1="735" x2="720" y2="900" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#0f172a" stop-opacity="0.72"/>
+          <stop offset="100%" stop-color="#090d14" stop-opacity="0.92"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Dark Precision Grid -->
+      <rect width="1440" height="900" fill="url(#labBlueprintGridDark)"/>
+
+      <!-- Glowing Molecular Lattice & Nanoparticle Schematic -->
+      <g stroke="#2dd4bf" stroke-opacity="0.13" stroke-width="1.6">
+        <polygon points="1040,145 1072,126 1104,145 1104,182 1072,201 1040,182"/>
+        <polygon points="1104,145 1136,126 1168,145 1168,182 1136,201 1104,182"/>
+        <polygon points="1072,201 1104,182 1136,201 1136,238 1104,257 1072,238"/>
+        <line x1="1168" y1="145" x2="1198" y2="128"/>
+        <circle cx="1198" cy="128" r="5" fill="#2dd4bf" fill-opacity="0.22"/>
+        <circle cx="1040" cy="145" r="4" fill="#38bdf8" fill-opacity="0.22"/>
+        <circle cx="340" cy="185" r="36" stroke-dasharray="4 4"/>
+        <circle cx="340" cy="185" r="20"/>
+        <circle cx="340" cy="185" r="6" fill="#2dd4bf" fill-opacity="0.24"/>
+      </g>
+
+      <!-- Left Lab Wall Shelf & Fluorescent-Lit Reagent Glassware -->
+      <g opacity="0.68">
+        <rect x="38" y="340" width="230" height="7" rx="3" fill="#334155" fill-opacity="0.75"/>
+        <path d="M58 347 L58 364 M248 347 L248 364" stroke="#475569" stroke-width="3" stroke-opacity="0.55"/>
+        <rect x="64" y="294" width="26" height="46" rx="4" fill="#1e293b" fill-opacity="0.82" stroke="#475569" stroke-width="1.3"/>
+        <rect x="68" y="314" width="18" height="22" rx="2" fill="#14b8a6" fill-opacity="0.34"/>
+        <rect x="70" y="286" width="14" height="8" rx="2" fill="#0d9488" fill-opacity="0.65"/>
+
+        <rect x="102" y="302" width="24" height="38" rx="4" fill="#1e293b" fill-opacity="0.82" stroke="#475569" stroke-width="1.3"/>
+        <rect x="106" y="318" width="16" height="18" rx="2" fill="#38bdf8" fill-opacity="0.32"/>
+        <rect x="108" y="295" width="12" height="7" rx="2" fill="#0284c7" fill-opacity="0.6"/>
+
+        <path d="M156 292 L164 292 L164 310 L176 334 C178 338 175 340 171 340 L149 340 C145 340 142 338 144 334 L156 310 Z" fill="#1e293b" fill-opacity="0.82" stroke="#475569" stroke-width="1.3"/>
+        <path d="M148 326 L172 326 L175 335 C176 338 174 339 171 339 L149 339 C146 339 144 338 145 335 Z" fill="#2dd4bf" fill-opacity="0.36"/>
+
+        <path d="M204 340 L236 340 M220 282 L220 340 M202 288 L238 288" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
+        <rect x="208" y="284" width="4" height="44" rx="2" fill="#2dd4bf" fill-opacity="0.55"/>
+        <rect x="228" y="284" width="4" height="44" rx="2" fill="#38bdf8" fill-opacity="0.55"/>
+      </g>
+
+      <!-- Right Illuminated Biosafety Cabinet -->
+      <ellipse cx="1272" cy="525" rx="175" ry="130" fill="url(#labHoodGlowDark)"/>
+      <g opacity="0.68">
+        <rect x="1155" y="425" width="235" height="310" rx="10" fill="#1e293b" fill-opacity="0.82" stroke="#334155" stroke-width="1.6"/>
+        <path d="M1170 425 L1195 385 L1350 385 L1375 425 Z" fill="#0f172a" fill-opacity="0.85" stroke="#334155" stroke-width="1.4"/>
+        <rect x="1175" y="455" width="195" height="145" rx="6" fill="#0f292e" fill-opacity="0.72" stroke="#2dd4bf" stroke-width="1.3" stroke-opacity="0.45"/>
+        <line x1="1175" y1="538" x2="1370" y2="538" stroke="#5eead4" stroke-width="1.4" stroke-opacity="0.4"/>
+        <rect x="1182" y="434" width="54" height="12" rx="3" fill="#14b8a6" fill-opacity="0.35"/>
+        <circle cx="1352" cy="440" r="4" fill="#34d399" fill-opacity="0.85"/>
+      </g>
+
+      <!-- Dark Lab Bench Countertop & Floor -->
+      <rect x="0" y="735" width="1440" height="16" fill="#334155" fill-opacity="0.75"/>
+      <rect x="0" y="751" width="1440" height="149" fill="url(#labBenchTopDark)"/>
+      <line x1="280" y1="751" x2="280" y2="900" stroke="#334155" stroke-width="1.2" stroke-opacity="0.45"/>
+      <line x1="560" y1="751" x2="560" y2="900" stroke="#334155" stroke-width="1.2" stroke-opacity="0.45"/>
+      <line x1="880" y1="751" x2="880" y2="900" stroke="#334155" stroke-width="1.2" stroke-opacity="0.45"/>
+      <line x1="1160" y1="751" x2="1160" y2="900" stroke="#334155" stroke-width="1.2" stroke-opacity="0.45"/>
+
+      <!-- Benchtop Microscope & Bioluminescent Beakers (Bottom-Left) -->
+      <g opacity="0.72">
+        <path d="M115 735 L185 735 L178 723 L122 723 Z" fill="#334155"/>
+        <path d="M164 723 C176 702, 176 672, 158 656" stroke="#475569" stroke-width="7" stroke-linecap="round"/>
+        <rect x="142" y="642" width="14" height="32" rx="3" transform="rotate(-24 142 642)" fill="#64748b"/>
+        <line x1="132" y1="696" x2="164" y2="696" stroke="#64748b" stroke-width="3.5"/>
+        <rect x="212" y="692" width="32" height="43" rx="3" fill="#1e293b" fill-opacity="0.85" stroke="#475569" stroke-width="1.4"/>
+        <rect x="214" y="712" width="28" height="21" rx="2" fill="#2dd4bf" fill-opacity="0.38"/>
+        <path d="M268 684 L276 684 L276 700 L290 730 C292 733 289 735 285 735 L259 735 C255 735 252 733 254 730 L268 700 Z" fill="#1e293b" fill-opacity="0.85" stroke="#475569" stroke-width="1.4"/>
+        <path d="M259 718 L285 718 L289 730 C290 733 288 734 285 734 L259 734 C256 734 254 733 255 730 Z" fill="#38bdf8" fill-opacity="0.36"/>
+      </g>
+    </svg>
+  </div>
+
   <!-- Panoramic Snowy Winter Night Christmas Backdrop (Visible Only in Xmas Mode) -->
   <div id="xmas-winter-backdrop" aria-hidden="true">
     <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1070,7 +1320,7 @@
       <!-- Desktop Navigation Tabs -->
       <nav class="hidden sm:flex gap-1 overflow-x-auto no-scrollbar -mb-px pt-1" aria-label="Dashboard sections">
         <button data-tab="roster" class="tab-btn active whitespace-nowrap px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold border-b-2 border-teal-700 text-teal-800 transition flex items-center gap-1.5 sm:gap-2">
-          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 0 002 2h2a2 2 0 002-2M9 5a2 0 012-2h2a2 0 012 2m-6 9l2 2 4-4"/></svg>
           <span id="nav-roster">Duties</span>
           <span data-edit-nav="roster" title="Edit tab label" class="hidden nav-edit-pencil text-[11px] opacity-70 hover:opacity-100 px-1 py-0.5 rounded hover:bg-slate-200/70">✎</span>
         </button>
@@ -1207,7 +1457,7 @@
       </div>
       <div class="mob-tab-btn active w-full flex items-center justify-between gap-2 px-3.5 py-3 rounded-2xl text-sm font-bold bg-teal-50/90 text-teal-900 border border-teal-200 transition cursor-pointer" data-tab="roster">
         <span class="flex items-center gap-2.5 min-w-0 flex-1">
-          <svg class="w-4 h-4 shrink-0 text-teal-700" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+          <svg class="w-4 h-4 shrink-0 text-teal-700" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 0 012-2h2a2 0 012 2m-6 9l2 2 4-4"/></svg>
           <span id="mob-menu-roster" class="truncate">Duties</span>
         </span>
         <span class="flex items-center gap-1.5 shrink-0">
