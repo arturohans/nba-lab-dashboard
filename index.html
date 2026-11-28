@@ -797,16 +797,33 @@
     #xmas-screen-frost {
       display: none;
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100dvh;
       pointer-events: none;
-      z-index: 49;
-      border: 2px solid rgba(186, 230, 253, 0.35);
+      z-index: 60;
+      border: 2.5px solid rgba(186, 230, 253, 0.48);
       box-shadow:
-        inset 0 0 18px 2px rgba(186, 230, 253, 0.24),
-        inset 0 0 42px 4px rgba(125, 211, 252, 0.10);
+        inset 0 0 18px 2px rgba(186, 230, 253, 0.32),
+        inset 0 0 38px 4px rgba(125, 211, 252, 0.14);
     }
     html.xmas #xmas-screen-frost {
       display: block;
+    }
+    .xmas-frost-corner {
+      position: absolute;
+      width: 96px;
+      height: 44px;
+      pointer-events: none;
+    }
+    @media (min-width: 640px) {
+      .xmas-frost-corner {
+        width: 145px;
+        height: 56px;
+      }
     }
   </style>
   <script>
@@ -895,19 +912,32 @@
 
   <!-- Subtle Frosted Ice Screen Edge Frame (Visible Only in Xmas Mode) -->
   <div id="xmas-screen-frost" aria-hidden="true">
-    <svg viewBox="0 0 1440 900" preserveAspectRatio="none" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="screenIceEdge" x1="0" y1="0" x2="1440" y2="900" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.72"/>
-          <stop offset="50%" stop-color="#bae6fd" stop-opacity="0.55"/>
-          <stop offset="100%" stop-color="#e0f2fe" stop-opacity="0.68"/>
-        </linearGradient>
-      </defs>
-      <!-- Delicate Corner Frost & Tiny Hanging Icicles Along Very Edge -->
-      <path d="M0 0 L95 0 C78 4, 68 5, 58 3 L52 14 L46 4 C36 6, 28 5, 20 3 L14 19 L9 5 C4 8, 2 14, 0 26 Z" fill="url(#screenIceEdge)"/>
-      <path d="M1440 0 L1345 0 C1362 4, 1372 5, 1382 3 L1388 14 L1394 4 C1404 6, 1412 5, 1420 3 L1426 19 L1431 5 C1436 8, 1438 14, 1440 26 Z" fill="url(#screenIceEdge)"/>
-      <path d="M0 900 L0 865 C3 878, 7 887, 16 892 C28 897, 48 898, 85 900 Z" fill="url(#screenIceEdge)"/>
-      <path d="M1440 900 L1440 865 C1437 878, 1433 887, 1424 892 C1412 897, 1392 898, 1355 900 Z" fill="url(#screenIceEdge)"/>
+    <defs class="hidden">
+      <svg width="0" height="0">
+        <defs>
+          <linearGradient id="screenIceEdge" x1="0" y1="0" x2="100" y2="50" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.82"/>
+            <stop offset="55%" stop-color="#bae6fd" stop-opacity="0.65"/>
+            <stop offset="100%" stop-color="#e0f2fe" stop-opacity="0.75"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </defs>
+    <!-- Top-Left Corner Frost & Icicles -->
+    <svg viewBox="0 0 120 56" class="xmas-frost-corner top-0 left-0" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0 L112 0 C92 5, 80 6, 68 3.5 L61 17 L54 4.5 C42 7, 32 6, 23 3.5 L16 23 L10 6 C4 10, 2 18, 0 34 Z" fill="url(#screenIceEdge)" stroke="#e0f2fe" stroke-width="0.6" stroke-opacity="0.6"/>
+    </svg>
+    <!-- Top-Right Corner Frost & Icicles -->
+    <svg viewBox="0 0 120 56" class="xmas-frost-corner top-0 right-0 -scale-x-100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0 L112 0 C92 5, 80 6, 68 3.5 L61 17 L54 4.5 C42 7, 32 6, 23 3.5 L16 23 L10 6 C4 10, 2 18, 0 34 Z" fill="url(#screenIceEdge)" stroke="#e0f2fe" stroke-width="0.6" stroke-opacity="0.6"/>
+    </svg>
+    <!-- Bottom-Left Corner Frost -->
+    <svg viewBox="0 0 120 56" class="xmas-frost-corner bottom-0 left-0 -scale-y-100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0 L105 0 C72 3, 44 5, 24 11 C11 16, 4 26, 0 42 Z" fill="url(#screenIceEdge)"/>
+    </svg>
+    <!-- Bottom-Right Corner Frost -->
+    <svg viewBox="0 0 120 56" class="xmas-frost-corner bottom-0 right-0 scale-[-1]" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0 L105 0 C72 3, 44 5, 24 11 C11 16, 4 26, 0 42 Z" fill="url(#screenIceEdge)"/>
     </svg>
   </div>
 
