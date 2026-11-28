@@ -300,7 +300,12 @@
       );
     }
     @media (max-width: 639px) {
+      .liquid-glass-dock {
+        z-index: 42 !important;
+      }
       .liquid-glass-sheet {
+        z-index: 55 !important;
+        bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px)) !important;
         background: linear-gradient(
           165deg,
           rgba(255, 255, 255, 0.82) 0%,
@@ -1608,20 +1613,20 @@
           </div>
         </div>
 
-        <!-- Mobile Stacked Card View (< lg only) -->
-        <div id="mtg-mobile-list" class="lg:hidden divide-y divide-slate-100">
+        <!-- Mobile Meeting Cards List -->
+        <div id="mtg-mobile-list" class="md:hidden divide-y divide-slate-100">
           <!-- Populated dynamically -->
         </div>
 
-        <!-- Desktop Table View (lg and above) -->
-        <div class="hidden lg:block overflow-x-auto">
+        <!-- Desktop Meeting Schedule Table -->
+        <div class="hidden md:block overflow-x-auto">
           <table class="w-full text-left border-collapse">
             <thead>
               <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                <th class="py-3 px-4" id="th-mtg-date">Date & Time</th>
-                <th class="py-3 px-4" id="th-mtg-type">Format</th>
-                <th class="py-3 px-4" id="th-mtg-presenters">Presenters</th>
-                <th class="py-3 px-4" id="th-mtg-notes">Notes & Requirements</th>
+                <th class="py-3 px-3.5 whitespace-nowrap" id="th-mtg-date">Date & Time</th>
+                <th class="py-3 px-3.5 whitespace-nowrap" id="th-mtg-type">Format</th>
+                <th class="py-3 px-3.5 whitespace-nowrap" id="th-mtg-presenters">Presenters</th>
+                <th class="py-3 px-3.5" id="th-mtg-notes">Notes & Requirements</th>
               </tr>
             </thead>
             <tbody id="mtg-tbody" class="divide-y divide-slate-100 text-sm">
@@ -1632,53 +1637,49 @@
       </div>
     </section>
 
-    <!-- VIEW 4: MONTHLY DUTIES & TRASH TRUCKS -->
+    <!-- VIEW 4: TIMETABLE & PERIODIC SCHEDULES -->
     <section id="view-monthly" class="hidden space-y-5 animate-fade">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5" id="monthly-grid">
+      <div id="monthly-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <!-- Populated dynamically -->
       </div>
     </section>
-
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-white border-t border-slate-200 mt-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
-      <p id="footer-left">Nanobiomaterials Applications Laboratory (NBA Lab) • Semester 115-1 Operations Portal</p>
-      <p id="footer-right">Effective Sept. 7, 2026 • Dynamic Modular Rotation Engine</p>
-    </div>
-  </footer>
-
   <!-- Mobile Floating Liquid Glass Dock -->
-  <div id="mobile-liquid-dock" class="liquid-glass-dock sm:hidden z-40" aria-label="Mobile Quick Controls">
-    <!-- Expanded Pill Layer -->
+  <div id="mobile-liquid-dock" class="sm:hidden liquid-glass-dock z-40" role="toolbar" aria-label="Mobile quick controls">
     <div class="dock-expanded-layer">
       <button id="btn-mobile-nav-fab" type="button" class="liquid-glass-pill flex-1 h-full px-3 rounded-full flex items-center justify-center gap-1.5 text-xs font-extrabold cursor-pointer min-w-0">
-        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10"/></svg>
+        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
         <span id="lbl-mobile-nav-fab" class="truncate">Duties</span>
       </button>
       <button id="btn-mobile-filter-fab" type="button" class="liquid-glass-pill flex-1 h-full px-3 rounded-full flex items-center justify-center gap-1.5 text-xs font-extrabold cursor-pointer min-w-0">
-        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
-        <span id="lbl-mobile-fab" class="truncate">Filter</span>
         <span id="mobile-fab-dot" class="hidden w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
+        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+        <span id="lbl-mobile-fab" class="truncate">Filter</span>
       </button>
     </div>
-
-    <!-- Collapsed Compact Orb Layer (on scroll) -->
-    <button id="btn-mobile-dock-expand" type="button" class="dock-collapsed-layer w-full h-full rounded-full text-white cursor-pointer" aria-label="Expand mobile controls">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
-      <span id="mobile-collapsed-dot" class="hidden absolute top-2 right-2 w-2 h-2 rounded-full bg-amber-400 ring-2 ring-teal-800"></span>
+    <button id="btn-mobile-dock-expand" type="button" class="dock-collapsed-layer text-white cursor-pointer" aria-label="Expand mobile controls">
+      <span id="mobile-collapsed-dot" class="hidden absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-amber-400 border border-white"></span>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
   </div>
 
-  <!-- Duty Swap Request Modal -->
+  <!-- Footer -->
+  <footer class="w-full bg-white/95 backdrop-blur border-t border-slate-200 mt-auto">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-1.5 text-[11px] text-slate-500">
+      <span id="footer-left">Nanobiomaterials Applications Laboratory (NBA Lab) • Semester 115-1 Operations Portal</span>
+      <span id="footer-right">Effective Sept. 7, 2026 • Dynamic Modular Rotation Engine</span>
+    </div>
+  </footer>
+
+  <!-- Duty & Meeting Swap Request Modal -->
   <div id="swap-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
     <div class="bg-white rounded-2xl max-w-lg w-full border border-slate-200 shadow-xl overflow-hidden animate-fade">
       <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 border border-amber-200 flex items-center justify-center font-bold text-base">&#8644;</div>
           <div>
-            <h3 id="modal-swap-title" class="text-base font-bold text-slate-900">Swap Weekly Duties</h3>
+            <h3 id="modal-swap-title" class="text-base font-bold text-slate-900">Swap Weekly Duties & Meetings</h3>
             <p id="modal-swap-week-lbl" class="text-[11px] font-semibold text-teal-700">Week: 2026-09-07</p>
           </div>
         </div>
@@ -1686,7 +1687,21 @@
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
-      <div class="p-5 space-y-4 text-sm text-slate-600">
+
+      <!-- Mode Switcher Tabs: Weekly Duty vs. Lab Meeting -->
+      <div class="px-5 pt-3 border-b border-slate-100 bg-slate-50/60">
+        <div class="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-slate-200/70" role="tablist">
+          <button id="swap-tab-duty" type="button" class="py-2 px-3 rounded-lg text-xs font-extrabold transition bg-white text-teal-800 shadow-xs cursor-pointer">
+            Weekly Duty Swap
+          </button>
+          <button id="swap-tab-meeting" type="button" class="py-2 px-3 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer">
+            Meeting / Seminar Swap
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel 1: Weekly Duty Swap -->
+      <div id="swap-panel-duty" class="p-5 space-y-4 text-sm text-slate-600 max-h-[75vh] overflow-y-auto">
         <p id="modal-swap-desc" class="text-xs text-slate-600 leading-relaxed">
           Select yourself and the lab member you agreed to swap duties with for this week. Both the Weekly Roster and Member Directory will update automatically.
         </p>
@@ -1726,7 +1741,7 @@
 
         <div id="swap-feedback" class="hidden rounded-xl p-3 text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200"></div>
 
-        <!-- Existing Swaps List inside Modal -->
+        <!-- Existing Duty Swaps List inside Modal -->
         <div id="modal-existing-swaps" class="hidden space-y-1.5 pt-2 border-t border-slate-100">
           <!-- Populated dynamically -->
         </div>
@@ -1737,6 +1752,62 @@
           </button>
           <button id="btn-confirm-swap" type="button" class="px-4 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold shadow-sm cursor-pointer">
             Confirm Duty Swap
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel 2: Lab Meeting / Seminar Swap -->
+      <div id="swap-panel-meeting" class="hidden p-5 space-y-4 text-sm text-slate-600 max-h-[75vh] overflow-y-auto">
+        <p id="modal-mtg-swap-desc" class="text-xs text-slate-600 leading-relaxed">
+          Swap your scheduled presentation date/session with another lab member in Lab Meetings (115-1). Both meeting dates and presenter lists will update automatically.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="space-y-1.5">
+            <label for="swap-mtg-a" id="lbl-swap-mtg-a" class="block text-xs font-bold uppercase tracking-wider text-slate-500">
+              Your Session & Name:
+            </label>
+            <select id="swap-mtg-a" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-600 cursor-pointer">
+              <!-- Populated dynamically -->
+            </select>
+            <div id="swap-mtg-preview-a" class="px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-[11px] text-slate-700 min-h-[42px]">
+              <!-- Meeting A preview -->
+            </div>
+          </div>
+
+          <div class="space-y-1.5">
+            <label for="swap-mtg-b" id="lbl-swap-mtg-b" class="block text-xs font-bold uppercase tracking-wider text-slate-500">
+              Swap With Session & Member:
+            </label>
+            <select id="swap-mtg-b" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-600 cursor-pointer">
+              <!-- Populated dynamically -->
+            </select>
+            <div id="swap-mtg-preview-b" class="px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-[11px] text-slate-700 min-h-[42px]">
+              <!-- Meeting B preview -->
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <label for="swap-mtg-reason-input" id="lbl-swap-mtg-reason" class="block text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Optional Note / Reason:
+          </label>
+          <input id="swap-mtg-reason-input" type="text" placeholder="e.g., Swapping Mandarin group presentation date" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-600" />
+        </div>
+
+        <div id="swap-mtg-feedback" class="hidden rounded-xl p-3 text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200"></div>
+
+        <!-- Existing Meeting Swaps List inside Modal -->
+        <div id="modal-existing-mtg-swaps" class="hidden space-y-1.5 pt-2 border-t border-slate-100">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button id="btn-cancel-mtg-swap" type="button" class="px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 cursor-pointer">
+            Cancel
+          </button>
+          <button id="btn-confirm-mtg-swap" type="button" class="px-4 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold shadow-sm cursor-pointer">
+            Confirm Meeting Swap
           </button>
         </div>
       </div>
@@ -2585,6 +2656,8 @@
       statuses: safeParseJSON(safeGetStorage('nba_lab_statuses'), {}),
       dutyNotes: safeParseJSON(safeGetStorage('nba_lab_duty_notes'), {}),
       dutySwaps: safeParseJSON(safeGetStorage('nba_lab_duty_swaps'), {}),
+      meetingSwaps: safeParseJSON(safeGetStorage('nba_lab_meeting_swaps'), []),
+      swapModalTab: 'duty',
       roleOverrides: safeParseJSON(safeGetStorage('nba_lab_roles'), {}),
       customMembers: safeParseJSON(safeGetStorage('nba_lab_custom_members'), null),
       slotDutyOverrides: safeParseJSON(safeGetStorage('nba_lab_slot_duties'), {}),
@@ -2686,6 +2759,7 @@
         statuses: state.statuses,
         dutyNotes: state.dutyNotes,
         dutySwaps: state.dutySwaps,
+        meetingSwaps: state.meetingSwaps,
         roleOverrides: state.roleOverrides,
         customMembers: state.customMembers,
         slotDutyOverrides: state.slotDutyOverrides,
@@ -2714,6 +2788,10 @@
       if (data.dutySwaps && typeof data.dutySwaps === 'object') {
         state.dutySwaps = data.dutySwaps;
         safeSetStorage('nba_lab_duty_swaps', JSON.stringify(state.dutySwaps));
+      }
+      if (Array.isArray(data.meetingSwaps)) {
+        state.meetingSwaps = data.meetingSwaps;
+        safeSetStorage('nba_lab_meeting_swaps', JSON.stringify(state.meetingSwaps));
       }
       if (data.roleOverrides && typeof data.roleOverrides === 'object') {
         state.roleOverrides = data.roleOverrides;
@@ -2859,9 +2937,66 @@
     }
 
     // =========================================================================
-    // 5. DUTY SWAP WORKFLOW
+    // 5. DUTY & MEETING SWAP WORKFLOW
     // =========================================================================
-    function openSwapModal(preselectMemberId = null) {
+    function switchSwapModalTab(tab) {
+      state.swapModalTab = tab === 'meeting' ? 'meeting' : 'duty';
+      const isDuty = state.swapModalTab === 'duty';
+      const tabDuty = document.getElementById('swap-tab-duty');
+      const tabMtg = document.getElementById('swap-tab-meeting');
+      const panelDuty = document.getElementById('swap-panel-duty');
+      const panelMtg = document.getElementById('swap-panel-meeting');
+
+      if (tabDuty && tabMtg) {
+        tabDuty.className = isDuty
+          ? 'py-2 px-3 rounded-lg text-xs font-extrabold transition bg-white text-teal-800 shadow-xs cursor-pointer'
+          : 'py-2 px-3 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer';
+        tabMtg.className = !isDuty
+          ? 'py-2 px-3 rounded-lg text-xs font-extrabold transition bg-white text-teal-800 shadow-xs cursor-pointer'
+          : 'py-2 px-3 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer';
+      }
+      if (panelDuty) panelDuty.classList.toggle('hidden', !isDuty);
+      if (panelMtg) panelMtg.classList.toggle('hidden', isDuty);
+    }
+
+    function getSwappableMeetingEntries() {
+      const isZh = state.lang === 'zh';
+      const activeMembers = getActiveMembers();
+      const resolvedMeetings = MEETING_SCHEDULE
+        .map(getMeetingData)
+        .filter(m => m.type !== 'Regular')
+        .sort((a, b) => {
+          const orderA = MEETING_TYPE_ORDER[a.type] || 99;
+          const orderB = MEETING_TYPE_ORDER[b.type] || 99;
+          if (orderA !== orderB) return orderA - orderB;
+          return a.date.localeCompare(b.date);
+        });
+
+      const entries = [];
+      resolvedMeetings.forEach(mtg => {
+        (mtg.presenters || []).forEach(presenterEn => {
+          if (!presenterEn || presenterEn === 'All Members') return;
+          const memberObj = activeMembers.find(m => m.en === presenterEn);
+          const displayName = memberObj ? formatMemberName(memberObj) : presenterEn;
+          const typeLbl = formatMeetingTypeLabel(mtg.type, isZh);
+          entries.push({
+            key: `${mtg.id}::${presenterEn}`,
+            mtgId: mtg.id,
+            presenterEn,
+            memberId: memberObj ? memberObj.id : null,
+            displayName,
+            date: mtg.date,
+            time: mtg.time,
+            type: mtg.type,
+            typeLbl,
+            optionLabel: `${displayName} — [${typeLbl}] ${mtg.date} ${mtg.time}`
+          });
+        });
+      });
+      return entries;
+    }
+
+    function openSwapModal(preselectMemberId = null, defaultTab = null) {
       const isZh = state.lang === 'zh';
       const monStr = snapToMonday(state.selectedDate);
       const activeMembers = getActiveMembers();
@@ -2871,8 +3006,11 @@
       const reasonInput = document.getElementById('swap-reason-input');
       const feedback = document.getElementById('swap-feedback');
 
-      document.getElementById('modal-swap-title').textContent = isZh ? '申請本週值日互換' : 'Swap Weekly Duties';
-      document.getElementById('modal-swap-week-lbl').textContent = isZh ? `適用週期：${monStr}` : `Selected Week: ${monStr}`;
+      document.getElementById('modal-swap-title').textContent = isZh ? '申請值日 / 會議報告互換' : 'Swap Duties & Lab Meetings';
+      document.getElementById('modal-swap-week-lbl').textContent = isZh ? `目前檢視週期：${monStr}` : `Selected Week: ${monStr}`;
+      document.getElementById('swap-tab-duty').textContent = isZh ? '每週值日互換' : 'Weekly Duty Swap';
+      document.getElementById('swap-tab-meeting').textContent = isZh ? '會議 / 報告互換' : 'Meeting / Seminar Swap';
+
       document.getElementById('modal-swap-desc').textContent = isZh
         ? '請選擇您自己與已協調好互換的實驗室成員。確認後，本週的值日工作卡片與成員輪值名冊將會自動同步更新。'
         : 'Select yourself and the lab member you agreed to swap duties with for this week. Both the Weekly Roster and Member Directory will update automatically.';
@@ -2897,8 +3035,186 @@
       updateSwapPreviewBoxes();
       renderExistingSwapsInModal();
 
+      // Populate Meeting Swap Tab
+      document.getElementById('modal-mtg-swap-desc').textContent = isZh
+        ? '選擇您與互換對象在「實驗室會議與書報 (115-1)」中的報告場次，確認後雙方日期與報告者名單將自動對調。'
+        : 'Select your scheduled meeting slot and the member/session you agreed to swap with in Lab Meetings (115-1). Both schedules will update automatically.';
+      document.getElementById('lbl-swap-mtg-a').textContent = isZh ? '您的場次與姓名：' : 'Your Session & Name:';
+      document.getElementById('lbl-swap-mtg-b').textContent = isZh ? '互換場次與對象：' : 'Swap With Session:';
+      document.getElementById('lbl-swap-mtg-reason').textContent = isZh ? '互換備註 / 原因（選填）：' : 'Optional Note / Reason:';
+      document.getElementById('swap-mtg-reason-input').placeholder = isZh ? '例：出差參加研討會，與映慈互換中文團咪日期' : 'e.g., Attending symposium, swapping presentation date';
+      document.getElementById('btn-cancel-mtg-swap').textContent = isZh ? '取消' : 'Cancel';
+      document.getElementById('btn-confirm-mtg-swap').textContent = isZh ? '確認互換會議' : 'Confirm Meeting Swap';
+
+      const mtgEntries = getSwappableMeetingEntries();
+      const selMtgA = document.getElementById('swap-mtg-a');
+      const selMtgB = document.getElementById('swap-mtg-b');
+      const mtgOptionsHtml = mtgEntries.map(e => `<option value="${e.key}">${e.optionLabel}</option>`).join('');
+      selMtgA.innerHTML = mtgOptionsHtml;
+      selMtgB.innerHTML = mtgOptionsHtml;
+
+      if (defaultA) {
+        const matchedEntry = mtgEntries.find(e => e.memberId === defaultA);
+        if (matchedEntry) selMtgA.value = matchedEntry.key;
+      }
+      const partnerEntry = mtgEntries.find(e => e.key !== selMtgA.value && e.presenterEn !== selMtgA.value.split('::')[1]) || mtgEntries[1] || mtgEntries[0];
+      if (partnerEntry) selMtgB.value = partnerEntry.key;
+
+      document.getElementById('swap-mtg-reason-input').value = '';
+      document.getElementById('swap-mtg-feedback').classList.add('hidden');
+      updateMeetingSwapPreviewBoxes();
+      renderExistingMeetingSwapsInModal();
+
+      const initialTab = defaultTab || (state.activeTab === 'meetings' ? 'meeting' : 'duty');
+      switchSwapModalTab(initialTab);
+
       modal.classList.remove('hidden');
       modal.classList.add('flex');
+    }
+
+    function updateMeetingSwapPreviewBoxes() {
+      const isZh = state.lang === 'zh';
+      const entries = getSwappableMeetingEntries();
+      const valA = document.getElementById('swap-mtg-a').value;
+      const valB = document.getElementById('swap-mtg-b').value;
+      const eA = entries.find(e => e.key === valA);
+      const eB = entries.find(e => e.key === valB);
+
+      const renderPreview = (entry) => {
+        if (!entry) return '';
+        return `
+          <div class="font-bold text-teal-800">${entry.typeLbl}</div>
+          <div class="text-slate-600 mt-0.5">${entry.date} (${entry.time}) &bull; <span class="font-semibold text-slate-900">${entry.displayName}</span></div>
+        `;
+      };
+      document.getElementById('swap-mtg-preview-a').innerHTML = renderPreview(eA);
+      document.getElementById('swap-mtg-preview-b').innerHTML = renderPreview(eB);
+    }
+
+    function renderExistingMeetingSwapsInModal() {
+      const isZh = state.lang === 'zh';
+      const container = document.getElementById('modal-existing-mtg-swaps');
+      const list = Array.isArray(state.meetingSwaps) ? state.meetingSwaps : [];
+      if (list.length === 0) {
+        container.classList.add('hidden');
+        container.innerHTML = '';
+        return;
+      }
+      container.classList.remove('hidden');
+      container.innerHTML = `
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+          ${isZh ? '已登記之會議報告互換紀錄：' : 'Recorded Meeting Swaps:'}
+        </div>
+        <div class="space-y-1.5">
+          ${list.map(sw => `
+            <div class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-sky-50/80 border border-sky-200 text-xs">
+              <div class="min-w-0">
+                <div class="font-bold text-slate-900 truncate">${sw.labelA} &#8644; ${sw.labelB}</div>
+                ${sw.reason ? `<div class="text-[11px] text-slate-600 truncate">${sw.reason}</div>` : ''}
+              </div>
+              <button type="button" onclick="removeMeetingSwap('${sw.id}')" class="shrink-0 px-2 py-1 rounded-lg bg-white border border-rose-200 hover:bg-rose-50 text-[11px] font-bold text-rose-700 cursor-pointer">
+                ${isZh ? '還原' : 'Undo'}
+              </button>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function confirmMeetingSwap() {
+      const isZh = state.lang === 'zh';
+      const valA = document.getElementById('swap-mtg-a').value;
+      const valB = document.getElementById('swap-mtg-b').value;
+      const reason = document.getElementById('swap-mtg-reason-input').value.trim();
+      const feedback = document.getElementById('swap-mtg-feedback');
+
+      if (!valA || !valB || valA === valB) {
+        feedback.textContent = isZh ? '請選擇兩個不同的會議報告場次進行互換。' : 'Please select two different meeting slots to swap.';
+        feedback.classList.remove('hidden');
+        return;
+      }
+
+      const [mtgIdA, presenterA] = valA.split('::');
+      const [mtgIdB, presenterB] = valB.split('::');
+
+      if (mtgIdA === mtgIdB) {
+        feedback.textContent = isZh ? '兩位成員已在同一場次報告，無須互換。' : 'Both presenters are already in the same meeting session.';
+        feedback.classList.remove('hidden');
+        return;
+      }
+
+      const baseA = MEETING_SCHEDULE.find(m => m.id === mtgIdA);
+      const baseB = MEETING_SCHEDULE.find(m => m.id === mtgIdB);
+      if (!baseA || !baseB) return;
+
+      const curA = getMeetingData(baseA);
+      const curB = getMeetingData(baseB);
+
+      const nextPresentersA = curA.presenters.map(p => (p === presenterA ? presenterB : p));
+      const nextPresentersB = curB.presenters.map(p => (p === presenterB ? presenterA : p));
+
+      state.meetingOverrides[mtgIdA] = { ...curA, presenters: nextPresentersA };
+      state.meetingOverrides[mtgIdB] = { ...curB, presenters: nextPresentersB };
+      safeSetStorage('nba_lab_meetings_v2', JSON.stringify(state.meetingOverrides));
+
+      const entries = getSwappableMeetingEntries();
+      const eA = entries.find(e => e.key === valA);
+      const eB = entries.find(e => e.key === valB);
+
+      const swapRecord = {
+        id: 'MSW' + Date.now(),
+        mtgIdA,
+        presenterA,
+        dateA: curA.date,
+        mtgIdB,
+        presenterB,
+        dateB: curB.date,
+        labelA: `${presenterA} (${curA.date})`,
+        labelB: `${presenterB} (${curB.date})`,
+        reason,
+        createdAt: new Date().toISOString()
+      };
+      state.meetingSwaps = [...(state.meetingSwaps || []), swapRecord];
+      safeSetStorage('nba_lab_meeting_swaps', JSON.stringify(state.meetingSwaps));
+
+      document.getElementById('swap-modal').classList.add('hidden');
+      document.getElementById('swap-modal').classList.remove('flex');
+      renderAll();
+      pushFullStateToCloud();
+      showToast(
+        isZh
+          ? `已完成會議互換：${presenterA} (${curA.date}) ⇄ ${presenterB} (${curB.date})`
+          : `Swapped meetings: ${presenterA} (${curA.date}) ⇄ ${presenterB} (${curB.date})`
+      );
+    }
+
+    function removeMeetingSwap(swapId) {
+      const list = Array.isArray(state.meetingSwaps) ? state.meetingSwaps : [];
+      const target = list.find(sw => sw.id === swapId);
+      if (target) {
+        const baseA = MEETING_SCHEDULE.find(m => m.id === target.mtgIdA);
+        const baseB = MEETING_SCHEDULE.find(m => m.id === target.mtgIdB);
+        if (baseA && baseB) {
+          const curA = getMeetingData(baseA);
+          const curB = getMeetingData(baseB);
+          state.meetingOverrides[target.mtgIdA] = {
+            ...curA,
+            presenters: curA.presenters.map(p => (p === target.presenterB ? target.presenterA : p))
+          };
+          state.meetingOverrides[target.mtgIdB] = {
+            ...curB,
+            presenters: curB.presenters.map(p => (p === target.presenterA ? target.presenterB : p))
+          };
+          safeSetStorage('nba_lab_meetings_v2', JSON.stringify(state.meetingOverrides));
+        }
+      }
+      state.meetingSwaps = list.filter(sw => sw.id !== swapId);
+      safeSetStorage('nba_lab_meeting_swaps', JSON.stringify(state.meetingSwaps));
+      renderAll();
+      renderExistingMeetingSwapsInModal();
+      updateMeetingSwapPreviewBoxes();
+      pushFullStateToCloud();
+      showToast(state.lang === 'zh' ? '已還原該筆會議報告互換' : 'Meeting swap undone');
     }
 
     function updateSwapPreviewBoxes() {
@@ -3052,7 +3368,7 @@
       });
 
       const swapBtnLbl = document.getElementById('lbl-swap-btn');
-      if (swapBtnLbl) swapBtnLbl.textContent = isZh ? '申請值日互換' : 'Swap Duties';
+      if (swapBtnLbl) swapBtnLbl.textContent = isZh ? '申請互換 (值日/會議)' : 'Swap Duty / Meeting';
       const swapMobLbl = document.getElementById('lbl-swap-mobile');
       if (swapMobLbl) swapMobLbl.textContent = isZh ? '互換' : 'Swap';
 
@@ -5001,14 +5317,22 @@
 
       const openMobileFiltersHandler = () => toggleMobileFilters(true);
       const closeMobileFiltersHandler = () => toggleMobileFilters(false);
-      document.getElementById('btn-mobile-filter-fab').addEventListener('click', () => toggleMobileFilters());
-      document.getElementById('btn-mobile-nav-fab').addEventListener('click', () => toggleMobileNavMenu());
-      document.getElementById('btn-open-mobile-filters-strip').addEventListener('click', openMobileFiltersHandler);
-      document.getElementById('btn-close-mobile-filters').addEventListener('click', closeMobileFiltersHandler);
-      document.getElementById('btn-done-mobile-filters').addEventListener('click', closeMobileFiltersHandler);
-      document.getElementById('mobile-controls-backdrop').addEventListener('click', () => {
+      const bindClick = (id, fn) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', fn);
+      };
+      bindClick('btn-mobile-filter-fab', () => toggleMobileFilters());
+      bindClick('btn-mobile-nav-fab', () => toggleMobileNavMenu());
+      bindClick('btn-open-mobile-filters-strip', openMobileFiltersHandler);
+      bindClick('btn-close-mobile-filters', closeMobileFiltersHandler);
+      bindClick('btn-done-mobile-filters', closeMobileFiltersHandler);
+      bindClick('mobile-controls-backdrop', () => {
         toggleMobileFilters(false);
         toggleMobileNavMenu(false);
+      });
+      bindClick('btn-mobile-dock-expand', (e) => {
+        e.stopPropagation();
+        setMobileDockCollapsed(false);
       });
 
       const dockExpandBtn = document.getElementById('btn-mobile-dock-expand');
@@ -5049,27 +5373,34 @@
           renderAll();
         }
       });
-
-      document.getElementById('member-select').addEventListener('change', (e) => {
-        state.selectedMember = e.target.value;
-        renderAll();
-      });
-
-      // Swap Duties Modal Listeners
+      const memberSelectEl = document.getElementById('member-select');
+      if (memberSelectEl) {
+        memberSelectEl.addEventListener('change', (e) => {
+          state.selectedMember = e.target.value;
+          renderAll();
+        });
+      }
+      // Swap Duties & Meetings Modal Listeners
       document.getElementById('btn-open-swap').addEventListener('click', () => openSwapModal());
       const swapMobileBtn = document.getElementById('btn-open-swap-mobile');
       if (swapMobileBtn) {
         swapMobileBtn.addEventListener('click', () => openSwapModal());
       }
+      document.getElementById('swap-tab-duty').addEventListener('click', () => switchSwapModalTab('duty'));
+      document.getElementById('swap-tab-meeting').addEventListener('click', () => switchSwapModalTab('meeting'));
       document.getElementById('swap-member-a').addEventListener('change', updateSwapPreviewBoxes);
       document.getElementById('swap-member-b').addEventListener('change', updateSwapPreviewBoxes);
       document.getElementById('btn-confirm-swap').addEventListener('click', confirmDutySwap);
+      document.getElementById('swap-mtg-a').addEventListener('change', updateMeetingSwapPreviewBoxes);
+      document.getElementById('swap-mtg-b').addEventListener('change', updateMeetingSwapPreviewBoxes);
+      document.getElementById('btn-confirm-mtg-swap').addEventListener('click', confirmMeetingSwap);
       const closeSwapModal = () => {
         document.getElementById('swap-modal').classList.add('hidden');
         document.getElementById('swap-modal').classList.remove('flex');
       };
       document.getElementById('btn-close-swap').addEventListener('click', closeSwapModal);
       document.getElementById('btn-cancel-swap').addEventListener('click', closeSwapModal);
+      document.getElementById('btn-cancel-mtg-swap').addEventListener('click', closeSwapModal);
       document.getElementById('swap-modal').addEventListener('click', (e) => {
         if (e.target === document.getElementById('swap-modal')) closeSwapModal();
       });
